@@ -19,7 +19,6 @@
     // "no-var": "off",
     "indent": ["error", 2],
     "curly": ["error", "all"],
-    "arrow-body-style": ["error", "always"],
     "no-console": "off",
     "no-plusplus": "off",
     "no-shadow": "off",
@@ -45,6 +44,7 @@
       }
     ],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/extensions": ["off"],
     "max-len": [
       "error",
       {
