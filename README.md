@@ -6,6 +6,19 @@ see [Group maker](https://connecto-frontend.github.io/group-maker/)
 
 ---
 
+## 진행 기간
+
+2022.10.08 ~ 2022.10.21
+
+## 참여 인원
+
+|                                    김채린                                    |                                    손재영                                    |                                 최현정                                 |
+| :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------: |
+|                [@chaerin.dev](https://github.com/chaerin-dev)                |                  [@npereng11](https://github.com/pereng11)                   |             [@Hyunjung Choi](https://github.com/chjy0202)              |
+| <img src="https://avatars.githubusercontent.com/u/70943835?v=4" width="100"> | <img src="https://avatars.githubusercontent.com/u/67821588?v=4" width="100"> | <img src="https://avatars.githubusercontent.com/chjy0202" width="100"> |
+
+<br>
+
 ## Documentation
 
 ### Usage
@@ -21,27 +34,10 @@ see [Group maker](https://connecto-frontend.github.io/group-maker/)
 - Create Group - Self
   - 새로운 조를 수동으로 생성합니다
 
----
-
-### Conventional Commits
-
-ref: https://www.conventionalcommits.org/ko/v1.0.0/
-
-- feat: 기능 개발 관련
-- refactor: 리팩토링
-- fix: 오류 개선 혹은 버그 패치
-- docs: 문서화 작업
-- conf: 환경설정 관련
-- build: 빌드 관련
-
----
-
 ### Reference
 
 Please see [Good-Enough-Golfers](https://github.com/islemaster/good-enough-golfers)
 
----
-
 ### License
 
-Sesame is Free software, and may be redistributed under the terms of specified in the [LICENSE]() file.
+GroupMaker is Free software, and may be redistributed under the terms of specified in the [LICENSE]() file.
