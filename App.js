@@ -1,25 +1,28 @@
 // import axios from 'axios';
 import { Component } from './src/library/index.js';
-import { Intro, SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './src/pages/index.js';
+import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './src/pages/index.js';
+
+const GUEST = 'guest';
+const MEMBER = 'member';
 
 export default class App extends Component {
   constructor() {
     super();
     // 초기 상태 뭘로 할지 생각해봐야 함
-    this.state = {
-      userType: null,
-      data: {
+    const initialState = {
+      userType: GUEST,
+      organization: {
         members: [],
         records: [],
       },
     };
+    this.state = initialState;
     // 라우팅 관련 변수 함수 분리하는게 맞나 고민중
     this.routes = [
-      { path: '/', Component: Intro, accessible: 'guest', redirectionPath: '/members' },
-      { path: '/signin', Component: SignIn, accessible: 'guest', redirectionPath: '/members' },
-      { path: '/signup', Component: SignUp, accessible: 'guest', redirectionPath: '/members' },
+      { path: '/', Component: Members },
+      { path: '/signin', Component: SignIn, accessibleUserType: [GUEST], redirectionPath: '/' },
+      { path: '/signup', Component: SignUp, accessibleUserType: [GUEST], redirectionPath: '/' },
       { path: '/newgroup', Component: NewGroup },
-      { path: '/members', Component: Members },
       { path: '/records', Component: Records },
       { path: '/result', Component: Result },
     ];
@@ -32,8 +35,9 @@ export default class App extends Component {
     const _path = path ?? window.location.pathname;
 
     try {
-      const { Component, accessible, redirectionPath } = this.routes.find(route => route.path === _path) || NotFound;
-      if (accessible !== this.state.userType) {
+      const { Component, accessibleUserType, redirectionPath } =
+        this.routes.find(route => route.path === _path) || NotFound;
+      if (accessibleUserType && !accessibleUserType.includes(this.state.userType)) {
         const RedirectionComponent = this.routes.find(route => route.path === redirectionPath)?.Component || NotFound;
         return new RedirectionComponent().render();
       }
@@ -60,20 +64,21 @@ export default class App extends Component {
 
   async fetchState() {
     try {
-      const response = await axios.get('/user');
+      const response = await axios.get('/api/user');
       const { userType } = response.data;
+      let organization;
 
-      let data = { members: [], records: [] };
-      if (userType === 'guest') {
+      if (userType === GUEST) {
         // 로컬스토리지 깔끔하게 분리하는게 좋을듯?
-        data = localStorage.getItem('state') ?? data;
-      } else {
+        organization = localStorage.getItem('state') ?? organization;
+      }
+      if (userType === MEMBER) {
         // api 주소 이름 무조건 고쳐야 함 data가 뭐냐!
         // fetch하는 함수 & base_url 같은 것도 분리&정리하는게 좋을듯?
-        const response = await axios.get('/api/data');
-        data = response.data;
+        const response = await axios.get('/api/organization');
+        organization = response.data;
       }
-      this.setState({ userType, data });
+      this.setState({ userType, organization });
     } catch (err) {
       console.error(err);
     }

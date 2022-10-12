@@ -6,13 +6,13 @@ const port = 5004;
 
 app.use(express.static(__dirname));
 
-app.get('/user', (req, res) => {
-  res.send(JSON.stringify({ userType: 'gueeeeeest' }));
+app.get('/api/user', (req, res) => {
+  res.send(JSON.stringify({ userType: 'member' }));
 });
 
 // 이름이 data가 뭐냐!
-app.get('/api/data', (req, res) => {
-  const data = {
+app.get('/api/organization', (req, res) => {
+  const organization = {
     members: [
       { id: 0, name: '강지승', isActive: true },
       { id: 1, name: '김경현', isActive: true },
@@ -44,7 +44,7 @@ app.get('/api/data', (req, res) => {
       ],
     ],
   };
-  res.send(JSON.stringify(data));
+  res.send(JSON.stringify(organization));
 });
 
 // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)
