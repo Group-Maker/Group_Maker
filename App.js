@@ -10,6 +10,7 @@ export default class App extends Component {
     super();
     // 초기 상태 뭘로 할지 생각해봐야 함
     const initialState = {
+      path: window.location.pathname,
       userType: GUEST,
       organization: {
         members: [],
@@ -59,7 +60,7 @@ export default class App extends Component {
     }
 
     window.history.pushState(null, null, path);
-    this.render(path);
+    this.setState({ path });
   }
 
   async fetchState() {
