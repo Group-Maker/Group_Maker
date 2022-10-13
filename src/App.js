@@ -1,6 +1,6 @@
-// import axios from 'axios';
-import { Component } from './src/library/index.js';
-import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './src/pages/index.js';
+import axios from 'axios';
+import { Component } from './library/index.js';
+import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 
 const GUEST = 'guest';
 const MEMBER = 'member';
@@ -29,6 +29,7 @@ export default class App extends Component {
     ];
 
     this.fetchState();
+    console.log(this.state);
   }
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
