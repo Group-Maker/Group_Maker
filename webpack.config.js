@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const getAbsolutePath = pathDir => path.resolve(__dirname, pathDir);
 
 module.exports = {
-  // js 파일의 진입점과 빌드한 파일을 저장할 경로
-  entry: './src/index.js',
+  // js 파일의 진입점과 빌드한 파일을 저장할 경로. babel polyfill 추가하여 레거시 지원하도록 함
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     filename: 'js/main.[contenthash:8].js',
     path: getAbsolutePath('dist'),
@@ -22,16 +22,38 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    //
+    // 컴파일된 CSS를 별도의 CSS 파일로 분리한다
     new MiniCssExtractPlugin({
       filename: 'dist/css/[name].[contenthash:8].css',
       chunkFilename: 'dist/css/[name].[contenthash:8].chunk.css',
     }),
   ],
   module: {
-    // CSS module을 위한 속성
-    // 일반 css 파일과 module.css 파일을 구분하여 처리
     rules: [
+      // js 번들링 옵션
+      // babel 이용하여 트랜스파일링한 뒤 번들링하도록함
+      {
+        test: /\.js$/,
+        include: [getAbsolutePath('src/js')],
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              [
+                '@babel/plugin-transform-runtime',
+                {
+                  corejs: 3,
+                  proposals: true,
+                },
+              ],
+            ],
+          },
+        },
+      },
+      // CSS module을 위한 속성
+      // 일반 css 파일과 module.css 파일을 구분하여 처리
       {
         test: /\.css$/i,
         exclude: /\.module\.css$/i, // 모듈 파일 제외 설정
