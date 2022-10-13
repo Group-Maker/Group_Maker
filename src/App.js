@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Component } from './library/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
+import style from './App.module.css';
 
 const GUEST = 'guest';
 const MEMBER = 'member';
