@@ -1,0 +1,9 @@
+.title {
+  width: 500px;
+  height: 200px;
+  background-color: skyblue;
+}
+.red {
+  composes: title;
+  color: red;
+}
