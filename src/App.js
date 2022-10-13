@@ -28,46 +28,45 @@ export default class App extends Component {
       { path: '/records', Component: Records },
       { path: '/result', Component: Result },
     ];
-
-    this.fetchState();
-    console.log(this.state);
+    (async () => {
+      await this.fetchState();
+    })();
   }
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render = path => {
     const _path = path ?? window.location.pathname;
-
     try {
-      const { Component, accessibleUserType, redirectionPath } =
-        this.routes.find(route => route.path === _path) || NotFound;
-      if (accessibleUserType && !accessibleUserType.includes(this.state.userType)) {
-        const RedirectionComponent = this.routes.find(route => route.path === redirectionPath)?.Component || NotFound;
-        return new RedirectionComponent().render();
-      }
-      return new Component().render();
+      const Component = this.routes.find(route => route.path === _path)?.Component ?? NotFound;
+
+      return new Component({
+        navigate: this.navigate.bind(this),
+      }).render();
     } catch (err) {
       console.error(err);
     }
   };
 
-  navigate(e) {
-    if (!e.target.matches('a')) {
-      return;
-    }
-    e.preventDefault();
-
-    const path = e.target.getAttribute('href');
+  navigate(path) {
     if (window.location.pathname === path) {
       return;
     }
+    const nextRoute = this.routes.find(route => route.path === path);
+    if (!nextRoute) {
+      window.history.pushState(null, null, path);
+      this.setState({ path });
+      return;
+    }
+    const { accessibleUserType, redirectionPath } = nextRoute;
+    const isAccessible = !accessibleUserType || accessibleUserType.includes(this.state.userType);
 
-    window.history.pushState(null, null, path);
-    this.setState({ path });
+    window.history.pushState(null, null, isAccessible ? path : redirectionPath);
+    this.setState({ path: isAccessible ? path : redirectionPath });
   }
 
   async fetchState() {
     try {
-      const response = await axios.get('/api/user');
+      const response = await axios.get('/auth/check');
       const { userType } = response.data;
       let organization;
 
@@ -90,14 +89,11 @@ export default class App extends Component {
   setEvent() {
     return [
       {
-        type: 'click',
-        selector: 'window',
-        handler: this.navigate,
-      },
-      {
         type: 'popstate',
         selector: 'window',
-        handler: this.render,
+        handler: () => {
+          this.setState({ path: window.location.pathname });
+        },
       },
     ];
   }

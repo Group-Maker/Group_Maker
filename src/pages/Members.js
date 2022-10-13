@@ -5,7 +5,7 @@ import style from './Members.module.css';
 export default class Members extends Component {
   render() {
     return `
-    ${new MainLayout().render()}
+    ${new MainLayout({ navigate: this.props.navigate }).render()}
 
     `;
   }

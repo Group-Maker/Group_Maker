@@ -61,7 +61,7 @@
   composes: main-link;
   margin-top: 1rem;
 }
-.new-group-link {
+.newgroup-link {
   composes: main-link;
   margin-top: 1rem;
   font-size: 2rem;
