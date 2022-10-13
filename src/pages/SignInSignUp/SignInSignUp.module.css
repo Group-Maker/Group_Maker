@@ -1,0 +1,125 @@
+body {
+  background-color: rgb(174, 149, 198);
+}
+
+.title {
+  margin: 1rem;
+  text-align: center;
+}
+
+.signInForm,
+.signUpForm {
+  width: 60%;
+  min-width: 20rem;
+  height: 21rem;
+  margin: 1.5rem auto;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.subTitle {
+  margin-bottom: 3rem;
+}
+
+.signUpForm .subTitle {
+  margin-bottom: 1.5rem;
+}
+
+.inputContainer {
+  width: 19.5rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: skyblue;
+  margin: 2rem auto;
+}
+
+/* .signInForm .inputContainer {
+  margin: 2rem auto;
+}*/
+
+.signUpForm .inputContainer {
+  margin: 1.5rem auto;
+}
+
+.label {
+  width: 9rem;
+  background-color: pink;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input {
+  padding: 0 1.3rem 0 0.5rem;
+  width: 10rem;
+  height: 1.2rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0.2rem;
+}
+
+.error {
+  width: 10rem;
+  position: absolute;
+  right: 0;
+  font-size: 0.5rem;
+  color: red;
+  text-align: center;
+  top: 1.5rem;
+}
+
+/* .signInForm .error {
+  top: 1.5rem;
+}
+
+.signUpForm .error {
+  top: 1.3rem;
+} */
+
+.submitBtn {
+  display: block;
+  width: 7rem;
+  height: 2rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0.2rem;
+  cursor: pointer;
+  margin: 3rem auto 1rem;
+}
+
+/* .signInForm .submitBtn {
+  margin: 3rem auto 1rem;
+} */
+
+.signUpForm .submitBtn {
+  margin: 1.5rem auto 0.5rem;
+}
+
+.submitBtn:disabled {
+  cursor: not-allowed;
+}
+
+.submitBtn:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.link {
+  padding: 0;
+  color: black;
+}
+
+.icon {
+  position: absolute;
+  right: 0.3rem;
+  font-size: 0.7rem;
+}
+
+.iconSuccess {
+  color: green;
+}
+
+.iconError {
+  color: red;
+}
