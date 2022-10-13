@@ -8,7 +8,7 @@ module.exports = {
   // js 파일의 진입점과 빌드한 파일을 저장할 경로. babel polyfill 추가하여 레거시 지원하도록 함
   entry: './src/index.js',
   output: {
-    filename: 'js/main.[contenthash:8].js',
+    filename: 'js/main.js',
     path: getAbsolutePath('dist'),
     publicPath: '/',
   },
