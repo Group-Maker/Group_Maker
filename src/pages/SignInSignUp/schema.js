@@ -11,7 +11,7 @@ const signinSchema = {
     value: '',
     dirty: false,
     get valid() {
-      return /^[A-Za-z0-9]{6,12}$/.test(this.value);
+      return /^[0-9a-zA-Z]{6,12}$/.test(this.value);
     },
     error: '영문 또는 숫자를 6~12자 입력하세요.',
   },

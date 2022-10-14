@@ -4,8 +4,8 @@ import MainLayout from '../components/MainLayout.js';
 export default class Members extends Component {
   render() {
     return `
-    ${new MainLayout(this.props).render()}
-
+      ${new MainLayout(this.props).render()}
+      Member!!
     `;
   }
 }
