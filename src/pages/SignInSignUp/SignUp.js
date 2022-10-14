@@ -52,6 +52,39 @@ export default class SignUp extends SignInSignUp {
         selector: `.${style.signUpForm} input`,
         handler: e => this.validate(e, signupSchema),
       },
+      {
+        type: 'click',
+        selector: `${style.signupButton}`,
+        handler: e => {
+          e.target.nextElementSibling.removeAttribute('hidden');
+        },
+      },
     ];
   }
+}
+
+render() {
+  // prettier-ignore
+  return `
+  <button class="${style.signupButton}">Sign up</button>
+  <div class="${style.modal}" hidden>${new View({
+    className: ['signin'],
+    contents: ['Sign in'],
+    message: `Congratulation!\n Now you can Sign in`,
+    path: ['/SignIn'],
+  }).render()}
+  </div>
+  `;
+}
+
+setEvent() {
+  return [
+    {
+      type: 'click',
+      selector: `${style.signupButton}`,
+      handler: e => {
+        e.target.nextElementSibling.removeAttribute('hidden');
+      },
+    },
+  ];
 }
