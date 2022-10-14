@@ -1,10 +1,11 @@
 import { Component } from '../library/index.js';
-import style from './Members.module.css';
+import MainLayout from '../components/MainLayout.js';
 
 export default class Members extends Component {
   render() {
-    return `<h1 class="${style.red}">
-    <p >빨간색!</p>
-    멤버!!!</h1>`;
+    return `
+    ${new MainLayout(this.props).render()}
+
+    `;
   }
 }

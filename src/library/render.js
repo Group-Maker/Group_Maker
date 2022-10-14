@@ -53,9 +53,15 @@ const reconciliation = ($virtualNode, $realNode) => {
     const $vNode = $virtualChildNodes[i];
     const $rNode = $realChildNodes[i];
 
-    if ($vNode && $rNode) reconciliation($vNode, $rNode);
-    if (!$vNode) $rNode.remove();
-    if (!$rNode) $realNode.appendChild($vNode);
+    if ($vNode && $rNode) {
+      reconciliation($vNode, $rNode);
+    }
+    if (!$vNode) {
+      $rNode.remove();
+    }
+    if (!$rNode) {
+      $realNode.appendChild($vNode);
+    }
   }
 };
 
@@ -64,13 +70,19 @@ let $virtualRoot = null;
 let rootComponent = null;
 
 const render = ($rootContainer, RootComponent) => {
-  if ($rootContainer && RootComponent) {
+  if ($rootContainer) {
     $realRoot = $rootContainer;
     $virtualRoot = $rootContainer.cloneNode(true);
+  }
+  if (RootComponent) {
     rootComponent = new RootComponent();
   }
-  $virtualRoot.innerHTML = rootComponent.render();
-  reconciliation($virtualRoot, $realRoot);
+
+  const domStr = rootComponent.render();
+  if (typeof domStr === 'string') {
+    $virtualRoot.innerHTML = domStr;
+    reconciliation($virtualRoot, $realRoot);
+  }
 };
 
 export default render;
