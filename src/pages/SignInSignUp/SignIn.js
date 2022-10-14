@@ -35,6 +35,11 @@ export default class SignIn extends SignInSignUp {
         selector: `.${style.signInForm} input`,
         handler: e => this.validate(e, this.schema),
       },
+      {
+        type: 'submit',
+        selector: `.${style.signInForm}`,
+        handler: e => this.signin(e),
+      },
     ];
   }
 }

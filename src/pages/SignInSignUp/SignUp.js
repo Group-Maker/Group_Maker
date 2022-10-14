@@ -63,28 +63,28 @@ export default class SignUp extends SignInSignUp {
   }
 }
 
-render() {
-  // prettier-ignore
-  return `
-  <button class="${style.signupButton}">Sign up</button>
-  <div class="${style.modal}" hidden>${new View({
-    className: ['signin'],
-    contents: ['Sign in'],
-    message: `Congratulation!\n Now you can Sign in`,
-    path: ['/SignIn'],
-  }).render()}
-  </div>
-  `;
-}
+// render() {
+//   // prettier-ignore
+//   return `
+//   <button class="${style.signupButton}">Sign up</button>
+//   <div class="${style.modal}" hidden>${new View({
+//     className: ['signin'],
+//     contents: ['Sign in'],
+//     message: `Congratulation!\n Now you can Sign in`,
+//     path: ['/SignIn'],
+//   }).render()}
+//   </div>
+//   `;
+// }
 
-setEvent() {
-  return [
-    {
-      type: 'click',
-      selector: `${style.signupButton}`,
-      handler: e => {
-        e.target.nextElementSibling.removeAttribute('hidden');
-      },
-    },
-  ];
-}
+// setEvent() {
+//   return [
+//     {
+//       type: 'click',
+//       selector: `${style.signupButton}`,
+//       handler: e => {
+//         e.target.nextElementSibling.removeAttribute('hidden');
+//       },
+//     },
+//   ];
+// }
