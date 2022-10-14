@@ -19,6 +19,7 @@
     // "no-var": "off",
     "curly": ["error", "all"],
     "no-console": "off",
+    "class-methods-use-this": "off",
     "no-plusplus": "off",
     "no-shadow": "off",
     "vars-on-top": "off",
