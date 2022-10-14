@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Component } from '../../library/index.js';
 
 export default class SignInSignUp extends Component {
@@ -42,5 +43,47 @@ export default class SignInSignUp extends Component {
       });
 
     this.activateSubmitButton(schema);
+  }
+
+  // async request(e) {
+  //   e.preventDefault();
+
+  //   // const payload = { email: $form.userid.value, password: $form.password.value };
+  //   const payload = [...new FormData($currentForm)].reduce(
+  //     // eslint-disable-next-line no-return-assign, no-sequences
+  //     (obj, [key, value]) => ((obj[key] = value), obj),
+  //     {}
+  //   );
+
+  //   try {
+  //     // request with payload & move to another page
+  //     const { data: user } = await axios.post(`/auth/${currentForm}`, payload);
+
+  //     console.log('😀 LOGIN SUCCESS!');
+  //     console.log(user);
+
+  //     if (user) {
+  //       window.location.href = '/';
+  //     }
+  //   } catch (e) {
+  //     // login 실패...
+  //     console.log('😱 LOGIN FAILURE..');
+  //     toaster.append({ type: TOAST_TYPE.ERROR, title: '로그인 실패', message: e.response.data.error });
+  //   }
+  // }
+
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: '.switchSignInSignUp',
+        handler: e => {
+          e.preventDefault();
+          console.log('!!!');
+          const path = e.target.getAttribute('href');
+          this.props.navigate(path);
+        },
+      },
+    ];
   }
 }

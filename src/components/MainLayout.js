@@ -1,13 +1,14 @@
 import 'boxicons';
 import { Component } from '../library/index.js';
 import style from './MainLayout.module.css';
+import { navigate } from '../../router.js';
 
-const SignInAndOutButton = userType =>
-  userType === 'guest'
-    ? `<a href="/signin" class="innerLink ${style.loginLink}" >SIGNIN</a>`
-    : `<a href="/" class="innerLink ${style.loginLink}" >SIGNOUT</a>`;
+const SignInAndOutButton = isSignedIn =>
+  isSignedIn
+    ? `<a href="/" class="inerLink ${style.loginLink}" >SIGNOUT</a>`
+    : `<a href="/signin" class="innerLink ${style.loginLink}" >SIGNIN</a>`;
 
-const MainLinks = path => {
+const MainLinks = () => {
   const linkInfo = [
     {
       href: '/',
@@ -26,6 +27,7 @@ const MainLinks = path => {
     },
   ];
 
+  const path = window.location.pathname;
   // prettier-ignore
   return `
     <ul>
@@ -40,8 +42,8 @@ const MainLinks = path => {
 
 export default class MainLayout extends Component {
   render() {
-    const { path, userType } = this.props;
-    console.log(path);
+    const { isSignedIn } = this.props;
+
     // prettier-ignore
     return `
       <nav class="${style.nav}">
@@ -49,8 +51,8 @@ export default class MainLayout extends Component {
         <p class="${
           style.description
         }">In the repeated group activities,\nwe make a group\nwhere you can be with new people.</p>
-        ${SignInAndOutButton(userType)}
-        ${MainLinks(path)}
+        ${SignInAndOutButton(isSignedIn)}
+        ${MainLinks()}
         <ul class="${style.subMenu}">
           <li>
             <a href="https://github.com/Group-Maker/Group_Maker" class="${
@@ -88,7 +90,7 @@ export default class MainLayout extends Component {
 
           e.preventDefault();
           const path = e.target.closest('.innerLink').getAttribute('href');
-          this.props.navigate(path);
+          navigate(path);
         },
       },
     ];

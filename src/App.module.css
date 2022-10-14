@@ -36,3 +36,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
+:global .hidden {
+  display: none;
+}

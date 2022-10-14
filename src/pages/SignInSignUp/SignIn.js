@@ -24,7 +24,7 @@ export default class SignIn extends SignInSignUp {
         <div class="error ${style.error}"></div>
       </div>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN IN</button>
-      <a class="${style.link}" href="javascript:void(0);">Join us</a>
+      <a class="switchSignInSignUp ${style.link}" href="/signup">Join us</a>
     </form>`;
   }
 
@@ -32,7 +32,7 @@ export default class SignIn extends SignInSignUp {
     return [
       {
         type: 'input',
-        selector: `${style.form} input`,
+        selector: `.${style.signInForm} input`,
         handler: e => this.validate(e, this.schema),
       },
     ];

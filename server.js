@@ -7,7 +7,7 @@ const PORT = 5004;
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/auth/check', (req, res) => {
-  res.send(JSON.stringify({ userType: 'member' }));
+  res.send(JSON.stringify({ userType: 'guest' }));
 });
 
 // 이름이 data가 뭐냐!
