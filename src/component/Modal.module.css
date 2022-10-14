@@ -9,14 +9,6 @@
   gap: 40px;
   margin-top: 20px;
 }
-button {
-  background: inherit;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-}
 a {
   width: 180px;
   height: 60px;
