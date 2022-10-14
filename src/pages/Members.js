@@ -4,13 +4,15 @@ import View from '../component/View.js';
 
 export default class Members extends Component {
   render() {
+    // prettier-ignore
     return `
-      <button class="${style['delete-button']}">delete</button>
-      <div class="modal" hidden>${new View({
+      <button class="${style.deleteButton}">delete</button>
+      <div class="modal" hidden>${new View({ 
         className: ['back', 'back'],
-        contents: ['CANCEL', 'DELETE'],
-        message: 'ARE YOU SURE? This member will be deleted permanently!',
-      }).render()}</div>
+        contents: ['CANCEL', 'DELETE'], 
+        message: 'ARE YOU SURE? This member will be deleted permanently!' 
+      }).render()}
+      </div>
     `;
   }
 
@@ -18,7 +20,7 @@ export default class Members extends Component {
     return [
       {
         type: 'click',
-        selector: `${style['delete-button']}`,
+        selector: `${style.eleteButton}`,
         handler: e => {
           e.target.nextElementSibling.removeAttribute('hidden');
         },

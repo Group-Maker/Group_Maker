@@ -4,14 +4,16 @@ import View from '../component/View.js';
 
 export default class Result extends Component {
   render() {
+    // prettier-ignore
     return `
-    <button class="${style['save-button']}">SAVE!</button>
+    <button class="${style.saveButton}">SAVE!</button>
     <div class="modal" hidden>${new View({
       className: ['records', 'newgroup'],
       contents: ['모든 기록 보기', '조 더 짜기'],
       message: 'Store Records!',
       path: ['/Records', '/NewGroup'],
-    }).render()}</div>
+    }).render()}
+    </div>
     `;
   }
 
@@ -19,7 +21,7 @@ export default class Result extends Component {
     return [
       {
         type: 'click',
-        selector: `${style['save-button']}`,
+        selector: `${style.saveButton}`,
         handler: e => {
           e.target.nextElementSibling.removeAttribute('hidden');
         },

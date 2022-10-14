@@ -4,14 +4,16 @@ import View from '../component/View.js';
 
 export default class SignUp extends Component {
   render() {
+    // prettier-ignore
     return `
-    <button class="${style['signup-button']}">Sign up</button>
-    <div class="modal" hidden>${new View({
+    <button class="${style.signupButton}">Sign up</button>
+    <div class="${style.modal}" hidden>${new View({
       className: ['signin'],
       contents: ['Sign in'],
-      message: 'Congratulation!Now you can Sign in',
+      message: `Congratulation!\n Now you can Sign in`,
       path: ['/SignIn'],
-    }).render()}</div>
+    }).render()}
+    </div>
     `;
   }
 
@@ -19,7 +21,7 @@ export default class SignUp extends Component {
     return [
       {
         type: 'click',
-        selector: `${style['signup-button']}`,
+        selector: `${style.signupButton}`,
         handler: e => {
           e.target.nextElementSibling.removeAttribute('hidden');
         },
