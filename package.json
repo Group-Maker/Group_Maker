@@ -4,9 +4,10 @@
   "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를만들어주는 프로그램입니다",
   "private": true,
   "scripts": {
-    "start": "run-p webpack-dev-server server",
-    "server": "nodemon server.js",
+    "start": "run-p webpack-dev-server webpack-watch server",
+    "server": "nodemon -e js,css,html --watch dist/ --watch server.js server.js",
     "webpack-dev-server": "webpack serve",
+    "webpack-watch": "webpack -w",
     "build": "rm -rf dist && webpack"
   },
   "repository": {
@@ -26,6 +27,7 @@
     "@babel/plugin-transform-runtime": "^7.19.1",
     "@babel/preset-env": "^7.19.4",
     "babel-loader": "^8.2.5",
+    "boxicons": "^2.1.4",
     "css-loader": "^6.7.1",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",

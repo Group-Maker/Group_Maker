@@ -1,0 +1,109 @@
+.nav {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 3.25rem 2.5rem;
+  text-align: center;
+  width: 23vw;
+  height: 100vh;
+  background: rgba(77, 37, 190, 0.28);
+}
+
+.title {
+  font-style: normal;
+  font-size: 6rem;
+  line-height: 1;
+  text-align: center;
+  color: #fff;
+}
+
+.description {
+  margin-top: 2.5rem;
+  font-size: 2rem;
+  white-space: pre;
+}
+
+.loginLink {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 4rem 0.4rem;
+  font-size: 3rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  transition: all 150ms;
+}
+.loginLink:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.mainLink {
+  display: inline-block;
+  width: 100%;
+  padding: 1rem;
+  font-size: 3rem;
+  color: #fff;
+  background: rgba(144, 30, 184, 0.2);
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  transition: all 150ms;
+}
+.mainLink:hover {
+  background: rgba(144, 30, 184, 0.4);
+}
+.mainLink.active {
+  background: rgba(144, 30, 184, 0.75);
+}
+
+.membersLink {
+  composes: mainLink;
+  margin-top: 5rem;
+}
+.recordsLink {
+  composes: mainLink;
+  margin-top: 1rem;
+}
+.newgroupLink {
+  composes: mainLink;
+  margin-top: 1rem;
+  font-size: 6rem;
+  text-align: center;
+  line-height: 1;
+}
+
+.subMenu {
+  margin-top: 4.5rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.subMenuItem {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 50%;
+}
+.subMenuItem:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 150ms;
+}
+
+.githubLink {
+  composes: subMenuItem;
+  display: inline-block;
+}
+.issueLink {
+  composes: subMenuItem;
+  display: inline-block;
+}
+.settingBtn {
+  composes: subMenuItem;
+  cursor: pointer;
+}
+.icon {
+  width: 3.5rem;
+  height: 3.5rem;
+}

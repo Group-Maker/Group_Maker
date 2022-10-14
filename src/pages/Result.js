@@ -1,4 +1,5 @@
 import { Component } from '../library/index.js';
+// import MainLayout from '../components/MainLayout.js';
 import style from './Result.module.css';
 import View from '../component/View.js';
 
@@ -29,8 +30,3 @@ export default class Result extends Component {
     ];
   }
 }
-
-// Result 에서 save 버튼을 누르면 메시지랑 버튼 2개 뜸
-// 버튼의 path: /Records, /NewGroup, c: records, newgroup content: 모든 기록 보기, 조 더 짜기
-// 메시지: Store Records! 버튼2개
-// `<button href="/${path}" class="to-${c}">${content}</button>`

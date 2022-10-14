@@ -6,8 +6,8 @@ const PORT = 5004;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('/api/user', (req, res) => {
-  res.send(JSON.stringify({ userType: 'member' }));
+app.get('/auth/check', (req, res) => {
+  res.send(JSON.stringify({ userType: 'guest' }));
 });
 
 // 이름이 data가 뭐냐!
@@ -50,7 +50,7 @@ app.get('/api/organization', (req, res) => {
 // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)
 // 브라우저 새로고침 시 서버는 index.html을 전달하고 클라이언트는 window.location.pathname를 참조해 다시 라우팅한다.
 app.get('*', (req, res) => {
-  res.sendFile('/index.html');
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 app.listen(PORT, () => {

@@ -6,9 +6,9 @@ const getAbsolutePath = pathDir => path.resolve(__dirname, pathDir);
 
 module.exports = {
   // js 파일의 진입점과 빌드한 파일을 저장할 경로. babel polyfill 추가하여 레거시 지원하도록 함
-  entry: ['@babel/polyfill', './src/index.js'],
+  entry: './src/index.js',
   output: {
-    filename: 'js/main.[contenthash:8].js',
+    filename: 'js/main.js',
     path: getAbsolutePath('dist'),
     publicPath: '/',
   },
@@ -70,6 +70,15 @@ module.exports = {
             },
           },
         ],
+      },
+      // Asset Modules를 이용한 폰트 내보내기
+      // 로더를 추가로 구성하지 않아도 사용 가능 (webpack 5+)
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[hash][ext][query]',
+        },
       },
     ],
   },
