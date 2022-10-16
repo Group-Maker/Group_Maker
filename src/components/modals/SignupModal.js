@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
-import style from './Modal.module.css';
 import Link from '../../../library/SPA-router/index.js';
+import style from './Modal.module.css';
 
 export default class SignupModal extends Component {
   render() {
