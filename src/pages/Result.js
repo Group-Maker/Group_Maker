@@ -7,7 +7,7 @@ export default class Result extends Component {
   render() {
     return `
       <button class="${style.btn}">SAVE</button>
-      <section class="openTarget ${style.modal} hidden">
+      <section class="modal hidden">
         ${new SaveModal().render()}
       </section>
     `;
@@ -19,7 +19,7 @@ export default class Result extends Component {
         type: 'click',
         selector: `.${style.btn}`,
         handler: () => {
-          document.querySelector('.openTarget').classList.remove('hidden');
+          document.querySelector('.modal').classList.remove('hidden');
         },
       },
     ];

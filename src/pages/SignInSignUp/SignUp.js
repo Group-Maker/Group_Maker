@@ -45,7 +45,7 @@ export default class SignUp extends Component {
         <div class="error ${style.error}"></div>
       </div>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
-      <section class="openTarget ${style.modal} hidden">
+      <section class="modal hidden">
         ${new SignupModal().render()}
       </section>
       <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
@@ -66,7 +66,7 @@ export default class SignUp extends Component {
           e.preventDefault();
 
           console.log(e.target.childNodes);
-          document.querySelector('.openTarget').classList.remove('hidden');
+          document.querySelector('.modal').classList.remove('hidden');
         },
       },
     ];

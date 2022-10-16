@@ -8,7 +8,7 @@ export default class Members extends Component {
     return `
       ${this.props.organization.members.map(({ id, name }) => `<span>${id} / ${name}</span>`)}
       <button class="${style.btn}">X</button>
-      <section class="openTarget ${style.modal} hidden">
+      <section class="modal hidden">
         ${new DeleteModal({ target: 'member' }).render()}
       </section>
     `;
@@ -20,7 +20,7 @@ export default class Members extends Component {
         type: 'click',
         selector: `.${style.btn}`,
         handler: () => {
-          document.querySelector('.openTarget').classList.remove('hidden');
+          document.querySelector('.modal').classList.remove('hidden');
         },
       },
     ];

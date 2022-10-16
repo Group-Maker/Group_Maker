@@ -10,7 +10,7 @@ export default class Records extends Component {
       RECORDS!!
       ${this.props.organization.records.map(record => `<span>${record}</span>`)}
       <button class="${style.btn}">X</button>
-      <section class="openTarget ${style.modal} hidden">
+      <section class="modal hidden">
         ${new DeleteModal({ target: 'record' }).render()}
       </section>
     `;
@@ -22,7 +22,7 @@ export default class Records extends Component {
         type: 'click',
         selector: `.${style.btn}`,
         handler: () => {
-          document.querySelector('.openTarget').classList.remove('hidden');
+          document.querySelector('.modal').classList.remove('hidden');
         },
       },
     ];

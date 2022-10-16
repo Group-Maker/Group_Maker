@@ -22,7 +22,7 @@ export default class SignupModal extends Component {
         type: 'click',
         selector: '.closeTarget',
         handler: e => {
-          e.target.closest('.openTarget').classList.add('hidden');
+          e.target.closest('.modal').classList.add('hidden');
         },
       },
     ];
