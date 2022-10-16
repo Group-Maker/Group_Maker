@@ -1,13 +1,50 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const users = require('./fake-data/users-data.js');
+
+require('dotenv').config();
 
 const app = express();
 const PORT = 5004;
 
 app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.json());
+app.use(cookieParser());
 
 app.get('/auth/check', (req, res) => {
   res.send(JSON.stringify({ userType: 'guest' }));
+});
+
+app.post('/auth/signin', (req, res) => {
+  const { userid, password } = req.body;
+
+  // 401 Unauthorized
+  if (!userid || !password) {
+    return res.status(401).send({ error: '사용자 아이디 또는 패스워드가 전달되지 않았습니다.' });
+  }
+
+  const user = users.findUser(userid, password);
+  console.log('사용자 정보:', user);
+
+  // 401 Unauthorized
+  if (!user) {
+    return res.status(401).send({ error: '등록되지 않은 사용자입니다.' });
+  }
+
+  const accessToken = jwt.sign({ userid }, process.env.JWT_SECRET_KEY, {
+    expiresIn: '1d',
+  });
+
+  // 쿠키에 토큰 설정(http://expressjs.com/ko/api.html#res.cookie)
+  res.cookie('accessToken', accessToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7d
+    httpOnly: true,
+  });
+
+  // 로그인 성공
+  res.send({ userid, username: user.name, organization: user.organization });
 });
 
 // 이름이 data가 뭐냐!

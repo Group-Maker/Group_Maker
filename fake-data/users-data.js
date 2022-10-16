@@ -68,9 +68,9 @@ const findUserByUserid = userid => users.find(user => user.userid === userid);
 const findUser = (userid, password) => users.find(user => user.userid === userid && user.password === password);
 
 const createUser = (userid, password, name) => {
-  users = [...users, { userid, password, name }];
+  users = [...users, { userid, password, name, organization: { members: [], records: [] } }];
 };
 
 const getUsers = () => users;
 
-export { createUser, findUserByUserid, findUser, getUsers };
+module.exports = { createUser, findUserByUserid, findUser, getUsers };

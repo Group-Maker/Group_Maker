@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { navigate } from '../../../router.js';
 import { Component } from '../../library/index.js';
 
 export default class SignInSignUp extends Component {
@@ -45,45 +46,48 @@ export default class SignInSignUp extends Component {
     this.activateSubmitButton(schema);
   }
 
-  // async request(e) {
-  //   e.preventDefault();
+  async signin(e) {
+    e.preventDefault();
 
-  //   // const payload = { email: $form.userid.value, password: $form.password.value };
-  //   const payload = [...new FormData($currentForm)].reduce(
-  //     // eslint-disable-next-line no-return-assign, no-sequences
-  //     (obj, [key, value]) => ((obj[key] = value), obj),
-  //     {}
-  //   );
+    console.log(this);
 
-  //   try {
-  //     // request with payload & move to another page
-  //     const { data: user } = await axios.post(`/auth/${currentForm}`, payload);
+    // const payload = { email: $form.userid.value, password: $form.password.value };
+    const payload = [...new FormData(e.target)].reduce(
+      // eslint-disable-next-line no-return-assign, no-sequences
+      (obj, [key, value]) => ((obj[key] = value), obj),
+      {}
+    );
 
-  //     console.log('😀 LOGIN SUCCESS!');
-  //     console.log(user);
+    try {
+      // request with payload & move to another page
+      const { data: user } = await axios.post(`/auth${window.location.pathname}`, payload);
 
-  //     if (user) {
-  //       window.location.href = '/';
-  //     }
-  //   } catch (e) {
-  //     // login 실패...
-  //     console.log('😱 LOGIN FAILURE..');
-  //     toaster.append({ type: TOAST_TYPE.ERROR, title: '로그인 실패', message: e.response.data.error });
-  //   }
-  // }
+      console.log('😀 LOGIN SUCCESS!');
+      console.log(user);
 
-  setEvent() {
-    return [
-      {
-        type: 'click',
-        selector: '.switchSignInSignUp',
-        handler: e => {
-          e.preventDefault();
-          console.log('!!!');
-          const path = e.target.getAttribute('href');
-          this.props.navigate(path);
-        },
-      },
-    ];
+      if (user) {
+        console.log(user.organization);
+
+        // this.setState({ isSignedIn: true, organization: user.organization });
+        navigate('/');
+      }
+    } catch (e) {
+      console.log('😱 LOGIN FAILURE..');
+    }
   }
+
+  // setEvent() {
+  //   return [
+  //     // {
+  //     //   type: 'click',
+  //     //   selector: '.switchSignInSignUp',
+  //     //   handler: e => {
+  //     //     e.preventDefault();
+  //     //     console.log('!!!');
+  //     //     const path = e.target.getAttribute('href');
+  //     //     this.props.navigate(path);
+  //     //   },
+  //     // },
+  //   ];
+  // }
 }
