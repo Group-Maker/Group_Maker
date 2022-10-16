@@ -34,15 +34,13 @@ export default class App extends Component {
     this.init();
   }
 
-  signInSetState = user => {
-    this.setState({ isSignedIn: true, organization: user.organization });
-  };
-
   async init() {
     try {
       const response = await axios.get('/auth/check');
       const { isSignedIn } = response.data;
+
       let organization;
+
       if (isSignedIn) {
         // fetch하는 함수 & base_url 같은 것도 분리&정리하는게 좋을듯
         const response = await axios.get('/api/organization');
@@ -68,6 +66,19 @@ export default class App extends Component {
 
     const { isSignedIn, organization } = this.state;
 
-    return new Component({ isSignedIn, organization, signInSetState: this.signInSetState.bind(this) }).render();
+    return new Component({
+      isSignedIn,
+      organization,
+      signInSetState: this.signInSetState.bind(this),
+      signOut: this.signOut.bind(this),
+    }).render();
   };
+
+  signInSetState = user => {
+    this.setState({ isSignedIn: true, organization: user.organization });
+  };
+
+  signOut() {
+    this.setState({ isSignedIn: false });
+  }
 }
