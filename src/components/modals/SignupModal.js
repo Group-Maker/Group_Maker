@@ -10,7 +10,7 @@ export default class SignupModal extends Component {
       <div class="${style.content}">
         <div class="${style.message}">Congratulation!\n Now you can Sign in</div>
         <div class="${style.buttons}">
-          ${new Link({ path: '/signin', classNames: [style.btn], content: 'Sign in' }).render()}
+          ${new Link({ path: '/signin', classNames: [style.button], content: 'Sign in' }).render()}
         </div>
       </div>
     `;

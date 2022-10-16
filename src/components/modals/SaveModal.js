@@ -10,8 +10,8 @@ export default class SaveModal extends Component {
       <div class="${style.content}">
         <div class="${style.message}">Store Records!</div>
         <div class="${style.buttons}">
-          ${new Link({ path: '/records', classNames: [style.btn], content: '모든 기록 보기' }).render()}
-          ${new Link({ path: '/newgroup', classNames: [style.btn], content: '조 더 짜기!' }).render()}
+          ${new Link({ path: '/records', classNames: [style.button], content: '모든 기록 보기' }).render()}
+          ${new Link({ path: '/newgroup', classNames: [style.button], content: '조 더 짜기!' }).render()}
         </div>
       </div>
     `;

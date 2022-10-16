@@ -14,8 +14,8 @@ export default class DeleteModal extends Component {
           deleted permanently!
         </div>
         <div class="${style.buttons}">
-          <button class="${style.btn}">CANCEL</button>
-          <button class="${style.btn} ${style.warning}">DELETE</button>
+          <button class="${style.button}">CANCEL</button>
+          <button class="${style.button} ${style.warning}">DELETE</button>
         </div>
       </div>
     `;
