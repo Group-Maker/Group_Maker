@@ -17,16 +17,13 @@ export default class SignIn extends Component {
 
     try {
       // request with payload & move to another page
-      const { data: user } = await axios.post(`/auth${window.location.pathname}`, payload);
-
-      console.log('😀 LOGIN SUCCESS!');
+      const { data: user } = await axios.post(`/auth/signin`, payload);
 
       if (user) {
         this.props.signInSetState(user);
         navigate('/');
       }
     } catch (err) {
-      console.log('😱 LOGIN FAILURE..');
       if (err.response.status === 401) {
         document.querySelector('.signInError').textContent = 'Incorrect email or password';
       }
