@@ -1,6 +1,6 @@
 import { Component } from '../../library/CBD/index.js';
-import style from './View.module.css';
 import Modal from './Modal.js';
+import style from './View.module.css';
 
 export default class View extends Component {
   render() {

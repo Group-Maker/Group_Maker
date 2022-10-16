@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { signinSchema } from './schema.js';
 import validate from './signInSignOut.js';
-import { navigate } from '../../../library/SPA-router/router.js';
+import { navigate } from '../../../library/SPA-router/index.js';
 import style from './SignInSignUp.module.css';
 
 export default class SignIn extends Component {
