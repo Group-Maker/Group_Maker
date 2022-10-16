@@ -2,8 +2,6 @@ import { Component } from '../../library/CBD/index.js';
 import MainLayout from '../components/Nav/MainLayout.js';
 import DeleteModal from '../components/modals/DeleteModal.js';
 import style from './Records.module.css';
-// import style from './Records.module.css';
-// import View from '../component/View.js';
 
 export default class Records extends Component {
   render() {
