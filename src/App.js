@@ -4,7 +4,7 @@ import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
-import { saveState, loadState } from './utils/localStorage.js';
+import { loadOrganization } from './utils/localStorage.js';
 
 const routes = [
   { path: '/', component: Members },
@@ -38,24 +38,22 @@ export default class App extends Component {
     this.setState({ isSignedIn: true, organization: user.organization });
   };
 
-  async init() {
+  init = async () => {
     try {
       const response = await axios.get('/auth/check');
-      const { isSignedIn } = response.data;
-      let organization;
-      if (isSignedIn) {
-        // fetch하는 함수 & base_url 같은 것도 분리&정리하는게 좋을듯
-        const response = await axios.get('/api/organization');
-        organization = response.data;
-      } else {
-        organization = loadState(this.state.organization);
-      }
+      const initialState = response.data;
 
-      this.setState({ isSignedIn, isLoading: false, organization });
+      if (!initialState.organization) {
+        const localOrganization = loadOrganization();
+        if (localOrganization) {
+          initialState.organization = localOrganization;
+        }
+      }
+      this.setState({ isLoading: false, ...initialState });
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render = () => {
