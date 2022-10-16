@@ -3,7 +3,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const users = require('./fake-data/users-data.js');
-
 require('dotenv').config();
 
 const app = express();
@@ -14,7 +13,20 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get('/auth/check', (req, res) => {
-  res.send(JSON.stringify({ userType: 'guest' }));
+  try {
+    const token = req.cookies.accessToken;
+
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      if (decoded) {
+        const { organization } = users.findUserByUserid(decoded.userid);
+        res.send(JSON.stringify({ isSignedIn: true, organization }));
+      }
+    }
+    res.send(JSON.stringify({ isSignedIn: false }));
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.post('/auth/signin', (req, res) => {
@@ -26,7 +38,6 @@ app.post('/auth/signin', (req, res) => {
   }
 
   const user = users.findUser(userid, password);
-  console.log('사용자 정보:', user);
 
   // 401 Unauthorized
   if (!user) {
@@ -46,6 +57,8 @@ app.post('/auth/signin', (req, res) => {
   // 로그인 성공
   res.send({ userid, username: user.name, organization: user.organization });
 });
+
+app.post('/auth/signout', (_, res) => res.clearCookie('accessToken'));
 
 // 이름이 data가 뭐냐!
 app.get('/api/organization', (req, res) => {
