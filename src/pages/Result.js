@@ -1,31 +1,27 @@
 import { Component } from '../../library/CBD/index.js';
 // import MainLayout from '../components/MainLayout.js';
-// import style from './Result.module.css';
-// import View from '../component/View.js';
+import SaveModal from '../components/modals/SaveModal.js';
+import style from './Result.module.css';
 
 export default class Result extends Component {
-  // render() {
-  //   // prettier-ignore
-  //   return `
-  //   <button class="${style.saveButton}">SAVE!</button>
-  //   <div class="modal" hidden>${new View({
-  //     className: ['records', 'newgroup'],
-  //     contents: ['모든 기록 보기', '조 더 짜기'],
-  //     message: 'Store Records!',
-  //     path: ['/Records', '/NewGroup'],
-  //   }).render()}
-  //   </div>
-  //   `;
-  // }
-  // setEvent() {
-  //   return [
-  //     {
-  //       type: 'click',
-  //       selector: `${style.saveButton}`,
-  //       handler: e => {
-  //         e.target.nextElementSibling.removeAttribute('hidden');
-  //       },
-  //     },
-  //   ];
-  // }
+  render() {
+    return `
+      <button class="${style.btn}">SAVE</button>
+      <section class="modal hidden">
+        ${new SaveModal().render()}
+      </section>
+    `;
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: `.${style.btn}`,
+        handler: () => {
+          document.querySelector('.modal').classList.remove('hidden');
+        },
+      },
+    ];
+  }
 }
