@@ -1,6 +1,6 @@
 import axios from 'axios';
 import style from './App.module.css';
-import { Component } from './library/index.js';
+import { Component } from '../library/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
 import { createRoutes, resolveComponent } from '../router.js';
@@ -11,8 +11,8 @@ const routes = [
   { path: '/signin', component: SignIn },
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
-  // { path: '/records', component: Records },
-  // { path: '/result', component: Result },
+  { path: '/records', component: Records },
+  { path: '/result', component: Result },
   { path: '*', component: NotFound },
 ];
 
