@@ -1,6 +1,7 @@
 import SignInSignUp from './SignInSignUp.js';
 import { signupSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
+import SignupModal from '../../components/modals/SignupModal.js';
 
 export default class SignUp extends SignInSignUp {
   render() {
@@ -34,13 +35,18 @@ export default class SignUp extends SignInSignUp {
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="confirm-password">CONFIRM PASSWORD</label>
-        <input class="${style.input}" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
+        <input class="${
+          style.input
+        }" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
         <span class="bar"></span>
         <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
         <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
         <div class="error ${style.error}"></div>
       </div>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
+      <div class="${style.modalBackground} ${style.hidden} ${style.closetarget}">
+        ${new SignupModal().render()}
+      </div>
       <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
     </form>`;
   }
@@ -54,37 +60,11 @@ export default class SignUp extends SignInSignUp {
       },
       {
         type: 'click',
-        selector: `${style.signupButton}`,
+        selector: `${style.submitBtn}`,
         handler: e => {
-          e.target.nextElementSibling.removeAttribute('hidden');
+          e.target.nextElementSibling.classList.remove('hidden');
         },
       },
     ];
   }
 }
-
-// render() {
-//   // prettier-ignore
-//   return `
-//   <button class="${style.signupButton}">Sign up</button>
-//   <div class="${style.modal}" hidden>${new View({
-//     className: ['signin'],
-//     contents: ['Sign in'],
-//     message: `Congratulation!\n Now you can Sign in`,
-//     path: ['/SignIn'],
-//   }).render()}
-//   </div>
-//   `;
-// }
-
-// setEvent() {
-//   return [
-//     {
-//       type: 'click',
-//       selector: `${style.signupButton}`,
-//       handler: e => {
-//         e.target.nextElementSibling.removeAttribute('hidden');
-//       },
-//     },
-//   ];
-// }
