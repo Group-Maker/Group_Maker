@@ -6,7 +6,7 @@ export default class DeleteModal extends Component {
     const { target } = this.props;
     // prettier-ignore
     return `
-      <div class="${style.overlay}"></div>
+      <div class="closeTarget ${style.overlay} "></div>
       <div class="${style.content}">
         <div class="${style.message}">
         <div>ARE YOU SURE?</div>
@@ -14,12 +14,22 @@ export default class DeleteModal extends Component {
           deleted permanently!
         </div>
         <div class="${style.buttons}">
-          <button class="${style.button}">CANCEL</button>
-          <button class="${style.button} ${style.warning}">DELETE</button>
+          <button class="closeTarget ${style.button}">CANCEL</button>
+          <button class="closeTarget ${style.button} ${style.warning}">DELETE</button>
         </div>
       </div>
     `;
   }
 
-  setEvent() {}
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: '.closeTarget',
+        handler: e => {
+          e.target.closest('.openTarget').classList.add('hidden');
+        },
+      },
+    ];
+  }
 }

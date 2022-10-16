@@ -1,12 +1,12 @@
 import { Component } from '../../../library/CBD/index.js';
-import Link from '../../../library/SPA-router/index.js';
+import { Link } from '../../../library/SPA-router/index.js';
 import style from './Modal.module.css';
 
 export default class SignupModal extends Component {
   render() {
     // prettier-ignore
     return `
-      <div class="${style.overlay}"></div>
+      <div class="closeTarget ${style.overlay}"></div>
       <div class="${style.content}">
         <div class="${style.message}">Congratulation!\n Now you can Sign in</div>
         <div class="${style.buttons}">
@@ -14,5 +14,17 @@ export default class SignupModal extends Component {
         </div>
       </div>
     `;
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: '.closeTarget',
+        handler: e => {
+          e.target.closest('.openTarget').classList.add('hidden');
+        },
+      },
+    ];
   }
 }
