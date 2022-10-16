@@ -1,4 +1,4 @@
-import { render } from './src/library/index.js';
+import { render } from './library/index.js';
 
 let _routes = null;
 

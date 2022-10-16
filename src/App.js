@@ -1,6 +1,6 @@
 import axios from 'axios';
 import style from './App.module.css';
-import { Component } from './library/index.js';
+import { Component } from '../library/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
 import { createRoutes, resolveComponent } from '../router.js';

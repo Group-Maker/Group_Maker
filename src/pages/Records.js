@@ -1,4 +1,4 @@
-import { Component } from '../library/index.js';
+import { Component } from '../../library/index.js';
 // import MainLayout from '../components/MainLayout.js';
 // import style from './Records.module.css';
 // import View from '../component/View.js';

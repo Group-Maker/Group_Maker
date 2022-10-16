@@ -1,4 +1,4 @@
-import { Component } from '../library/index.js';
+import { Component } from '../../library/index.js';
 import MainLayout from '../components/MainLayout.js';
 
 export default class Members extends Component {
