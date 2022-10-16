@@ -34,9 +34,9 @@ export default class App extends Component {
     this.init();
   }
 
-  //  signinsetstate = user => {
-  //     this.setState({ isSignedIn: true, organization: user.organization });
-  //   };
+  signInSetState = user => {
+    this.setState({ isSignedIn: true, organization: user.organization });
+  };
 
   async init() {
     try {
@@ -59,7 +59,7 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render = () => {
-    console.log(this.state);
+    console.log('RENDER', this.state);
     if (this.state.isLoading) {
       return new Loader().render();
     }
@@ -68,6 +68,6 @@ export default class App extends Component {
 
     const { isSignedIn, organization } = this.state;
 
-    return new Component({ isSignedIn, organization }).render();
+    return new Component({ isSignedIn, organization, signInSetState: this.signInSetState.bind(this) }).render();
   };
 }

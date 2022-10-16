@@ -1,8 +1,9 @@
-import SignInSignUp from './SignInSignUp.js';
+import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
+import validate from './signInSignOut.js';
 import style from './SignInSignUp.module.css';
 
-export default class SignUp extends SignInSignUp {
+export default class SignUp extends Component {
   render() {
     return `
     <h1 class="${style.title}">GROUP-MAKER</h1>
@@ -50,7 +51,7 @@ export default class SignUp extends SignInSignUp {
       {
         type: 'input',
         selector: `.${style.signUpForm} input`,
-        handler: e => this.validate(e, signupSchema),
+        handler: e => validate(e, signupSchema),
       },
       {
         type: 'click',

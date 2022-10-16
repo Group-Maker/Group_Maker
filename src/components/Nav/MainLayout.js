@@ -1,11 +1,11 @@
 import 'boxicons';
-import { Component } from '../library/index.js';
+import { Component } from '../../../library/CBD/index.js';
+import { navigate } from '../../../library/SPA-router/index.js';
 import style from './MainLayout.module.css';
-import { navigate } from '../../router.js';
 
 const SignInAndOutButton = isSignedIn =>
   isSignedIn
-    ? `<a href="/" class="inerLink ${style.loginLink}" >SIGNOUT</a>`
+    ? `<a href="/" class="innerLink ${style.loginLink}" >SIGNOUT</a>`
     : `<a href="/signin" class="innerLink ${style.loginLink}" >SIGNIN</a>`;
 
 const MainLinks = () => {
@@ -84,10 +84,6 @@ export default class MainLayout extends Component {
         type: 'click',
         selector: '.innerLink',
         handler: e => {
-          if (!e.target.closest('.innerLink')) {
-            return;
-          }
-
           e.preventDefault();
           const path = e.target.closest('.innerLink').getAttribute('href');
           navigate(path);

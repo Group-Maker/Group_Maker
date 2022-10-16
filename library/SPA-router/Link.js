@@ -15,10 +15,6 @@ export default class Link extends Component {
         type: 'click',
         selector: '.innerLink',
         handler: e => {
-          if (!e.target.closest('.innerLink')) {
-            return;
-          }
-
           e.preventDefault();
           const path = e.target.closest('.innerLink').getAttribute('href');
           navigate(path);

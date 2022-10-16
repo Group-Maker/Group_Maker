@@ -1,4 +1,4 @@
-import { Component } from '../library/index.js';
+import { Component } from '../../library/CBD/index.js';
 
 export default class Loader extends Component {
   render() {
