@@ -1,12 +1,12 @@
-import { Component } from '../../library/index.js';
-import MainLayout from '../components/MainLayout.js';
+import { Component } from '../../library/CBD/index.js';
+import MainLayout from '../components/Nav/MainLayout.js';
 import DeleteModal from '../components/modals/DeleteModal.js';
 import style from './Members.module.css';
 
 export default class Members extends Component {
   render() {
     return `
-      ${new MainLayout(this.props).render()}
+      ${this.props.organization.members.map(({ id, name }) => `<span>${id} / ${name}</span>`)}
       <button class="${style.btn}">X</button>
       <section class="openTarget ${style.modal} hidden">
         ${new DeleteModal({ target: 'member' }).render()}

@@ -1,4 +1,4 @@
-import { Component } from '../../library/index.js';
+import { Component } from '../../library/CBD/index.js';
 // import MainLayout from '../components/MainLayout.js';
 import SaveModal from '../components/modals/SaveModal.js';
 import style from './Result.module.css';

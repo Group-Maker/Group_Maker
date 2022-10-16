@@ -1,4 +1,4 @@
-import { render } from './src/library/index.js';
+import { render } from '../CBD/index.js';
 
 let _routes = null;
 
@@ -20,5 +20,9 @@ const navigate = path => {
   window.history.pushState(null, null, path);
   render();
 };
+
+window.addEventListener('popstate', () => {
+  render();
+});
 
 export { createRoutes, resolveComponent, navigate };
