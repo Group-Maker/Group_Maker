@@ -11,7 +11,7 @@ const routes = [
   { path: '/signin', component: SignIn },
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
-  // { path: '/records', component: Records },
+  { path: '/records', component: Records },
   // { path: '/result', component: Result },
   { path: '*', component: NotFound },
 ];
@@ -34,9 +34,9 @@ export default class App extends Component {
     this.init();
   }
 
-  //  signinsetstate = user => {
-  //     this.setState({ isSignedIn: true, organization: user.organization });
-  //   };
+  signInSetState = user => {
+    this.setState({ isSignedIn: true, organization: user.organization });
+  };
 
   async init() {
     try {
@@ -60,13 +60,17 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render = () => {
-    console.log(this.state);
+    console.log('RENDER', this.state);
     if (this.state.isLoading) {
       return new Loader().render();
     }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
-    return new Component({ isSignedIn: this.state.isSignedIn }).render();
+    return new Component({
+      isSignedIn: this.state.isSignedIn,
+      organization: this.state.organization,
+      signInSetState: this.signInSetState.bind(this),
+    }).render();
   };
 
   setEvent() {

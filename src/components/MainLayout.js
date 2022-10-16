@@ -5,7 +5,7 @@ import { navigate } from '../../router.js';
 
 const SignInAndOutButton = isSignedIn =>
   isSignedIn
-    ? `<a href="/" class="inerLink ${style.loginLink}" >SIGNOUT</a>`
+    ? `<a href="/" class="innerLink ${style.loginLink}" >SIGNOUT</a>`
     : `<a href="/signin" class="innerLink ${style.loginLink}" >SIGNIN</a>`;
 
 const MainLinks = () => {

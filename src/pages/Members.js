@@ -5,7 +5,8 @@ export default class Members extends Component {
   render() {
     return `
       ${new MainLayout(this.props).render()}
-      Member!!
+      MEMBERS!!
+      ${this.props.organization.members.map(({ id, name }) => `<span>${id} / ${name}</span>`)}
     `;
   }
 }

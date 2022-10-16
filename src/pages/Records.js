@@ -1,9 +1,17 @@
 import { Component } from '../../library/index.js';
-// import MainLayout from '../components/MainLayout.js';
+import MainLayout from '../components/MainLayout.js';
 // import style from './Records.module.css';
 // import View from '../component/View.js';
 
 export default class Records extends Component {
+  render() {
+    return `
+      ${new MainLayout(this.props).render()}
+      RECORDS!!
+      ${this.props.organization.records.map(record => `<span>${record}</span>`)}
+    `;
+  }
+
   // render() {
   //   // prettier-ignore
   //   return `
