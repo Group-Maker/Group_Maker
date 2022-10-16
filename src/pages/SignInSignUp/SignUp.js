@@ -44,9 +44,9 @@ export default class SignUp extends SignInSignUp {
         <div class="error ${style.error}"></div>
       </div>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
-      <div class="${style.modalBackground} ${style.hidden} ${style.closetarget}">
+      <section class="openTarget ${style.modal} hidden">
         ${new SignupModal().render()}
-      </div>
+      </section>
       <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
     </form>`;
   }
@@ -59,10 +59,13 @@ export default class SignUp extends SignInSignUp {
         handler: e => this.validate(e, signupSchema),
       },
       {
-        type: 'click',
-        selector: `${style.submitBtn}`,
+        type: 'submit',
+        selector: `.${style.signUpForm}`,
         handler: e => {
-          e.target.nextElementSibling.classList.remove('hidden');
+          e.preventDefault();
+
+          console.log(e.target.childNodes);
+          document.querySelector('.openTarget').classList.remove('hidden');
         },
       },
     ];

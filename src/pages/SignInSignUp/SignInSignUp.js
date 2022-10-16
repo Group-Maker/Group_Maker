@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { navigate } from '../../../router.js';
-import { Component } from '../../library/index.js';
+import { Component } from '../../../library/index.js';
 
 export default class SignInSignUp extends Component {
   // setSchema(schema, newSchema) {

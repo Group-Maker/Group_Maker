@@ -1,28 +1,27 @@
 import { Component } from '../../library/index.js';
 // import MainLayout from '../components/MainLayout.js';
-// import style from './Records.module.css';
+import DeleteModal from '../components/modals/DeleteModal.js';
+import style from './Records.module.css';
+
 export default class Records extends Component {
-  // render() {
-  //   // prettier-ignore
-  //   return `
-  //     <button class="${style.deleteButton}">delete</button>
-  //     <div class="modal" hidden>${new View({
-  //       className: ['back', 'back'],
-  //       contents: ['CANCEL', 'DELETE'],
-  //       message: 'ARE YOU SURE? This record will be deleted permanently!',
-  //     }).render()}
-  //     </div>
-  //   `;
-  // }
-  // setEvent() {
-  //   return [
-  //     {
-  //       type: 'click',
-  //       selector: `${style.deleteButton}`,
-  //       handler: e => {
-  //         e.target.nextElementSibling.removeAttribute('hidden');
-  //       },
-  //     },
-  //   ];
-  // }
+  render() {
+    return `
+      <button class="${style.btn}">X</button>
+      <section class="openTarget ${style.modal} hidden">
+        ${new DeleteModal({ target: 'record' }).render()}
+      </section>
+    `;
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: `.${style.btn}`,
+        handler: () => {
+          document.querySelector('.openTarget').classList.remove('hidden');
+        },
+      },
+    ];
+  }
 }
