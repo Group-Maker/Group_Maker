@@ -1,5 +1,5 @@
 import 'boxicons';
-import { Component } from '../library/index.js';
+import { Component } from '../../library/index.js';
 import style from './MainLayout.module.css';
 import { navigate } from '../../router.js';
 

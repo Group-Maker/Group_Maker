@@ -1,4 +1,4 @@
-import { Component } from '../library/index.js';
+import { Component } from '../../library/index.js';
 import style from './View.module.css';
 import Modal from './Modal.js';
 
