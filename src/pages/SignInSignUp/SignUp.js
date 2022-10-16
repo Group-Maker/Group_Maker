@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
-import validate from './signInSignOut.js';
+import validate from './validate.js';
 import style from './SignInSignUp.module.css';
 
 export default class SignUp extends Component {
