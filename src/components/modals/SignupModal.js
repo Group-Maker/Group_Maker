@@ -1,6 +1,6 @@
-import { Component } from '../../../library/index.js';
+import { Component } from '../../../library/CBD/index.js';
 import style from './Modal.module.css';
-import Button from '../Button.js';
+import Link from '../../../library/SPA-router/index.js';
 
 export default class SignupModal extends Component {
   render() {
@@ -10,7 +10,7 @@ export default class SignupModal extends Component {
       <div class="${style.content}">
         <div class="${style.message}">Congratulation!\n Now you can Sign in</div>
         <div class="${style.buttons}">
-          ${new Button({ path: '/signin', className: `${style.btn}`, content: 'Sign in' }).render()}
+          ${new Link({ path: '/signin', classNames: [style.btn], content: 'Sign in' }).render()}
         </div>
       </div>
     `;
