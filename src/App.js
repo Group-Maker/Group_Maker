@@ -1,9 +1,9 @@
 import axios from 'axios';
 import style from './App.module.css';
-import { Component } from '../library/index.js';
+import { Component } from '../library/CBD/index.js';
+import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
-import { createRoutes, resolveComponent } from '../router.js';
 import { saveState, loadState } from './utils/localStorage.js';
 
 const routes = [
@@ -12,7 +12,7 @@ const routes = [
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
   { path: '/records', component: Records },
-  // { path: '/result', component: Result },
+  { path: '/result', component: Result },
   { path: '*', component: NotFound },
 ];
 
@@ -43,7 +43,6 @@ export default class App extends Component {
       const response = await axios.get('/auth/check');
       const { isSignedIn } = response.data;
       let organization;
-
       if (isSignedIn) {
         // fetch하는 함수 & base_url 같은 것도 분리&정리하는게 좋을듯
         const response = await axios.get('/api/organization');
@@ -66,22 +65,9 @@ export default class App extends Component {
     }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
-    return new Component({
-      isSignedIn: this.state.isSignedIn,
-      organization: this.state.organization,
-      signInSetState: this.signInSetState.bind(this),
-    }).render();
-  };
 
-  setEvent() {
-    return [
-      {
-        type: 'popstate',
-        selector: 'window',
-        handler: () => {
-          this.setState({ path: window.location.pathname });
-        },
-      },
-    ];
-  }
+    const { isSignedIn, organization } = this.state;
+
+    return new Component({ isSignedIn, organization, signInSetState: this.signInSetState.bind(this) }).render();
+  };
 }
