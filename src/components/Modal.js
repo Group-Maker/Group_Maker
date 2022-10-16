@@ -1,4 +1,4 @@
-import { Component } from '../../library/index.js';
+import { Component } from '../../library/CBD/index.js';
 import style from './Modal.module.css';
 
 export default class Modal extends Component {

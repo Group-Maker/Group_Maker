@@ -1,5 +1,5 @@
-import { Component } from '../../library/index.js';
-import MainLayout from '../components/MainLayout.js';
+import { Component } from '../../library/CBD/index.js';
+import MainLayout from '../components/Nav/MainLayout.js';
 
 export default class Members extends Component {
   render() {

@@ -1,4 +1,4 @@
-import Component from '../../../library/component.js';
+import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
 import validate from './signInSignOut.js';
 import style from './SignInSignUp.module.css';

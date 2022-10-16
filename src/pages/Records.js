@@ -1,5 +1,5 @@
-import { Component } from '../../library/index.js';
-import MainLayout from '../components/MainLayout.js';
+import { Component } from '../../library/CBD/index.js';
+import MainLayout from '../components/Nav/MainLayout.js';
 // import style from './Records.module.css';
 // import View from '../component/View.js';
 
