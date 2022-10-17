@@ -2,6 +2,7 @@ import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
 import validate from './signInSignOut.js';
 import style from './SignInSignUp.module.css';
+import SignupModal from '../../components/modals/SignupModal.js';
 
 export default class SignUp extends Component {
   render() {
@@ -35,13 +36,18 @@ export default class SignUp extends Component {
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="confirm-password">CONFIRM PASSWORD</label>
-        <input class="${style.input}" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
+        <input class="${
+          style.input
+        }" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
         <span class="bar"></span>
         <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
         <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
         <div class="error ${style.error}"></div>
       </div>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
+      <section class="modal hidden">
+        ${new SignupModal().render()}
+      </section>
       <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
     </form>`;
   }
@@ -54,38 +60,15 @@ export default class SignUp extends Component {
         handler: e => validate(e, signupSchema),
       },
       {
-        type: 'click',
-        selector: `${style.signupButton}`,
+        type: 'submit',
+        selector: `.${style.signUpForm}`,
         handler: e => {
-          e.target.nextElementSibling.removeAttribute('hidden');
+          e.preventDefault();
+
+          console.log(e.target.childNodes);
+          document.querySelector('.modal').classList.remove('hidden');
         },
       },
     ];
   }
 }
-
-// render() {
-//   // prettier-ignore
-//   return `
-//   <button class="${style.signupButton}">Sign up</button>
-//   <div class="${style.modal}" hidden>${new View({
-//     className: ['signin'],
-//     contents: ['Sign in'],
-//     message: `Congratulation!\n Now you can Sign in`,
-//     path: ['/SignIn'],
-//   }).render()}
-//   </div>
-//   `;
-// }
-
-// setEvent() {
-//   return [
-//     {
-//       type: 'click',
-//       selector: `${style.signupButton}`,
-//       handler: e => {
-//         e.target.nextElementSibling.removeAttribute('hidden');
-//       },
-//     },
-//   ];
-// }
