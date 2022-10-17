@@ -66,20 +66,19 @@ const reconciliation = ($virtualNode, $realNode) => {
 };
 
 let $realRoot = null;
-let $virtualRoot = null;
-let rootComponent = null;
+let RootComponent = null;
 
-const render = ($rootContainer, RootComponent) => {
+const render = ($rootContainer, rootComponent) => {
   if ($rootContainer) {
     $realRoot = $rootContainer;
-    $virtualRoot = $rootContainer.cloneNode(true);
   }
-  if (RootComponent) {
-    rootComponent = new RootComponent();
+  if (rootComponent) {
+    RootComponent = rootComponent;
   }
 
-  const domStr = rootComponent.render();
+  const domStr = new RootComponent().render();
   if (typeof domStr === 'string') {
+    const $virtualRoot = $realRoot.cloneNode(false);
     $virtualRoot.innerHTML = domStr;
     reconciliation($virtualRoot, $realRoot);
   }
