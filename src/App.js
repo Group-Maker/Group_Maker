@@ -56,7 +56,7 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
-      this.setState({ isLoading: false, ...initialState });
+      this.setState(prevState => ({ ...prevState, isLoading: false, ...initialState }));
     } catch (err) {
       console.error(err);
     }

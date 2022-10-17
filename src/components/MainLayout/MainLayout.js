@@ -3,7 +3,6 @@ import { Component } from '../../../library/CBD/index.js';
 import Nav from './Nav.js';
 import { SignInLink, SignOutButton } from './SignInAndOut.js';
 import style from './MainLayout.module.css';
-import { getUserState } from '../../state/user.js';
 
 export default class MainLayout extends Component {
   constructor(props) {
