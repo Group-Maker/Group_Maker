@@ -1,6 +1,6 @@
 import SignIn from './SignInSignUp/SignIn.js';
 import SignUp from './SignInSignUp/SignUp.js';
-import NewGroup from './NewGroup.js';
+import NewGroup from './NewGroup/NewGroup.js';
 import Members from './Members/Members.js';
 import Records from './Records.js';
 import Result from './Result.js';
