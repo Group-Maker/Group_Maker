@@ -5,7 +5,7 @@ import style from './SignInAndOut.module.css';
 class SignInLink extends Component {
   render() {
     return new Link({
-      path: 'signin',
+      path: '/signin',
       content: 'SIGN IN',
       classNames: [style.signInAndOut],
     }).render();
