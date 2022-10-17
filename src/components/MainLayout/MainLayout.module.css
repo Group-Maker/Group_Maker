@@ -1,4 +1,4 @@
-.nav {
+.container {
   position: relative;
   top: 0;
   left: 0;
@@ -23,22 +23,7 @@
   white-space: pre;
 }
 
-.loginLink {
-  display: inline-block;
-  margin-top: 1.5rem;
-  padding: 0.8rem 4rem 0.4rem;
-  font-size: 3rem;
-  text-align: left;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #ffffff;
-  border-radius: 20px;
-  transition: all 150ms;
-}
-.loginLink:hover {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-.mainLink {
+.link {
   display: inline-block;
   width: 100%;
   padding: 1rem;
@@ -49,24 +34,18 @@
   border-radius: 10px;
   transition: all 150ms;
 }
-.mainLink:hover {
+.link:hover {
   background: rgba(144, 30, 184, 0.4);
-}
-.mainLink.active {
-  background: rgba(144, 30, 184, 0.75);
 }
 
 .membersLink {
-  composes: mainLink;
-  margin-top: 5rem;
+  composes: link;
 }
 .recordsLink {
-  composes: mainLink;
-  margin-top: 1rem;
+  composes: link;
 }
 .newgroupLink {
-  composes: mainLink;
-  margin-top: 1rem;
+  composes: link;
   font-size: 6rem;
   text-align: center;
   line-height: 1;

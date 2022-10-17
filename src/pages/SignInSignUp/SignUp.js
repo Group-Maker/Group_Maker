@@ -3,6 +3,7 @@ import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
 import validate from './validate.js';
 import style from './SignInSignUp.module.css';
+import SignupModal from '../../components/modals/SignupModal.js';
 
 export default class SignUp extends Component {
   async checkDuplicated(e) {
@@ -28,11 +29,8 @@ export default class SignUp extends Component {
 
     try {
       // request with payload
-      const { data: user } = await axios.post(`/auth/signup`, payload);
-
-      if (user) {
-        this.props.signInSetState(user);
-      }
+      await axios.post(`/auth/signup`, payload);
+      document.querySelector('.modal').classList.remove('hidden');
     } catch (err) {
       if (err.response.status === 401) {
         document.querySelector('.signUpError').textContent = 'Account already exists';
@@ -71,7 +69,9 @@ export default class SignUp extends Component {
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="confirm-password">CONFIRM PASSWORD</label>
-        <input class="${style.input}" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
+        <input class="${
+          style.input
+        }" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
         <span class="bar"></span>
         <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
         <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
@@ -79,6 +79,9 @@ export default class SignUp extends Component {
       </div>
       <p class="signUpError ${style.authorizeError}"></p>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
+      <section class="modal hidden">
+        ${new SignupModal().render()}
+      </section>
       <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
     </form>`;
   }
@@ -103,29 +106,3 @@ export default class SignUp extends Component {
     ];
   }
 }
-
-// render() {
-//   // prettier-ignore
-//   return `
-//   <button class="${style.signupButton}">Sign up</button>
-//   <div class="${style.modal}" hidden>${new View({
-//     className: ['signin'],
-//     contents: ['Sign in'],
-//     message: `Congratulation!\n Now you can Sign in`,
-//     path: ['/SignIn'],
-//   }).render()}
-//   </div>
-//   `;
-// }
-
-// setEvent() {
-//   return [
-//     {
-//       type: 'click',
-//       selector: `${style.signupButton}`,
-//       handler: e => {
-//         e.target.nextElementSibling.removeAttribute('hidden');
-//       },
-//     },
-//   ];
-// }

@@ -34,11 +34,7 @@ export default class App extends Component {
     this.init();
   }
 
-  signInSetState = user => {
-    this.setState({ isSignedIn: true, organization: user.organization });
-  };
-
-  init = async () => {
+  async init() {
     try {
       const response = await axios.get('/auth/check');
       const initialState = response.data;
@@ -49,14 +45,15 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
+
       this.setState({ isLoading: false, ...initialState });
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
-  render = () => {
+  render() {
     console.log('RENDER', this.state);
     if (this.state.isLoading) {
       return new Loader().render();
@@ -66,6 +63,19 @@ export default class App extends Component {
 
     const { isSignedIn, organization } = this.state;
 
-    return new Component({ isSignedIn, organization, signInSetState: this.signInSetState.bind(this) }).render();
-  };
+    return new Component({
+      isSignedIn,
+      organization,
+      signInSetState: this.signInSetState.bind(this),
+      signOut: this.signOut.bind(this),
+    }).render();
+  }
+
+  signInSetState(user) {
+    this.setState({ isSignedIn: true, organization: user.organization });
+  }
+
+  signOut() {
+    this.setState({ isSignedIn: false });
+  }
 }
