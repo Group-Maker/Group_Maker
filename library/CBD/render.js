@@ -1,3 +1,5 @@
+import { bindEventHandlers, unbindEventHandlers } from './eventHandler.js';
+
 const reconciliation = ($virtualNode, $realNode) => {
   if ($virtualNode.nodeType !== $realNode.nodeType) {
     $realNode.replaceWith($virtualNode);
@@ -76,12 +78,16 @@ const render = ($rootContainer, rootComponent) => {
     RootComponent = rootComponent;
   }
 
+  unbindEventHandlers();
+
   const domStr = new RootComponent().render();
   if (typeof domStr === 'string') {
     const $virtualRoot = $realRoot.cloneNode(false);
     $virtualRoot.innerHTML = domStr;
     reconciliation($virtualRoot, $realRoot);
   }
+
+  bindEventHandlers();
 };
 
 export default render;
