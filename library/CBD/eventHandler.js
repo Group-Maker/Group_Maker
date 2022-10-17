@@ -25,26 +25,48 @@ const validateEventHandler = eventHandlers => {
   });
 };
 
-const handlersHolder = [];
+let handlersHolder = [];
 
-const addEventHandlers = eventHandlers => {
+// 지역 상태를 사용함에 따라, 상태를 가지는 컴포넌트의 인스턴스가 재생성되면 해당 상태에 의존하는 이벤트 핸들러를 새로 달아주어야 정상 동작한다.
+// 이벤트 핸들러를 새로 달아주지 않으면, 기존의 핸들러가 렌더링 이후 사라져버린 이전 컴포넌트를 클로저로 참조하기 때문에 제대로 동작하지 않는다.
+// 이벤트 핸들러를 넘겨줄 때 이벤트 타깃이 아닌 컴포넌트의 인스턴스를 this로 참조하게 하기 위하여 bind(this)를 통해 this를 고정해준다.
+// 이벤트 핸들러를 새로 달아주지 않으면 컴포넌트가 새로운 상태를 가진 새로운 인스턴스를 생성하여도 this가 고정되어있기 때문에 항상 같은 값을 참조하게 된다
+
+const holdEventHandlers = eventHandlers => {
   validateEventHandler(eventHandlers);
   eventHandlers.forEach(eventHandler => {
+    const { type, selector, handler } = eventHandler;
+
     const isDuplicated = handlersHolder.find(
-      ({ type, selector }) => type === eventHandler.type && selector === eventHandler.selector
+      ({ holdedType, holdedSlector }) => holdedType === type && holdedSlector === selector
     );
     if (isDuplicated) {
       return;
     }
 
-    const { type, selector, handler } = eventHandler;
-    window.addEventListener(type, e => {
-      if (e.target === window || e.target === document || e.target.closest(selector)) {
+    const newHandler = e => {
+      if (selector === 'window' || selector === 'document' || e.target.closest(selector)) {
         handler(e);
       }
-    });
-    handlersHolder.push(eventHandler);
+    };
+    eventHandler.handler = newHandler;
+
+    handlersHolder.push({ type, selector, handler: newHandler });
   });
 };
 
-export default addEventHandlers;
+const unbindEventHandlers = () => {
+  handlersHolder.forEach(({ type, handler }) => {
+    window.removeEventListener(type, handler);
+  });
+  handlersHolder = [];
+};
+
+const bindEventHandlers = () => {
+  console.log(handlersHolder);
+  handlersHolder.forEach(({ type, handler }) => {
+    window.addEventListener(type, handler);
+  });
+};
+
+export { unbindEventHandlers, bindEventHandlers, holdEventHandlers };
