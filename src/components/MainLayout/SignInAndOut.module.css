@@ -1,0 +1,14 @@
+.signInAndOut {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 4rem 0.4rem;
+  font-size: 3rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  transition: all 150ms;
+}
+.signInAndOut:hover {
+  background: rgba(255, 255, 255, 0.8);
+}

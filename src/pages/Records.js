@@ -1,5 +1,5 @@
 import { Component } from '../../library/CBD/index.js';
-import MainLayout from '../components/Nav/MainLayout.js';
+import MainLayout from '../components/MainLayout/MainLayout.js';
 import DeleteModal from '../components/modals/DeleteModal.js';
 import style from './Records.module.css';
 
