@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { signinSchema } from './schema.js';
-import validate from './signInSignOut.js';
+import validate from './validate.js';
 import { navigate } from '../../../library/SPA-router/index.js';
 import style from './SignInSignUp.module.css';
 
@@ -17,17 +17,16 @@ export default class SignIn extends Component {
 
     try {
       // request with payload & move to another page
-      const { data: user } = await axios.post(`/auth${window.location.pathname}`, payload);
-
-      console.log('😀 LOGIN SUCCESS!');
+      const { data: user } = await axios.post(`/auth/signin`, payload);
 
       if (user) {
         this.props.signInSetState(user);
         navigate('/');
       }
     } catch (err) {
-      console.log('😱 LOGIN FAILURE..');
-      console.log(err);
+      if (err.response.status === 401) {
+        document.querySelector('.signInError').textContent = 'Incorrect email or password';
+      }
     }
   }
 
@@ -39,13 +38,14 @@ export default class SignIn extends Component {
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="userid">EMAIL</label>
         <input class="${style.input}" type="text" id="userid" name="userid" required autocomplete="off" />
-        <div class="error ${style.error}"></div>
+        <div class="validateError ${style.validateError}"></div>
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="password">PASSWORD</label>
         <input class="${style.input}" type="password" id="password" name="password" required autocomplete="off" />
-        <div class="error ${style.error}"></div>
+        <div class="validateError ${style.validateError}"></div>
       </div>
+      <p class="signInError ${style.authorizeError}"></p>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN IN</button>
       <a class="switchSignInSignUp ${style.link}" href="/signup">Join us</a>
     </form>`;

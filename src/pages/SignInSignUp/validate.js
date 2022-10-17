@@ -1,23 +1,23 @@
-function toggleValidationResultIcon(inputName, schema) {
+const toggleValidationResultIcon = (inputName, schema) => {
   document
     .querySelector(`input[name=${inputName}] ~ .icon-success`)
     ?.classList.toggle('hidden', !schema[inputName].valid);
 
   document.querySelector(`input[name=${inputName}] ~ .icon-error`)?.classList.toggle('hidden', schema[inputName].valid);
-}
+};
 
-function setErrorMessage(inputName, schema) {
-  document.querySelector(`input[name=${inputName}] ~ .error`).textContent = schema[inputName].valid
+const setErrorMessage = (inputName, schema) => {
+  document.querySelector(`input[name=${inputName}] ~ .validateError`).textContent = schema[inputName].valid
     ? ''
     : schema[inputName].error;
-}
+};
 
-function activateSubmitButton(schema) {
+const activateSubmitButton = schema => {
   document.querySelector('.submit-btn').disabled = !schema.valid;
-}
+};
 
 // TODO: debounce 적용
-function validate(e, schema) {
+const validate = (e, schema) => {
   const { name, value } = e.target;
 
   schema[name].value = value.trim();
@@ -32,6 +32,6 @@ function validate(e, schema) {
     });
 
   activateSubmitButton(schema);
-}
+};
 
 export default validate;
