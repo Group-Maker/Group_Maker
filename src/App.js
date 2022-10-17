@@ -1,6 +1,6 @@
 import axios from 'axios';
 import style from './App.module.css';
-import { Component, useLocalState, useEffect } from '../library/CBD/index.js';
+import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
@@ -30,7 +30,7 @@ export default class App extends Component {
     //     records: [],
     //   },
     // };
-    [this.state, this.setState] = useLocalState({
+    [this.state, this.setState] = this.useState({
       isLoading: true,
       isSignedIn: false,
       organization: {
@@ -40,9 +40,9 @@ export default class App extends Component {
     });
 
     // 함수 이름 변경 필요
-    // useEffect(() => {
-    //   this.init();
-    // }, []);
+    this.useEffect(() => {
+      this.init();
+    }, []);
   }
 
   async init() {
@@ -94,15 +94,5 @@ export default class App extends Component {
       ...prevState,
       isSignedIn: false,
     }));
-  }
-
-  setEvent() {
-    return [
-      {
-        type: 'DOMContentLoaded',
-        selector: 'document',
-        handler: this.init.bind(this),
-      },
-    ];
   }
 }
