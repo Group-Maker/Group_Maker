@@ -11,41 +11,47 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-html,
-body,
-h1 {
   padding: 0;
   margin: 0;
 }
-html {
-  font-size: 62.5%;
-  line-height: 1.285;
-}
+
 body {
   font-family: 'NeoDunggeunmoPro';
+  line-height: 1.285;
   background-color: rgba(77, 37, 190, 0.28);
 }
+
 ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 button {
   background: inherit;
   border: none;
   box-shadow: none;
   border-radius: 0;
-  padding: 0;
   overflow: visible;
   cursor: pointer;
 }
 :global .hidden {
   display: none !important;
+}
+
+:global #root {
+  display: flex;
+  flex-direction: row;
+}
+
+:global .mainContainer {
+  width: 100%;
+  margin: 2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
 }
 
 :global .modal {

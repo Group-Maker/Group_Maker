@@ -21,7 +21,10 @@ class SignOutButton extends Component {
       {
         type: 'click',
         selector: '.signOutBtn',
-        handler: this.props.signOut,
+        handler: e => {
+          // console.log(this.p)
+          this.props.signOut(e);
+        },
       },
     ];
   }

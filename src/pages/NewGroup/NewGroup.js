@@ -1,7 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import Counter from '../../components/Counter.js';
-import { Link } from '../../../library/SPA-router/index.js';
 import solver from '../../../core/solver.js';
 import style from './NewGroup.module.css';
 
