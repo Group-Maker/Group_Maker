@@ -39,7 +39,6 @@ const addEventHandlers = eventHandlers => {
 
     const { type, selector, handler } = eventHandler;
     window.addEventListener(type, e => {
-      console.log(e.target);
       if (e.target === window || e.target === document || e.target.closest(selector)) {
         handler(e);
       }
