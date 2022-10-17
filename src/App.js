@@ -1,6 +1,6 @@
 import axios from 'axios';
 import style from './App.module.css';
-import { Component } from '../library/CBD/index.js';
+import { Component, useLocalState, useEffect } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
 import Loader from './components/Loader.js';
@@ -22,16 +22,27 @@ export default class App extends Component {
   constructor() {
     super();
     // 초기 상태 뭘로 할지 생각해봐야 함
-    this.state = {
+    // this.state = {
+    //   isLoading: true,
+    //   isSignedIn: false,
+    //   organization: {
+    //     members: [],
+    //     records: [],
+    //   },
+    // };
+    [this.state, this.setState] = useLocalState({
       isLoading: true,
       isSignedIn: false,
       organization: {
         members: [],
         records: [],
       },
-    };
+    });
 
-    this.init();
+    // 함수 이름 변경 필요
+    // useEffect(() => {
+    //   this.init();
+    // }, []);
   }
 
   async init() {
@@ -45,7 +56,6 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
-
       this.setState({ isLoading: false, ...initialState });
     } catch (err) {
       console.error(err);
@@ -71,11 +81,28 @@ export default class App extends Component {
     }).render();
   }
 
-  signInSetState(user) {
-    this.setState({ isSignedIn: true, organization: user.organization });
-  }
+  signInSetState = user => {
+    this.setState(prevState => ({
+      ...prevState,
+      isSignedIn: true,
+      organization: user.organization,
+    }));
+  };
 
   signOut() {
-    this.setState({ isSignedIn: false });
+    this.setState(prevState => ({
+      ...prevState,
+      isSignedIn: false,
+    }));
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'DOMContentLoaded',
+        selector: 'document',
+        handler: this.init.bind(this),
+      },
+    ];
   }
 }
