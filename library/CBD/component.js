@@ -1,4 +1,4 @@
-import addEventHandlers from './eventHandler.js';
+import { holdEventHandlers } from './eventHandler.js';
 import { useLocalState, useEffect } from './state.js';
 
 class Component {
@@ -6,7 +6,7 @@ class Component {
     this.props = props;
     this.useState = useLocalState;
     this.useEffect = useEffect;
-    this.setEvent && addEventHandlers(this.setEvent());
+    this.setEvent && holdEventHandlers(this.setEvent());
   }
 
   render() {
