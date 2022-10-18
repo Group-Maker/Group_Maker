@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
-import { signinSchema } from './schema.js';
+import { Link, navigate } from '../../../library/SPA-router/index.js';
 import validate from './validate.js';
-import { navigate } from '../../../library/SPA-router/index.js';
+import { signinSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 
 export default class SignIn extends Component {
+  constructor(props) {
+    super(props);
+    [this.state, this.setState] = this.useState({ isSignInFailed: false });
+  }
+
   async signin(e) {
     e.preventDefault();
 
@@ -16,7 +21,6 @@ export default class SignIn extends Component {
     );
 
     try {
-      // request with payload & move to another page
       const { data: user } = await axios.post(`/auth/signin`, payload);
 
       if (user) {
@@ -25,12 +29,13 @@ export default class SignIn extends Component {
       }
     } catch (err) {
       if (err.response.status === 401) {
-        document.querySelector('.signInError').textContent = 'Incorrect email or password';
+        this.setState({ isSignInFailed: true });
       }
     }
   }
 
   render() {
+    // prettier-ignore
     return `
     <h1 class="${style.title}">GROUP-MAKER</h1>
     <form class="${style.signInForm}" novalidate>
@@ -45,9 +50,11 @@ export default class SignIn extends Component {
         <input class="${style.input}" type="password" id="password" name="password" required autocomplete="off" />
         <div class="validateError ${style.validateError}"></div>
       </div>
-      <p class="signInError ${style.authorizeError}"></p>
+      <p class="signInError ${style.authorizeError}">${
+      this.state.isSignInFailed ? 'Incorrect email or password' : ''
+    }</p>
       <button class="submit-btn ${style.submitBtn}" disabled>SIGN IN</button>
-      <a class="switchSignInSignUp ${style.link}" href="/signup">Join us</a>
+      ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
     </form>`;
   }
 

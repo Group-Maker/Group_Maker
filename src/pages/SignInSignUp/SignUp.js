@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { signupSchema } from './schema.js';
+import { Link } from '../../../library/SPA-router/index.js';
 import validate from './validate.js';
 import style from './SignInSignUp.module.css';
 import SignupModal from '../../components/modals/SignupModal.js';
@@ -82,7 +83,7 @@ export default class SignUp extends Component {
       <section class="modal hidden">
         ${new SignupModal().render()}
       </section>
-      <a class="switchSignInSignUp ${style.link}" href="/signin">Sign in</a>
+      ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
     </form>`;
   }
 
