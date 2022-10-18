@@ -3,7 +3,7 @@ import style from './App.module.css';
 import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
-import Loader from './components/Loader.js';
+import Loader from './components/Loading/Loader.js';
 import { loadOrganization } from './utils/localStorage.js';
 
 const routes = [
@@ -22,16 +22,6 @@ export default class App extends Component {
   constructor() {
     super();
 
-    // 초기 상태 뭘로 할지 생각해봐야 함
-    // this.state = {
-    //   isLoading: true,
-    //   isSignedIn: false,
-    //   organization: {
-    //     members: [],
-    //     records: [],
-    //   },
-    // };
-
     [this.state, this.setState] = this.useState({
       isLoading: true,
       isSignedIn: false,
@@ -41,7 +31,7 @@ export default class App extends Component {
       },
     });
 
-    // 함수 이름 변경 필요
+    // TODO: 함수 이름 변경 필요
     this.useEffect(() => {
       this.init();
     }, []);
@@ -49,8 +39,9 @@ export default class App extends Component {
 
   async init() {
     try {
-      const response = await axios.get('/auth/check');
-      const initialState = response.data;
+      // const response = await axios.get('/auth/check');
+      // const initialState = response.data;
+      const { data: initialState } = await axios.get('/auth/check');
 
       if (!initialState.organization) {
         const localOrganization = loadOrganization();
@@ -83,6 +74,7 @@ export default class App extends Component {
     }).render();
   }
 
+  // TODO: 적절한 이름 찾기
   signInSetState = user => {
     this.setState(prevState => ({
       ...prevState,
@@ -91,11 +83,15 @@ export default class App extends Component {
     }));
   };
 
-  signOut() {
-    document.cookie = 'accessToken =; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-    this.setState(prevState => ({
-      ...prevState,
-      isSignedIn: false,
-    }));
+  async signOut() {
+    try {
+      await axios.get('/auth/signout');
+      this.setState(prevState => ({
+        ...prevState,
+        isSignedIn: false,
+      }));
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

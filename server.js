@@ -23,6 +23,7 @@ app.get('/auth/check', (req, res) => {
         res.send(JSON.stringify({ isSignedIn: true, organization }));
       }
     }
+
     res.send(JSON.stringify({ isSignedIn: false }));
   } catch (error) {
     console.log(error);
@@ -56,6 +57,11 @@ app.post('/auth/signin', (req, res) => {
 
   // 로그인 성공
   res.send({ userid, username: user.name, organization: user.organization });
+});
+
+app.get('/auth/signout', (req, res) => {
+  res.clearCookie('accessToken', { path: '/' });
+  res.send('clearCookie');
 });
 
 app.post('/auth/checkDuplicated', (req, res) => {
