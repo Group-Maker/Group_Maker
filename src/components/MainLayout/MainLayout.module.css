@@ -1,12 +1,13 @@
 .container {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 3.25rem 2.5rem;
   text-align: center;
   width: 23vw;
   height: 100vh;
-  background: rgba(77, 37, 190, 0.28);
+  background: rgb(173, 145, 250);
+  z-index: 10;
 }
 
 .title {
@@ -20,7 +21,7 @@
 .description {
   margin-top: 2.5rem;
   font-size: 2rem;
-  white-space: pre;
+  /* white-space: pre; */
 }
 
 .link {
@@ -30,7 +31,6 @@
   font-size: 3rem;
   color: #fff;
   background: rgba(144, 30, 184, 0.2);
-  border: 1px solid #ffffff;
   border-radius: 10px;
   transition: all 150ms;
 }

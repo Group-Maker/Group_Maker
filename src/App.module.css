@@ -36,6 +36,7 @@ a {
   color: inherit;
 }
 button {
+  font-family: inherit;
   background: inherit;
   border: none;
   box-shadow: none;
@@ -43,6 +44,10 @@ button {
   padding: 0;
   overflow: visible;
   cursor: pointer;
+}
+pre,
+input {
+  font-family: inherit;
 }
 :global .hidden {
   display: none !important;
