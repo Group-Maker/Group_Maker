@@ -56,7 +56,7 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
-      this.setState({ isLoading: false, ...initialState });
+      this.setState(prevState => ({ ...prevState, isLoading: false, ...initialState }));
     } catch (err) {
       console.error(err);
     }
@@ -78,6 +78,7 @@ export default class App extends Component {
       organization,
       signInSetState: this.signInSetState.bind(this),
       signOut: this.signOut.bind(this),
+      addRecord: this.addRecord.bind(this),
     }).render();
   }
 
@@ -93,6 +94,14 @@ export default class App extends Component {
     this.setState(prevState => ({
       ...prevState,
       isSignedIn: false,
+    }));
+  }
+
+  addRecord(newrecord) {
+    const records = [...this.state.organization.records, newrecord];
+    this.setState(prevState => ({
+      ...prevState,
+      organization: { ...prevState.organization, records },
     }));
   }
 }

@@ -43,6 +43,7 @@ button {
   padding: 0;
   overflow: visible;
   cursor: pointer;
+  font-family: inherit;
 }
 :global .hidden {
   display: none !important;
