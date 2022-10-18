@@ -1,6 +1,6 @@
-import { Component } from '../../library/CBD/index.js';
-import MainLayout from '../components/MainLayout/MainLayout.js';
-import DeleteModal from '../components/modals/DeleteModal.js';
+import { Component } from '../../../library/CBD/index.js';
+import MainLayout from '../../components/MainLayout/MainLayout.js';
+import DeleteModal from '../../components/modals/DeleteModal.js';
 import style from './Members.module.css';
 
 export default class Members extends Component {
