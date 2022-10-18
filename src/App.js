@@ -2,7 +2,7 @@ import axios from 'axios';
 import style from './App.module.css';
 import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
-import { SignIn, SignUp, NewGroup, Members, Records, Result, NotFound } from './pages/index.js';
+import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
 import { loadOrganization } from './utils/localStorage.js';
 
@@ -12,7 +12,6 @@ const routes = [
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
   { path: '/records', component: Records },
-  { path: '/result', component: Result },
   { path: '*', component: NotFound },
 ];
 
@@ -39,8 +38,6 @@ export default class App extends Component {
 
   async init() {
     try {
-      // const response = await axios.get('/auth/check');
-      // const initialState = response.data;
       const { data: initialState } = await axios.get('/auth/check');
 
       if (!initialState.organization) {
@@ -70,28 +67,16 @@ export default class App extends Component {
       isSignedIn,
       organization,
       signInSetState: this.signInSetState.bind(this),
-      signOut: this.signOut.bind(this),
+      signOutSetState: this.signOutSetState.bind(this),
     }).render();
   }
 
   // TODO: 적절한 이름 찾기
-  signInSetState = user => {
-    this.setState(prevState => ({
-      ...prevState,
-      isSignedIn: true,
-      organization: user.organization,
-    }));
-  };
+  signInSetState(user) {
+    this.setState(prevState => ({ ...prevState, isSignedIn: true, organization: user.organization }));
+  }
 
-  async signOut() {
-    try {
-      await axios.get('/auth/signout');
-      this.setState(prevState => ({
-        ...prevState,
-        isSignedIn: false,
-      }));
-    } catch (err) {
-      console.log(err);
-    }
+  signOutSetState() {
+    this.setState(prevState => ({ ...prevState, isSignedIn: false, organization: { members: [], records: [] } }));
   }
 }
