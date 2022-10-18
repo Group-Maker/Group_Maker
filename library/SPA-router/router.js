@@ -1,4 +1,5 @@
 import { render } from '../CBD/index.js';
+import { resetHookIdx } from '../CBD/state.js';
 
 let _routes = null;
 
@@ -16,12 +17,14 @@ const navigate = path => {
   if (path === window.location.pathname) {
     return;
   }
-
+  // resetHookIdx 임시방편. 더 좋은 방법을 생각해라!
   window.history.pushState(null, null, path);
+  resetHookIdx();
   render();
 };
 
 window.addEventListener('popstate', () => {
+  resetHookIdx();
   render();
 });
 

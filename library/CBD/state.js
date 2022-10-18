@@ -3,6 +3,10 @@ import render from './render.js';
 const hooks = [];
 let hookIdx = 0;
 
+const resetHookIdx = () => {
+  hookIdx = 0;
+};
+
 const useEffect = (callback, depArray) => {
   const currentHookIdx = hookIdx;
   const hasNoDeps = !depArray;
@@ -17,17 +21,19 @@ const useEffect = (callback, depArray) => {
 };
 
 const useLocalState = initialState => {
+  console.log(hooks);
   hooks[hookIdx] = hooks[hookIdx] || initialState;
 
   const currentHookIdx = hookIdx;
 
   const setState = nextState => {
     hooks[currentHookIdx] = typeof nextState === 'function' ? nextState(hooks[currentHookIdx]) : nextState;
-    hookIdx = 0;
+
+    resetHookIdx();
     render();
   };
   hookIdx += 1;
-  // console.log(hooks[currentHookIdx]);
+
   return [hooks[currentHookIdx], setState];
 };
 
@@ -36,11 +42,12 @@ const useGlobalState = initialState => {
   const getState = () => state;
   const setState = nextState => {
     state = typeof nextState === 'function' ? nextState(state) : nextState;
-    hookIdx = 0;
+
+    resetHookIdx();
     render();
   };
 
   return [getState, setState];
 };
 
-export { useGlobalState, useLocalState, useEffect };
+export { useGlobalState, useLocalState, useEffect, resetHookIdx };

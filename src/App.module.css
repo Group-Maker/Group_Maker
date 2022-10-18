@@ -31,12 +31,17 @@ a {
 }
 
 button {
+  font-family: inherit;
   background: inherit;
   border: none;
   box-shadow: none;
   border-radius: 0;
   overflow: visible;
   cursor: pointer;
+}
+pre,
+input {
+  font-family: inherit;
 }
 :global .hidden {
   display: none !important;

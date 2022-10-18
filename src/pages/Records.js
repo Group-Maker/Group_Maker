@@ -11,7 +11,7 @@ export default class Records extends Component {
       ${this.props.organization.records.map(record => `<span>${record}</span>`)}
       <button class="${style.btn}">X</button>
       <section class="modal hidden">
-        ${new DeleteModal({ target: 'record' }).render()}
+        ${new DeleteModal({ target: 'record', onRemove: () => {}, closeModal: () => {} }).render()}
       </section>
     `;
   }
