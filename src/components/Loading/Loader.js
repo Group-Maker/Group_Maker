@@ -1,9 +1,10 @@
-import { Component } from '../../library/CBD/index.js';
+import { Component } from '../../../library/CBD/index.js';
+import style from './Loader.module.css';
 
 export default class Loader extends Component {
   render() {
     return `
-      <h1>Loading...</h1>
+      <p class=${style.loadingMsg}>Loading...</p>
     `;
   }
 }
