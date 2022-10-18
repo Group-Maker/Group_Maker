@@ -64,7 +64,6 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render() {
-    console.log('RENDER', this.state);
     if (this.state.isLoading) {
       return new Loader().render();
     }
@@ -78,6 +77,7 @@ export default class App extends Component {
       organization,
       signInSetState: this.signInSetState.bind(this),
       signOut: this.signOut.bind(this),
+      getNextId: this.getNextId.bind(this),
       addRecord: this.addRecord.bind(this),
     }).render();
   }
@@ -97,8 +97,15 @@ export default class App extends Component {
     }));
   }
 
+  getNextId(arr) {
+    return Math.max(...arr.map(item => item.id), 0) + 1;
+  }
+
   addRecord(newrecord) {
-    const records = [...this.state.organization.records, newrecord];
+    const records = [
+      ...this.state.organization.records,
+      { id: this.getNextId(this.state.organization.records), newrecord },
+    ];
     this.setState(prevState => ({
       ...prevState,
       organization: { ...prevState.organization, records },
