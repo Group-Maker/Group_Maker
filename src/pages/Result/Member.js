@@ -3,7 +3,6 @@ import style from './Member.module.css';
 
 export default class Member extends Component {
   render() {
-    console.log(this.props);
     const {
       organization: { members },
     } = this.props;
