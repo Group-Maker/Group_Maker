@@ -27,7 +27,6 @@ const useLocalState = initialState => {
     render();
   };
   hookIdx += 1;
-  // console.log(hooks[currentHookIdx]);
   return [hooks[currentHookIdx], setState];
 };
 
