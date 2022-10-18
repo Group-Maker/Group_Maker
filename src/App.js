@@ -32,7 +32,6 @@ export default class App extends Component {
 
     // 함수 이름 변경 필요
     this.useEffect(() => {
-      console.log('effect');
       this.init();
     }, []);
   }
@@ -61,7 +60,6 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render() {
-    // console.log(this.state.organization);
     if (this.state.isLoading) {
       return new Loader().render();
     }
@@ -79,6 +77,7 @@ export default class App extends Component {
       addMember: this.addMember.bind(this),
       updateMember: this.updateMember.bind(this),
       removeMember: this.removeMember.bind(this),
+      removeRecord: this.removeRecord.bind(this),
     }).render();
   }
 
@@ -98,12 +97,13 @@ export default class App extends Component {
     }));
   }
 
-  getNextMemberId() {
-    return Math.max(...this.state.organization.members.map(member => member.id), 0) + 1;
+  getNextId(arr) {
+    return Math.max(...arr.map(item => item.id), 0) + 1;
   }
 
   addMember(name) {
-    const members = [...this.state.organization.members, { id: this.getNextMemberId(), name, isActive: true }];
+    const prevMembers = this.state.organization.members;
+    const members = [...prevMembers, { id: this.getNextId(prevMembers), name, isActive: true }];
     this.setState(prevState => ({
       ...prevState,
       organization: {
@@ -131,6 +131,17 @@ export default class App extends Component {
       organization: {
         ...prevState.organization,
         members,
+      },
+    }));
+  }
+
+  removeRecord(id) {
+    const records = this.state.organization.records.filter(record => record.id !== id);
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        records,
       },
     }));
   }
