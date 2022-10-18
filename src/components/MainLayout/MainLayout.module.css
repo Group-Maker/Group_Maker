@@ -2,6 +2,7 @@
   padding: 2rem 1rem;
   text-align: center;
   width: 25%;
+  min-width: 18rem;
   height: 100%;
   background: rgba(77, 37, 190, 0.28);
 }

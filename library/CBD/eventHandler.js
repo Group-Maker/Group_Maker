@@ -63,7 +63,6 @@ const unbindEventHandlers = () => {
 };
 
 const bindEventHandlers = () => {
-  console.log(handlersHolder);
   handlersHolder.forEach(({ type, handler }) => {
     window.addEventListener(type, handler);
   });

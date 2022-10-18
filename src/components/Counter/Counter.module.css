@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  padding: 0 auto;
+}
+
+.button {
+  font-size: 2rem;
+}
+
+.count {
+  width: 2rem;
+  text-align: center;
+  font-size: 2rem;
+}
