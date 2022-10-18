@@ -5,14 +5,20 @@ import style from './Members.module.css';
 
 export default class Members extends Component {
   render() {
-    console.log(this.props);
+    const { isSignedIn, organization, signOutSetState } = this.props;
+
     return `
-      ${new MainLayout(this.props).render()}
-      ${this.props.organization.members.map(({ id, name }) => `<span>${id} / ${name}</span>`)}
-      <button class="${style.btn}">X</button>
-      <section class="modal hidden">
-        ${new DeleteModal({ target: 'member' }).render()}
-      </section>
+    <div class="mainContainer">
+      ${new MainLayout({ isSignedIn, signOutSetState }).render()}
+      <main class="main">
+        <h2>MEMBERS!!</h2>
+        ${organization.members.map(({ id, name }) => `<span>${id} / ${name}</span>`)}
+        <button class="${style.btn}">X</button>
+        <section class="modal hidden">
+          ${new DeleteModal({ target: 'member' }).render()}
+        </section>
+      </main>
+    </div>
     `;
   }
 
