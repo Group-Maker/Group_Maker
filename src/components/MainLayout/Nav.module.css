@@ -2,10 +2,14 @@
   margin-top: 1rem;
   border: 1px solid #ffffff;
   border-radius: 10px;
+  background: rgba(144, 30, 184, 0.2);
+}
+.li:hover {
+  background: rgba(144, 30, 184, 0.4);
 }
 .li.active {
   background: rgba(144, 30, 184, 0.75);
 }
 .li:first-child {
-  margin-top: 5rem;
+  margin-top: 2rem;
 }

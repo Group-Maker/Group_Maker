@@ -21,7 +21,6 @@ createRoutes(routes);
 export default class App extends Component {
   constructor() {
     super();
-
     [this.state, this.setState] = this.useState({
       isLoading: true,
       isSignedIn: false,
@@ -49,6 +48,7 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
+
       this.setState(prevState => ({
         ...prevState,
         ...initialState,
@@ -91,6 +91,7 @@ export default class App extends Component {
   };
 
   signOut() {
+    document.cookie = 'accessToken =; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
     this.setState(prevState => ({
       ...prevState,
       isSignedIn: false,
