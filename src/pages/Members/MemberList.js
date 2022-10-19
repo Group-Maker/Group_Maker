@@ -18,6 +18,7 @@ export default class MemberList extends Component {
               openModal,
               onUpdate,
               toggleEditMode,
+              member
             }).render()
           )
           .join('')}
@@ -34,6 +35,7 @@ export default class MemberList extends Component {
   }
 
   isEditing(id) {
+    console.log(this.props);
     return this.props.editingMemberIds.includes(id);
   }
 
