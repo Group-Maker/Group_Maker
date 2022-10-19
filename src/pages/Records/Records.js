@@ -1,34 +1,52 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/modals/DeleteModal.js';
+import RecordList from './RecordList.js';
 import style from './Records.module.css';
 
 export default class Records extends Component {
+  constructor(props) {
+    super(props);
+
+    [this.modal, this.setModal] = this.useState({
+      isOpen: false,
+      recordId: null,
+    });
+  }
+
   render() {
     return `
     <div class="mainContainer">
       ${new MainLayout(this.props).render()}
       <main class="main">
-        <h2>RECORDS!!</h2>
-        ${this.props.organization.records.map(record => `<span>${record}</span>`)}
-        <button class="${style.btn}">X</button>
-        <section class="modal hidden">
-          ${new DeleteModal({ target: 'record' }).render()}
-        </section>
+        <h2 class="title">Previous Records</h2>
+        ${new RecordList({
+          organization: this.props.organization,
+          openModal: this.openModal.bind(this),
+        }).render()}
+        ${
+          this.modal.isOpen
+            ? new DeleteModal({
+                target: 'record',
+                onRemove: this.removeRecord.bind(this),
+                closeModal: this.closeModal.bind(this),
+              }).render()
+            : ''
+        }
       </main>
-    </div>
-    `;
+    </div>`;
   }
 
-  setEvent() {
-    return [
-      {
-        type: 'click',
-        selector: `.${style.btn}`,
-        handler: () => {
-          document.querySelector('.modal').classList.remove('hidden');
-        },
-      },
-    ];
+  removeRecord() {
+    this.props.removeRecord(this.modal.recordId);
+    this.closeModal();
+  }
+
+  openModal(recordId) {
+    this.setModal({ isOpen: true, recordId });
+  }
+
+  closeModal() {
+    this.setModal({ isOpen: false, recordId: null });
   }
 }

@@ -86,27 +86,29 @@ module.exports = {
   // 정확한 동작원리는 아직 모름
   devtool: 'cheap-module-source-map',
   // webpack-dev-server 관련 속성
-  devServer: {
-    open: true,
-    // 정적 파일을 찾는 위치
-    static: {
-      directory: path.join(__dirname, '/dist'),
-    },
-    // 서버 통신 시 CORS를 통과하기 위한 프록시 설정
-    proxy: [
-      {
-        context: ['/api', '/auth'], // can have multiple
-        target: 'http://localhost:5004', // 서버 주소
-        secure: false,
-      },
-    ],
-    port: 3000, // webpack-dev-server가 사용할 포트, 기본값 8080
-    client: {
-      overlay: {
-        // Shows a full-screen overlay in the browser when there are compiler errors or warnings
-        warnings: false, // defaults to false
-        errors: false, // defaults to false
-      },
-    },
-  },
+  // 로컬 서버에서 라우팅 처리가 필요해서 사용하지 않기로 함
+
+  // devServer: {
+  //   open: true,
+  //   // 정적 파일을 찾는 위치
+  //   static: {
+  //     directory: path.join(__dirname, '/dist'),
+  //   },
+  //   // 서버 통신 시 CORS를 통과하기 위한 프록시 설정
+  //   proxy: [
+  //     {
+  //       context: ['/api', '/auth'], // can have multiple
+  //       target: 'http://localhost:5004', // 서버 주소
+  //       secure: false,
+  //     },
+  //   ],
+  //   port: 3000, // webpack-dev-server가 사용할 포트, 기본값 8080
+  //   client: {
+  //     overlay: {
+  //       // Shows a full-screen overlay in the browser when there are compiler errors or warnings
+  //       warnings: false, // defaults to false
+  //       errors: false, // defaults to false
+  //     },
+  //   },
+  // },
 };

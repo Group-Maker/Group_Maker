@@ -1,9 +1,10 @@
-import 'boxicons';
 import { Component } from '../../../library/CBD/index.js';
 import { Link } from '../../../library/SPA-router/index.js';
 import { SignInLink, SignOutButton } from './SignInAndOut.js';
 import Nav from './Nav.js';
 import style from './MainLayout.module.css';
+import 'boxicons';
+
 
 export default class MainLayout extends Component {
   constructor(props) {

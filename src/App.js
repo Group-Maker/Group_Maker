@@ -46,7 +46,12 @@ export default class App extends Component {
           initialState.organization = localOrganization;
         }
       }
-      this.setState(prevState => ({ ...prevState, isLoading: false, ...initialState }));
+
+      this.setState(prevState => ({
+        ...prevState,
+        ...initialState,
+        isLoading: false,
+      }));
     } catch (err) {
       console.error(err);
     }
@@ -54,10 +59,10 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   render() {
-    console.log('RENDER', this.state);
     if (this.state.isLoading) {
       return new Loader().render();
     }
+
     const path = window.location.pathname;
     const Component = resolveComponent(path);
 
@@ -68,6 +73,11 @@ export default class App extends Component {
       organization,
       signInSetState: this.signInSetState.bind(this),
       signOutSetState: this.signOutSetState.bind(this),
+      addRecord: this.addRecord.bind(this),
+      addMember: this.addMember.bind(this),
+      updateMember: this.updateMember.bind(this),
+      removeMember: this.removeMember.bind(this),
+      removeRecord: this.removeRecord.bind(this),
     }).render();
   }
 
@@ -78,5 +88,65 @@ export default class App extends Component {
 
   signOutSetState() {
     this.setState(prevState => ({ ...prevState, isSignedIn: false, organization: { members: [], records: [] } }));
+  }
+
+  getNextId(arr) {
+    return Math.max(...arr.map(item => item.id), 0) + 1;
+  }
+
+  addRecord(record) {
+    const records = [
+      ...this.state.organization.records,
+      { id: this.getNextId(this.state.organization.records), record },
+    ];
+    this.setState(prevState => ({
+      ...prevState,
+      organization: { ...prevState.organization, records },
+    }));
+  }
+
+  addMember(name) {
+    const prevMembers = this.state.organization.members;
+    const members = [...prevMembers, { id: this.getNextId(prevMembers), name, isActive: true }];
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        members,
+      },
+    }));
+  }
+
+  removeMember(id) {
+    const members = this.state.organization.members.filter(member => member.id !== id);
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        members,
+      },
+    }));
+  }
+
+  updateMember({ id, name }) {
+    const members = this.state.organization.members.map(member => (member.id === id ? { ...member, name } : member));
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        members,
+      },
+    }));
+  }
+
+  removeRecord(id) {
+    const records = this.state.organization.records.filter(record => record.id !== id);
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        records,
+      },
+    }));
   }
 }

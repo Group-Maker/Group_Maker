@@ -1,0 +1,71 @@
+.recordList {
+  padding: 0 2rem 2rem;
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.recordList::-webkit-scrollbar {
+  width: 1rem;
+}
+.recordList::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 30, 184, 0.2);
+  border-radius: 1rem;
+}
+
+.recordItem {
+  position: relative;
+  margin-top: 2rem;
+  width: 100%;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+}
+
+.recordTitle {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 2.5rem;
+  color: red;
+  background-color: #ddd;
+  border: 2px solid #000;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate3D(50%, -50%, 0);
+  transition: opacity 120ms;
+  transition: background-color 220ms;
+}
+
+.recordItem:hover .removeBtn,
+.removeBtn:hover {
+  opacity: 1;
+}
+.removeBtn:hover {
+  background-color: #999;
+}
+
+.groupList {
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.groupTitle {
+  font-size: 1.5rem;
+}
+
+.groupItem {
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
