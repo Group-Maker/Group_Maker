@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link } from '../../../library/SPA-router/index.js';
+import { setUserAndOrganization } from '../../state/index.js';
+import { loadOrganization } from '../../utils/localStorage.js';
 import style from './SignInAndOut.module.css';
 
 class SignInLink extends Component {
@@ -15,8 +17,13 @@ class SignOutButton extends Component {
 
   async signout() {
     try {
+      // TODO 로그아웃 기능을 하는 함수로 다시 받을 것
       await axios.get('/auth/signout');
-      this.props.signOutSetState();
+      const organization = loadOrganization();
+      setUserAndOrganization({
+        user: null,
+        organization,
+      });
     } catch (err) {
       console.log(err);
     }

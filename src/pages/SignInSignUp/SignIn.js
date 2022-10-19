@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link, navigate } from '../../../library/SPA-router/index.js';
+import { setUserAndOrganization } from '../../state/index.js';
 import { signInSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 
@@ -25,12 +26,11 @@ export default class signIn extends Component {
     );
 
     try {
-      const { data: user } = await axios.post(`/auth/signIn`, payload);
+      const { data } = await axios.post(`/auth/signin`, payload);
+      const { user, organization } = data;
 
-      if (user) {
-        this.props.signInSetState(user);
-        navigate('/');
-      }
+      setUserAndOrganization({ user, organization });
+      navigate('/');
     } catch (err) {
       // if (err.response.status === 401) {
       // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요

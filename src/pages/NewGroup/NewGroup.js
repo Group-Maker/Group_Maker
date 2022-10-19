@@ -6,7 +6,7 @@ import SelectGroupCnt from './SelectGroupCnt.js';
 export default class NewGroup extends Component {
   constructor(props) {
     super(props);
-    // [this.state, this.setState] = this.useState({ isCreateGroupMode: false, result: [] });
+
     [this.resultState, this.setState] = this.useState({
       result: null,
       currentView: 'selectGroupCnt',
@@ -14,15 +14,13 @@ export default class NewGroup extends Component {
   }
 
   render() {
-    const { isSignedIn, signOutSetState } = this.props;
-
     return `
-      ${new MainLayout({ isSignedIn, signOutSetState }).render()}
+      ${new MainLayout().render()}
       <div class="mainContainer">
         ${
           this.resultState.currentView === 'selectGroupCnt'
-            ? new SelectGroupCnt(this.props, this.setState).render()
-            : new Result(this.props, this.resultState).render()
+            ? new SelectGroupCnt({ setState: this.setState }).render()
+            : new Result({ resultState: this.resultState }).render()
         }
       </div>
     `;

@@ -1,14 +1,15 @@
 import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
-import solver from '../../../core/solver.js';
+import solver from '../../core/solver.js';
+import { getMemberIds, getMembersLength, getRecords } from '../../state/index.js';
 import style from './NewGroup.module.css';
 
 export default class SelectGroupCnt extends Component {
-  constructor(props, setState) {
+  constructor(props) {
     super(props);
-    this.setState = setState;
-    this.memberCnt = props.organization.members.length;
-    this.groupCounter = new Counter(this.props, 0, this.memberCnt);
+
+    this.memberCnt = getMembersLength();
+    this.groupCounter = new Counter({ ...this.props, minCount: 0, maxCount: this.memberCnt });
   }
 
   render() {
@@ -27,21 +28,20 @@ export default class SelectGroupCnt extends Component {
   }
 
   setEvent() {
-    const { members, records } = this.props.organization;
     return [
       {
         type: 'click',
         selector: '.optimizedGroupBtn',
         handler: () => {
           const data = {
-            records,
+            records: getRecords(),
             groupNum: this.groupCounter.getCount(),
-            peopleArr: members.map(member => member.id),
-            totalPeopleNum: this.props.organization.members.length,
+            peopleArr: getMemberIds(),
+            totalPeopleNum: getMembersLength(),
             forbiddenPairs: [],
           };
           const { newRecord } = solver(data);
-          this.setState({ result: newRecord, currentView: 'autoResult' });
+          this.props.setState({ result: newRecord, currentView: 'autoResult' });
           console.log(newRecord);
         },
       },
@@ -50,7 +50,7 @@ export default class SelectGroupCnt extends Component {
         selector: '.manualGroupBtn',
         handler: () => {
           const groupNum = this.groupCounter.getCount();
-          this.setState({ result: Array.from({ length: groupNum }, () => []), currentView: 'manualResult' });
+          this.props.setState({ result: Array.from({ length: groupNum }, () => []), currentView: 'manualResult' });
         },
       },
     ];

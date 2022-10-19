@@ -1,13 +1,13 @@
 import { Component } from '../../../library/CBD/index.js';
 import SaveModal from '../../components/Modals/SaveModal.js';
-import Member from '../../components/Result/Member.js';
+import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
+import { addRecord } from '../../state/index.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
-  constructor(props, resultState) {
+  constructor(props) {
     super(props);
-    this.resultState = resultState;
 
     [this.state, this.setState] = this.useState({
       $dragTarget: null,
@@ -19,15 +19,13 @@ export default class Result extends Component {
   }
 
   render() {
-    const { organization } = this.props;
-    const { result, currentView } = this.resultState;
-    console.log(organization);
+    const { result, currentView } = this.props.resultState;
     // prettier-ignore
     return `
     <section class="${style.result}">
       <h2 class="${style.title}">Result</h2>
-      <div class="${style.dropContainer} ${style.members}">${currentView === 'autoResult' ? '' : new Member({ organization }).render()}</div>
-      <div class="${style.groups}">${new Groups({ organization, result}).render()}</div>
+      <div class="${style.dropContainer} ${style.members}">${currentView === 'autoResult' ? '' : new Members().render()}</div>
+      <div class="${style.groups}">${new Groups({ result }).render()}</div>
       <div class="${style.buttons}">
         ${currentView === 'autoResult' ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
         <button class="${style.save}">SAVE</button>
@@ -114,7 +112,7 @@ export default class Result extends Component {
 
   saveRecord() {
     this.state.result = this.getResult();
-    this.props.addRecord(this.state.result);
+    addRecord(this.state.result);
 
     this.openModal();
   }

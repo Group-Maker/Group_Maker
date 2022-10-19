@@ -39,6 +39,7 @@ const useLocalState = initialState => {
 
 const useGlobalState = initialState => {
   let state = initialState;
+
   const getState = () => state;
   const setState = nextState => {
     state = typeof nextState === 'function' ? nextState(state) : nextState;

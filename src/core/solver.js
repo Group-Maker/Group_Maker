@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const GENERATIONS = 30;
 const RANDOM_MUTATIONS = 3;
 const MAX_DESCENDANTS_TO_EXPLORE = 100;
