@@ -45,7 +45,7 @@ const generateNextId = arr => Math.max(...arr.map(item => item.id), 0) + 1;
 
 const getMembers = () => getGlobalState().organization.members;
 const setMembers = members => {
-  this.setState(prevState => ({
+  setGlobalState(prevState => ({
     ...prevState,
     organization: {
       ...prevState.organization,

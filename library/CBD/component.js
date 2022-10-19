@@ -1,16 +1,44 @@
 import { holdEventHandlers } from './eventHandler.js';
-import { useLocalState, useEffect } from './state.js';
+import render from './render.js';
 
 class Component {
   constructor(props) {
     this.props = props;
-    this.useState = useLocalState;
-    this.useEffect = useEffect;
-    this.setEvent && holdEventHandlers(this.setEvent());
+    this.state = null;
+    this.componentId = self.crypto.randomUUID();
+
+    this.updateEventHandlers();
+  }
+
+  setState(nextState) {
+    this.state = typeof nextState === 'function' ? nextState(this.state) : nextState;
+
+    render(document.querySelector(`[data-id=${this.componentId}]`), this);
   }
 
   render() {
-    throw new Error('render함수를 써라!');
+    return this.labelDOMStr(this.DOMStr());
+  }
+
+  DOMStr() {
+    throw new Error('domStr함수를 써라!');
+  }
+
+  labelDOMStr(DOMStr) {
+    const openTagRegex = /<[^>]*>/;
+    return DOMStr.replace(openTagRegex, openTag => `${openTag.slice(0, -1)} data-component-id=${this.componentId}/>`);
+  }
+
+  updateEventHandlers() {
+    if (!this.setEvent) {
+      return;
+    }
+    const labeledHandlerInfo = this.setEvent().map(handlerInfo => ({
+      id: this.componentId,
+      ...handlerInfo,
+    }));
+
+    holdEventHandlers(labeledHandlerInfo);
   }
 }
 

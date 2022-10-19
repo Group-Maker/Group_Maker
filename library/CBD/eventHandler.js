@@ -35,37 +35,33 @@ let handlersHolder = [];
 const holdEventHandlers = eventHandlers => {
   validateEventHandler(eventHandlers);
   eventHandlers.forEach(eventHandler => {
-    const { type, selector, handler } = eventHandler;
+    const { selector, handler } = eventHandler;
 
-    const isDuplicated = handlersHolder.find(
-      ({ holdedType, holdedSlector }) => holdedType === type && holdedSlector === selector
-    );
-    if (isDuplicated) {
-      return;
-    }
-
-    const newHandler = e => {
+    eventHandler.handler = e => {
       if (selector === 'window' || selector === 'document' || e.target.closest(selector)) {
         handler(e);
       }
     };
-    eventHandler.handler = newHandler;
 
-    handlersHolder.push({ type, selector, handler: newHandler });
+    handlersHolder.push(eventHandler);
   });
 };
 
-const unbindEventHandlers = () => {
-  handlersHolder.forEach(({ type, handler }) => {
-    window.removeEventListener(type, handler);
+const updateEventHandlers = () => {
+  const removeHandlers = [];
+
+  handlersHolder.forEach(handlerInfo => {
+    const { id, type, handler } = handlerInfo;
+
+    if (document.querySelector(`[data-component-id=${id}]`)) {
+      window.addEventListener(type, handler);
+    } else {
+      window.removeEventListener(type, handler);
+      removeHandlers.push(handlerInfo);
+    }
   });
-  handlersHolder = [];
+
+  handlersHolder = handlersHolder.filter(handlerInfo => !removeHandlers.includes(handlerInfo));
 };
 
-const bindEventHandlers = () => {
-  handlersHolder.forEach(({ type, handler }) => {
-    window.addEventListener(type, handler);
-  });
-};
-
-export { unbindEventHandlers, bindEventHandlers, holdEventHandlers };
+export { updateEventHandlers, holdEventHandlers };

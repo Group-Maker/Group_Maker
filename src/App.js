@@ -23,9 +23,7 @@ export default class App extends Component {
     super();
 
     // TODO: 함수 이름 변경 필요
-    this.useEffect(() => {
-      this.init();
-    }, []);
+    this.init();
   }
 
   async init() {

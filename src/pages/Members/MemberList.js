@@ -7,13 +7,14 @@ import { getMembers } from '../../state/index.js';
 export default class MemberList extends Component {
   render() {
     const { openModal, onUpdate, toggleEditMode } = this.props;
-
+    console.log(this.props);
     // prettier-ignore
     return `
       <ul class="${style.list}">
         ${getMembers()
           .map(member =>
-            new MemberItem({
+            new MemberItem( {
+              member,
               isEditing: this.isEditing(member.id),
               openModal,
               onUpdate,
