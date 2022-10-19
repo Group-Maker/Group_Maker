@@ -10,6 +10,3 @@
 .li.active {
   background: rgba(144, 30, 184, 0.75);
 }
-.li:first-child {
-  margin-top: 2rem;
-}

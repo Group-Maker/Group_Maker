@@ -16,11 +16,11 @@ export default class Members extends Component {
   }
 
   render() {
-    const { isSignedIn, signOut, organization } = this.props;
+    const { isSignedIn, organization, signOutSetState } = this.props;
     const { members } = organization;
     // prettier-ignore
     return `
-      ${new MainLayout({ isSignedIn, signOut }).render()}
+      ${new MainLayout({ isSignedIn, signOutSetState }).render()}
       <section class="${style.container}">
         <h2 class="${style.title}">Manage Members</h2>
         ${new MemberList( {

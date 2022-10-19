@@ -1,12 +1,21 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
-import { signinSchema } from './schema.js';
-import validate from './validate.js';
-import { navigate } from '../../../library/SPA-router/index.js';
+import { Link, navigate } from '../../../library/SPA-router/index.js';
+import { signInSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 
-export default class SignIn extends Component {
-  async signin(e) {
+export default class signIn extends Component {
+  constructor(props) {
+    super(props);
+    const initialSignInForm = {
+      email: { value: '', isDirty: false },
+      password: { value: '', isDirty: false },
+      isSignInFailed: false,
+    };
+    [this.signInForm, this.setSignInForm] = this.useState(initialSignInForm);
+  }
+
+  async signIn(e) {
     e.preventDefault();
 
     const payload = [...new FormData(e.target)].reduce(
@@ -16,38 +25,56 @@ export default class SignIn extends Component {
     );
 
     try {
-      // request with payload & move to another page
-      const { data: user } = await axios.post(`/auth/signin`, payload);
+      const { data: user } = await axios.post(`/auth/signIn`, payload);
 
       if (user) {
         this.props.signInSetState(user);
         navigate('/');
       }
     } catch (err) {
-      if (err.response.status === 401) {
-        document.querySelector('.signInError').textContent = 'Incorrect email or password';
-      }
+      // if (err.response.status === 401) {
+      // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
+      // this.setSignInForm({ isSignInFailed: true });
+      this.setSignInForm(prevState => ({ ...prevState, isSignInFailed: true }));
+      // }
     }
   }
 
   render() {
+    const emailValue = this.signInForm.email.value;
+    const passwordValue = this.signInForm.password.value;
+    const isEmailValid = signInSchema.email.isValid(emailValue);
+    const isPasswordValid = signInSchema.password.isValid(passwordValue);
+
     return `
     <h1 class="${style.title}">GROUP-MAKER</h1>
-    <form class="${style.signInForm}" novalidate>
+    <form class="${style.signInForm}">
       <h2 class="${style.subTitle}">SIGN IN</h2>
       <div class="${style.inputContainer}">
-        <label class="${style.label}" for="userid">EMAIL</label>
-        <input class="${style.input}" type="text" id="userid" name="userid" required autocomplete="off" />
-        <div class="validateError ${style.validateError}"></div>
+        <label class="${style.label}" for="email">EMAIL</label>
+        <input class="${
+          style.input
+        }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}" />
+        <div class="${style.validateError}">${
+      this.signInForm.email.isDirty && !isEmailValid ? signInSchema.email.error : ''
+    }</div>
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="password">PASSWORD</label>
-        <input class="${style.input}" type="password" id="password" name="password" required autocomplete="off" />
-        <div class="validateError ${style.validateError}"></div>
+        <input class="${
+          style.input
+        }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
+        <div class="${style.validateError}">${
+      this.signInForm.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
+    }</div>
       </div>
-      <p class="signInError ${style.authorizeError}"></p>
-      <button class="submit-btn ${style.submitBtn}" disabled>SIGN IN</button>
-      <a class="switchSignInSignUp ${style.link}" href="/signup">Join us</a>
+      <p class="signInError ${style.authorizeError}">${
+      this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
+    }</p>
+      <button class="submit-btn ${style.submitBtn}" ${
+      isEmailValid && isPasswordValid ? '' : 'disabled'
+    }>SIGN IN</button>
+      ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
     </form>`;
   }
 
@@ -56,12 +83,22 @@ export default class SignIn extends Component {
       {
         type: 'input',
         selector: `.${style.signInForm} input`,
-        handler: e => validate(e, signinSchema),
+        handler: e => {
+          this.setSignInForm(prevState => ({
+            ...prevState,
+            [e.target.name]: { value: e.target.value, isDirty: true },
+          }));
+        },
       },
       {
         type: 'submit',
         selector: `.${style.signInForm}`,
-        handler: e => this.signin(e),
+        handler: e => this.signIn(e),
+      },
+      {
+        type: 'click',
+        selector: `.switchSignInSignUp`,
+        handler: () => this.setSignInForm(this.initialSignInForm),
       },
     ];
   }
