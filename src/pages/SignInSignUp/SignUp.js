@@ -1,25 +1,37 @@
 import axios from 'axios';
+import 'boxicons';
 import { Component } from '../../../library/CBD/index.js';
-import { signupSchema } from './schema.js';
 import { Link } from '../../../library/SPA-router/index.js';
-import validate from './validate.js';
-import style from './SignInSignUp.module.css';
+import { signUpSchema } from './schema.js';
 import SignupModal from '../../components/modals/SignupModal.js';
+import style from './SignInSignUp.module.css';
 
 export default class SignUp extends Component {
-  async checkDuplicated(e) {
+  constructor(props) {
+    super(props);
+    const initialSignUpForm = {
+      email: { value: '', isDirty: false },
+      name: { value: '', isDirty: false },
+      password: { value: '', isDirty: false },
+      confirmPassword: { value: '', isDirty: false },
+      isSignUpFailed: false,
+    };
+    [this.signUpForm, this.setSignUpForm] = this.useState(initialSignUpForm);
+  }
+
+  async checkDuplicatedEmail(inputEmail) {
     try {
-      const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputId: e.target.value });
+      const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputEmail });
 
       if (isDuplicated) {
-        document.querySelector('.signUpError').textContent = 'Account already exists';
+        this.setSignUpForm(prevState => ({ ...prevState, isSignUpFailed: true }));
       }
     } catch (err) {
       console.log(err);
     }
   }
 
-  async signup(e) {
+  async signUp(e) {
     e.preventDefault();
 
     const payload = [...new FormData(e.target)].reduce(
@@ -29,57 +41,102 @@ export default class SignUp extends Component {
     );
 
     try {
-      // request with payload
-      await axios.post(`/auth/signup`, payload);
+      await axios.post(`/auth/signUp`, payload);
+      // TODO: 모달 관련 코드 수정 필요
       document.querySelector('.modal').classList.remove('hidden');
     } catch (err) {
-      if (err.response.status === 401) {
-        document.querySelector('.signUpError').textContent = 'Account already exists';
-      }
+      // if (err.response.status === 401) {
+      // }
+      console.log(err);
     }
   }
 
   render() {
+    const emailValue = this.signUpForm.email.value;
+    const nameValue = this.signUpForm.name.value;
+    const passwordValue = this.signUpForm.password.value;
+    const confirmPasswordValue = this.signUpForm.confirmPassword.value;
+    const isEmailValid = signUpSchema.email.isValid(emailValue);
+    const isNameValid = !!nameValue;
+    const isPasswordValid = signUpSchema.password.isValid(passwordValue);
+    const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
+
     return `
     <h1 class="${style.title}">GROUP-MAKER</h1>
-    <form class="${style.signUpForm}" novalidate>
+    <form class="${style.signUpForm}">
       <h2 class="${style.subTitle}">SIGN-UP</h2>
       <div class="${style.inputContainer}">
-        <label class="${style.label}" for="userid">EMAIL</label>
-        <input class="emailInput ${style.input}" type="text" id="userid" name="userid" required autocomplete="off" />
-        <span class="bar"></span>
-        <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
-        <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
-        <div class="signUpError validateError ${style.validateError}"></div>
+        <label class="${style.label}" for="email">EMAIL</label>
+        <input class="emailInput ${
+          style.input
+        }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}"/>
+        ${
+          this.signUpForm.email.isDirty
+            ? isEmailValid
+              ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
+              : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
+            : ''
+        }
+        <div class="${style.validateError}">${
+      this.signUpForm.email.isDirty && !isEmailValid ? signUpSchema.email.error : ''
+    }</div>
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="name">NAME</label>
-        <input class="${style.input}" type="text" id="name" name="username" required autocomplete="off" />
-        <span class="bar"></span>
-        <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
-        <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
-        <div class="validateError ${style.validateError}"></div>
+        <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
+      this.signUpForm.name.value
+    }"/>
+    ${
+      this.signUpForm.name.isDirty
+        ? isNameValid
+          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
+          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
+        : ''
+    }
+        <div class="${style.validateError}">${
+      this.signUpForm.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
+    }</div>
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="password">PASSWORD</label>
-        <input class="${style.input}" type="password" id="password" name="password" required autocomplete="off" />
-        <span class="bar"></span>
-        <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
-        <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
-        <div class="validateError ${style.validateError}"></div>
-      </div>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="confirm-password">CONFIRM PASSWORD</label>
         <input class="${
           style.input
-        }" type="password" id="confirm-password" name="confirm-password" required autocomplete="off" />
-        <span class="bar"></span>
-        <i class="${style.icon} ${style.iconSuccess} icon-success bx bxs-check-circle hidden"></i>
-        <i class="${style.icon} ${style.iconError} icon-error bx bxs-x-circle hidden"></i>
-        <div class="validateError ${style.validateError}"></div>
+        }" type="password" id="password" name="password" required autocomplete="off" value="${
+      this.signUpForm.password.value
+    }"/>
+    ${
+      this.signUpForm.password.isDirty
+        ? isPasswordValid
+          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
+          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
+        : ''
+    }
+        <div class="validateError ${style.validateError}">${
+      this.signUpForm.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
+    }</div>
+      </div>
+      <div class="${style.inputContainer}">
+        <label class="${style.label}" for="confirmPassword">CONFIRM PASSWORD</label>
+        <input class="${
+          style.input
+        }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
+      this.signUpForm.confirmPassword.value
+    }"/>
+    ${
+      this.signUpForm.confirmPassword.isDirty
+        ? isConfirmPasswordValid
+          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
+          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
+        : ''
+    }
+        <div class="validateError ${style.validateError}">${
+      this.signUpForm.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
+    }</div>
       </div>
       <p class="signUpError ${style.authorizeError}"></p>
-      <button class="submit-btn ${style.submitBtn}" disabled>SIGN UP</button>
+      <button class="submit-btn ${style.submitBtn}" ${
+      isEmailValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
+    }>SIGN UP</button>
       <section class="modal hidden">
         ${new SignupModal().render()}
       </section>
@@ -92,17 +149,27 @@ export default class SignUp extends Component {
       {
         type: 'input',
         selector: `.${style.signUpForm} input`,
-        handler: e => validate(e, signupSchema),
+        handler: e => {
+          this.setSignUpForm(prevState => ({
+            ...prevState,
+            [e.target.name]: { value: e.target.value, isDirty: true },
+          }));
+        },
       },
       {
         type: 'input',
         selector: `.emailInput`,
-        handler: e => this.checkDuplicated(e),
+        handler: e => this.checkDuplicatedEmail(e.target.value),
       },
       {
         type: 'submit',
         selector: `.${style.signUpForm}`,
-        handler: e => this.signup(e),
+        handler: e => this.signUp(e),
+      },
+      {
+        type: 'click',
+        selector: `.switchSignInSignUp`,
+        handler: () => this.setSignUpForm(this.initialSignUpForm),
       },
     ];
   }

@@ -117,15 +117,17 @@
 .icon {
   position: absolute;
   right: 0.3rem;
-  font-size: 0.7rem;
+  width: 1rem;
+  height: 1rem;
+  /* background-color: black; */
 }
 
 .iconSuccess {
-  color: green;
+  fill: green;
 }
 
 .iconError {
-  color: red;
+  fill: red;
 }
 
 .modal {
