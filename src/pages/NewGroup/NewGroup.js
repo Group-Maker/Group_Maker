@@ -7,7 +7,10 @@ export default class NewGroup extends Component {
   constructor(props) {
     super(props);
     // [this.state, this.setState] = this.useState({ isCreateGroupMode: false, result: [] });
-    [this.state, this.setState] = this.useState({ result: null });
+    [this.resultState, this.setState] = this.useState({
+      result: null,
+      currentView: 'selectGroupCnt',
+    });
   }
 
   render() {
@@ -17,9 +20,9 @@ export default class NewGroup extends Component {
       ${new MainLayout({ isSignedIn, signOutSetState }).render()}
       <div class="mainContainer">
         ${
-          this.state.result
-            ? new Result(this.props, this.state.result).render()
-            : new SelectGroupCnt(this.props, this.setState).render()
+          this.resultState.currentView === 'selectGroupCnt'
+            ? new SelectGroupCnt(this.props, this.setState).render()
+            : new Result(this.props, this.resultState).render()
         }
       </div>
     `;

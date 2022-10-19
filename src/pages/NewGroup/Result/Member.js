@@ -1,4 +1,4 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '../../../../library/CBD/index.js';
 import style from './Member.module.css';
 
 export default class Member extends Component {

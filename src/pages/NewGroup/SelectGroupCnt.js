@@ -27,21 +27,30 @@ export default class SelectGroupCnt extends Component {
   }
 
   setEvent() {
+    const { members, records } = this.props.organization;
     return [
       {
         type: 'click',
         selector: '.optimizedGroupBtn',
         handler: () => {
           const data = {
-            records: this.props.organization.records,
+            records,
             groupNum: this.groupCounter.getCount(),
-            peopleArr: this.props.organization.members.map(member => member.id),
+            peopleArr: members.map(member => member.id),
             totalPeopleNum: this.props.organization.members.length,
             forbiddenPairs: [],
           };
           const { newRecord } = solver(data);
-          this.setState({ result: newRecord });
+          this.setState({ result: newRecord, currentView: 'autoResult' });
           console.log(newRecord);
+        },
+      },
+      {
+        type: 'click',
+        selector: '.manualGroupBtn',
+        handler: () => {
+          const groupNum = this.groupCounter.getCount();
+          this.setState({ result: Array.from({ length: groupNum }, () => []), currentView: 'manualResult' });
         },
       },
     ];

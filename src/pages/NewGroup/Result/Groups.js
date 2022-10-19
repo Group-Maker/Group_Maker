@@ -1,4 +1,4 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '../../../../library/CBD/index.js';
 import style from './Groups.module.css';
 
 export default class Groups extends Component {
