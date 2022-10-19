@@ -95,10 +95,8 @@ export default class App extends Component {
   }
 
   addRecord(record) {
-    const records = [
-      ...this.state.organization.records,
-      { id: this.getNextId(this.state.organization.records), record },
-    ];
+    const prevRecords = this.state.organization.records;
+    const records = [...prevRecords, { id: this.getNextId(prevRecords), record }];
     this.setState(prevState => ({
       ...prevState,
       organization: { ...prevState.organization, records },

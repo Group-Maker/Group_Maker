@@ -1,3 +1,4 @@
+import { throttle } from 'lodash';
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import SaveModal from '../../components/modals/SaveModal.js';
@@ -15,7 +16,7 @@ export default class Result extends Component {
       $targetContainer: null,
       fromListId: null,
       // 테스트를 위한 상태값 고정
-      isauto: true,
+      isAuto: true,
       result: [
         // 테스트를 위한 데이터
         [0, 1],
@@ -30,19 +31,20 @@ export default class Result extends Component {
 
   render() {
     const { isSignedIn, signOut, organization } = this.props;
+    const { isAuto, result, isModalOpen } = this.state;
     console.log(organization);
     // prettier-ignore
     return `
     ${new MainLayout({ isSignedIn, signOut }).render()}
     <section class="${style.result}">
       <h2 class="${style.title}">Result</h2>
-      <div class="${style.dropContainer} ${style.members}">${this.state.isauto ? '' : new Member({ organization }).render()}</div>
-      <div class="${style.groups}">${new Groups({ organization, result: this.state.result}).render()}</div>
+      <div class="${style.dropContainer} ${style.members}">${isAuto ? '' : new Member({ organization }).render()}</div>
+      <div class="${style.groups}">${new Groups({ organization, result }).render()}</div>
       <div class="${style.buttons}">
-        ${this.state.isauto ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
+        ${isAuto ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
         <button class="${style.save}">SAVE</button>
       </div>
-      ${this.state.isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
+      ${isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
     </section>
     `;
   }
@@ -67,7 +69,7 @@ export default class Result extends Component {
       {
         type: 'dragover',
         selector: `.${style.dropContainer}`,
-        handler: _.throttle(this.onDragover.bind(this)),
+        handler: throttle(this.onDragover.bind(this)),
       },
       {
         type: 'drop',
@@ -79,10 +81,6 @@ export default class Result extends Component {
 
   getMemberId($target) {
     return +$target.closest('div').dataset.listId;
-  }
-
-  getMemberName(id) {
-    return id.closest('div').dataset.listIdx;
   }
 
   onDragstart(e) {
