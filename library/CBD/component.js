@@ -5,7 +5,7 @@ class Component {
   constructor(props) {
     this.props = props;
     this.state = null;
-    this.componentId = self.crypto.randomUUID();
+    this.componentId = self.crypto.randomUUID().slice(0, 8);
 
     this.updateEventHandlers();
   }
@@ -13,7 +13,7 @@ class Component {
   setState(nextState) {
     this.state = typeof nextState === 'function' ? nextState(this.state) : nextState;
 
-    render(document.querySelector(`[data-id=${this.componentId}]`), this);
+    render(document.querySelector(`[data-component-id="${this.componentId}"]`), this);
   }
 
   render() {
@@ -26,7 +26,7 @@ class Component {
 
   labelDOMStr(DOMStr) {
     const openTagRegex = /<[^>]*>/;
-    return DOMStr.replace(openTagRegex, openTag => `${openTag.slice(0, -1)} data-component-id=${this.componentId}/>`);
+    return DOMStr.replace(openTagRegex, openTag => `${openTag.slice(0, -1)} data-component-id="${this.componentId}"/>`);
   }
 
   updateEventHandlers() {
