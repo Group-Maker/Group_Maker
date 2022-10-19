@@ -74,6 +74,7 @@ export default class App extends Component {
       organization,
       signInSetState: this.signInSetState.bind(this),
       signOut: this.signOut.bind(this),
+      addRecord: this.addRecord.bind(this),
       addMember: this.addMember.bind(this),
       updateMember: this.updateMember.bind(this),
       removeMember: this.removeMember.bind(this),
@@ -99,6 +100,17 @@ export default class App extends Component {
 
   getNextId(arr) {
     return Math.max(...arr.map(item => item.id), 0) + 1;
+  }
+
+  addRecord(record) {
+    const records = [
+      ...this.state.organization.records,
+      { id: this.getNextId(this.state.organization.records), record },
+    ];
+    this.setState(prevState => ({
+      ...prevState,
+      organization: { ...prevState.organization, records },
+    }));
   }
 
   addMember(name) {
