@@ -9,14 +9,14 @@ import style from './SignInSignUp.module.css';
 export default class SignUp extends Component {
   constructor(props) {
     super(props);
-    const initialSignUpForm = {
+    this.initialSignUpForm = {
       email: { value: '', isDirty: false },
       name: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },
       isSignUpFailed: false,
     };
-    [this.signUpForm, this.setSignUpForm] = this.useState(initialSignUpForm);
+    this.state = this.initialSignUpForm;
   }
 
   async checkDuplicatedEmail(inputEmail) {
@@ -24,7 +24,7 @@ export default class SignUp extends Component {
       const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputEmail });
 
       if (isDuplicated) {
-        this.setSignUpForm(prevState => ({ ...prevState, isSignUpFailed: true }));
+        this.setState(prevState => ({ ...prevState, isSignUpFailed: true }));
       }
     } catch (err) {
       console.log(err);
@@ -52,10 +52,10 @@ export default class SignUp extends Component {
   }
 
   render() {
-    const emailValue = this.signUpForm.email.value;
-    const nameValue = this.signUpForm.name.value;
-    const passwordValue = this.signUpForm.password.value;
-    const confirmPasswordValue = this.signUpForm.confirmPassword.value;
+    const emailValue = this.state.email.value;
+    const nameValue = this.state.name.value;
+    const passwordValue = this.state.password.value;
+    const confirmPasswordValue = this.state.confirmPassword.value;
     const isEmailValid = signUpSchema.email.isValid(emailValue);
     const isNameValid = !!nameValue;
     const isPasswordValid = signUpSchema.password.isValid(passwordValue);
@@ -71,30 +71,30 @@ export default class SignUp extends Component {
           style.input
         }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}"/>
         ${
-          this.signUpForm.email.isDirty
+          this.state.email.isDirty
             ? isEmailValid
               ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
               : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
             : ''
         }
         <div class="${style.validateError}">${
-      this.signUpForm.email.isDirty && !isEmailValid ? signUpSchema.email.error : ''
+      this.state.email.isDirty && !isEmailValid ? signUpSchema.email.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
         <label class="${style.label}" for="name">NAME</label>
         <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
-      this.signUpForm.name.value
+      this.state.name.value
     }"/>
     ${
-      this.signUpForm.name.isDirty
+      this.state.name.isDirty
         ? isNameValid
           ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
           : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
         : ''
     }
         <div class="${style.validateError}">${
-      this.signUpForm.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
+      this.state.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
@@ -102,17 +102,17 @@ export default class SignUp extends Component {
         <input class="${
           style.input
         }" type="password" id="password" name="password" required autocomplete="off" value="${
-      this.signUpForm.password.value
+      this.state.password.value
     }"/>
     ${
-      this.signUpForm.password.isDirty
+      this.state.password.isDirty
         ? isPasswordValid
           ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
           : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
         : ''
     }
         <div class="validateError ${style.validateError}">${
-      this.signUpForm.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
+      this.state.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
@@ -120,17 +120,17 @@ export default class SignUp extends Component {
         <input class="${
           style.input
         }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
-      this.signUpForm.confirmPassword.value
+      this.state.confirmPassword.value
     }"/>
     ${
-      this.signUpForm.confirmPassword.isDirty
+      this.state.confirmPassword.isDirty
         ? isConfirmPasswordValid
           ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
           : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
         : ''
     }
         <div class="validateError ${style.validateError}">${
-      this.signUpForm.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
+      this.state.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
     }</div>
       </div>
       <p class="signUpError ${style.authorizeError}"></p>
@@ -150,7 +150,7 @@ export default class SignUp extends Component {
         type: 'input',
         selector: `.${style.signUpForm} input`,
         handler: e => {
-          this.setSignUpForm(prevState => ({
+          this.setState(prevState => ({
             ...prevState,
             [e.target.name]: { value: e.target.value, isDirty: true },
           }));
@@ -169,7 +169,7 @@ export default class SignUp extends Component {
       {
         type: 'click',
         selector: `.switchSignInSignUp`,
-        handler: () => this.setSignUpForm(this.initialSignUpForm),
+        handler: () => this.setState(this.initialSignUpForm),
       },
     ];
   }

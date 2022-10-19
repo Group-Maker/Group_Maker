@@ -9,11 +9,11 @@ import style from './Members.module.css';
 export default class Members extends Component {
   constructor(props) {
     super(props);
-    [this.state, this.setState] = this.useState({
+    this.state = {
       removeMemberId: null,
       editingMemberIds: [],
       isModalOpen: false,
-    });
+    };
   }
 
   render() {
@@ -57,6 +57,7 @@ export default class Members extends Component {
     }
 
     addMember(name);
+    console.log(id);
     this.setState(prevState => ({
       ...prevState,
       editingMemberIds: prevState.editingMemberIds.filter(_id => _id !== id),

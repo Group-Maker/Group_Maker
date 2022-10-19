@@ -8,12 +8,12 @@ import style from './SignInSignUp.module.css';
 export default class signIn extends Component {
   constructor(props) {
     super(props);
-    const initialSignInForm = {
+    this.initialSignInForm = {
       email: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
-    [this.signInForm, this.setSignInForm] = this.useState(initialSignInForm);
+    this.state = this.initialSignInForm;
   }
 
   async signIn(e) {
@@ -34,15 +34,15 @@ export default class signIn extends Component {
     } catch (err) {
       // if (err.response.status === 401) {
       // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
-      // this.setSignInForm({ isSignInFailed: true });
-      this.setSignInForm(prevState => ({ ...prevState, isSignInFailed: true }));
+      // this.setState({ isSignInFailed: true });
+      this.setState(prevState => ({ ...prevState, isSignInFailed: true }));
       // }
     }
   }
 
   render() {
-    const emailValue = this.signInForm.email.value;
-    const passwordValue = this.signInForm.password.value;
+    const emailValue = this.state.email.value;
+    const passwordValue = this.state.password.value;
     const isEmailValid = signInSchema.email.isValid(emailValue);
     const isPasswordValid = signInSchema.password.isValid(passwordValue);
 
@@ -56,7 +56,7 @@ export default class signIn extends Component {
           style.input
         }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}" />
         <div class="${style.validateError}">${
-      this.signInForm.email.isDirty && !isEmailValid ? signInSchema.email.error : ''
+      this.state.email.isDirty && !isEmailValid ? signInSchema.email.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
@@ -65,11 +65,11 @@ export default class signIn extends Component {
           style.input
         }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
         <div class="${style.validateError}">${
-      this.signInForm.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
+      this.state.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
     }</div>
       </div>
       <p class="signInError ${style.authorizeError}">${
-      this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
+      this.state.isSignInFailed ? 'Incorrect email or password' : ''
     }</p>
       <button class="submit-btn ${style.submitBtn}" ${
       isEmailValid && isPasswordValid ? '' : 'disabled'
@@ -84,7 +84,7 @@ export default class signIn extends Component {
         type: 'input',
         selector: `.${style.signInForm} input`,
         handler: e => {
-          this.setSignInForm(prevState => ({
+          this.setState(prevState => ({
             ...prevState,
             [e.target.name]: { value: e.target.value, isDirty: true },
           }));
@@ -98,7 +98,7 @@ export default class signIn extends Component {
       {
         type: 'click',
         selector: `.switchSignInSignUp`,
-        handler: () => this.setSignInForm(this.initialSignInForm),
+        handler: () => this.setState(this.initialSignInForm),
       },
     ];
   }
