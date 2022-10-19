@@ -1,8 +1,8 @@
 import { Component } from '../../../library/CBD/index.js';
 import { getMembers } from '../../state/index.js';
-import style from './Member.module.css';
+import style from './Members.module.css';
 
-export default class Member extends Component {
+export default class Members extends Component {
   render() {
     // prettier-ignore
     return getMembers().map(({ id, name }) => `

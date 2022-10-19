@@ -2,19 +2,19 @@ import { Component } from '../../../library/CBD/index.js';
 import style from './Counter.module.css';
 
 export default class Counter extends Component {
-  constructor(props, minCount, maxCount) {
+  constructor(props) {
     super(props);
+
     [this.state, this.setState] = this.useState({ count: 0 });
-    this.minCount = minCount;
-    this.maxCount = maxCount;
   }
 
   render() {
+    const { minCount, maxCount } = this.props;
     return `
       <div class=${style.container}>
-        <button class="decrease ${style.button}" ${this.state.count <= this.minCount ? 'disabled' : ''}>-</button>
+        <button class="decrease ${style.button}" ${this.state.count <= minCount ? 'disabled' : ''}>-</button>
         <div class="counter ${style.count}">${this.state.count}</div>
-        <button class="increase ${style.button}" ${this.state.count >= this.maxCount ? 'disabled' : ''}>+</button>
+        <button class="increase ${style.button}" ${this.state.count >= maxCount ? 'disabled' : ''}>+</button>
       </div>`;
   }
 

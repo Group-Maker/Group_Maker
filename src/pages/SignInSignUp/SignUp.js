@@ -3,7 +3,7 @@ import 'boxicons';
 import { Component } from '../../../library/CBD/index.js';
 import { Link } from '../../../library/SPA-router/index.js';
 import { signUpSchema } from './schema.js';
-import SignupModal from '../../components/modals/SignupModal.js';
+import SignupModal from '../../components/Modals/SignupModal.js';
 import style from './SignInSignUp.module.css';
 
 export default class SignUp extends Component {

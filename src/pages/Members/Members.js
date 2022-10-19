@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
-import DeleteModal from '../../components/modals/DeleteModal.js';
+import DeleteModal from '../../components/Modals/DeleteModal.js';
 import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
 import MemberList from './MemberList.js';
 

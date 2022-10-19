@@ -6,14 +6,22 @@ import SelectGroupCnt from './SelectGroupCnt.js';
 export default class NewGroup extends Component {
   constructor(props) {
     super(props);
-    [this.state, this.setState] = this.useState({ result: null });
+
+    [this.resultState, this.setState] = this.useState({
+      result: null,
+      currentView: 'selectGroupCnt',
+    });
   }
 
   render() {
     return `
       ${new MainLayout().render()}
       <div class="mainContainer">
-        ${this.state.result ? new Result(this.state.result).render() : new SelectGroupCnt(this.setState).render()}
+        ${
+          this.resultState.currentView === 'selectGroupCnt'
+            ? new SelectGroupCnt({ setState: this.setState }).render()
+            : new Result({ resultState: this.resultState }).render()
+        }
       </div>
     `;
   }
