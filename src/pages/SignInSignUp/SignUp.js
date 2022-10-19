@@ -51,6 +51,12 @@ export default class SignUp extends Component {
     }
   }
 
+  renderIcon(isValid) {
+    return isValid
+      ? `<box-icon class="${style.icon} ${style.iconSuccess}" name="check-circle"></box-icon>`
+      : `<box-icon class="${style.icon} ${style.iconError}" name="x-circle"></box-icon>`;
+  }
+
   render() {
     const useridValue = this.signUpForm.userid.value;
     const nameValue = this.signUpForm.name.value;
@@ -70,13 +76,7 @@ export default class SignUp extends Component {
         <input class="useridInput ${
           style.input
         }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
-        ${
-          this.signUpForm.userid.isDirty
-            ? isUseridValid
-              ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-              : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-            : ''
-        }
+        ${this.signUpForm.userid.isDirty ? this.renderIcon(isUseridValid) : ''}
         <div class="${style.validateError}">${
       this.signUpForm.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
     }</div>
@@ -86,13 +86,7 @@ export default class SignUp extends Component {
         <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
       this.signUpForm.name.value
     }"/>
-    ${
-      this.signUpForm.name.isDirty
-        ? isNameValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
+    ${this.signUpForm.name.isDirty ? this.renderIcon(isNameValid) : ''}
         <div class="${style.validateError}">${
       this.signUpForm.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
     }</div>
@@ -104,13 +98,7 @@ export default class SignUp extends Component {
         }" type="password" id="password" name="password" required autocomplete="off" value="${
       this.signUpForm.password.value
     }"/>
-    ${
-      this.signUpForm.password.isDirty
-        ? isPasswordValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
+    ${this.signUpForm.password.isDirty ? this.renderIcon(isPasswordValid) : ''}
         <div class="validateError ${style.validateError}">${
       this.signUpForm.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
     }</div>
@@ -122,13 +110,7 @@ export default class SignUp extends Component {
         }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
       this.signUpForm.confirmPassword.value
     }"/>
-    ${
-      this.signUpForm.confirmPassword.isDirty
-        ? isConfirmPasswordValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
+    ${this.signUpForm.confirmPassword.isDirty ? this.renderIcon(isConfirmPasswordValid) : ''}
         <div class="validateError ${style.validateError}">${
       this.signUpForm.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
     }</div>
@@ -158,7 +140,7 @@ export default class SignUp extends Component {
       },
       {
         type: 'input',
-        selector: `.useridInput`,
+        selector: '.useridInput',
         handler: e => this.checkDuplicatedUserid(e.target.value),
       },
       {
@@ -168,7 +150,7 @@ export default class SignUp extends Component {
       },
       {
         type: 'click',
-        selector: `.switchSignInSignUp`,
+        selector: '.switchSignInSignUp',
         handler: () => this.setSignUpForm(this.initialSignUpForm),
       },
     ];

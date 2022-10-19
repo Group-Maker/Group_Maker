@@ -22,7 +22,6 @@ export default class App extends Component {
   constructor() {
     super();
 
-    // TODO: 함수 이름 변경 필요
     this.useEffect(() => {
       this.init();
     }, []);

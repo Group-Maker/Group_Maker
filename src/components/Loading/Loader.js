@@ -3,6 +3,6 @@ import style from './Loader.module.css';
 
 export default class Loader extends Component {
   render() {
-    return `<p class=${style.loadingMsg}>Loading...</p>`;
+    return `<p class="${style.loadingMsg}">Loading...</p>`;
   }
 }
