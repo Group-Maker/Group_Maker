@@ -14,7 +14,7 @@ export default class SelectGroupCnt extends Component {
 
   render() {
     return `
-      <h2>Make New Group</h2>
+      <h2 class="title">Make New Group</h2>
       <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt}</p>
       <p>How many groups do you want?</p>
       ${this.groupCounter.render()}

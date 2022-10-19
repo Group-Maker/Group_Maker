@@ -14,15 +14,16 @@ export default class NewGroup extends Component {
   }
 
   render() {
+    // prettier-ignore
     return `
+    <div class="mainContainer">
       ${new MainLayout().render()}
-      <div class="mainContainer">
-        ${
-          this.resultState.currentView === 'selectGroupCnt'
-            ? new SelectGroupCnt({ setState: this.setState }).render()
-            : new Result({ resultState: this.resultState }).render()
-        }
-      </div>
+      <main class="main">
+        ${this.resultState.currentView === 'selectGroupCnt'
+          ? new SelectGroupCnt({ setState: this.setState }).render()
+          : new Result({ resultState: this.resultState }).render()}
+      </main>
+    </div>
     `;
   }
 }

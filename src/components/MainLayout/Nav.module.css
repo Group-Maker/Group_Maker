@@ -1,5 +1,9 @@
+.ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 .li {
-  margin-top: 1rem;
   border: 1px solid #ffffff;
   border-radius: 10px;
   background: rgba(144, 30, 184, 0.2);
