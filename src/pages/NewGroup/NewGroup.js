@@ -9,10 +9,10 @@ export default class NewGroup extends Component {
   constructor(props) {
     super(props);
 
-    [this.resultState, this.setState] = this.useState({
+    this.state = {
       result: null,
       currentView: 'selectGroupCnt',
-    });
+    };
   }
 
   createNewGroup(groupCnt) {
@@ -35,8 +35,8 @@ export default class NewGroup extends Component {
         ${new MainLayout().render()}
         <main class="main">
           ${this.resultState.currentView === 'selectGroupCnt'
-            ? new SelectGroupCnt({ setState: this.setState, createNewGroup:this.createNewGroup }).render()
-            : new Result({ resultState: this.resultState, createNewGroup:this.createNewGroup }).render()}
+            ? new SelectGroupCnt({ setState: this.setState.bind(this), createNewGroup:this.createNewGroup }).render()
+            : new Result({ resultState: this.state, createNewGroup:this.createNewGroup }).render()}
         </main>
       </div>`;
   }

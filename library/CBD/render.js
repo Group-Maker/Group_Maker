@@ -1,4 +1,4 @@
-import { bindEventHandlers, unbindEventHandlers } from './eventHandler.js';
+import { updateEventHandlers } from './eventHandler';
 
 const reconciliation = ($virtualNode, $realNode) => {
   if ($virtualNode.nodeType !== $realNode.nodeType) {
@@ -68,26 +68,28 @@ const reconciliation = ($virtualNode, $realNode) => {
 };
 
 let $realRoot = null;
-let RootComponent = null;
+let RootComponentInstance = null;
 
-const render = ($rootContainer, rootComponent) => {
-  if ($rootContainer) {
-    $realRoot = $rootContainer;
+const render = ($container, componentInstance) => {
+  if ($container && !$realRoot) {
+    $realRoot = $container;
   }
-  if (rootComponent) {
-    RootComponent = rootComponent;
+  if (componentInstance && !RootComponentInstance) {
+    RootComponentInstance = componentInstance;
   }
 
-  unbindEventHandlers();
+  const $targetContainer = $container ?? $realRoot;
+  const CurrentInstance = componentInstance ?? RootComponentInstance;
 
-  const domStr = new RootComponent().render();
+  const domStr = CurrentInstance.render();
   if (typeof domStr === 'string') {
-    const $virtualRoot = $realRoot.cloneNode(false);
+    const $virtualRoot = $targetContainer.cloneNode(false);
     $virtualRoot.innerHTML = domStr;
-    reconciliation($virtualRoot, $realRoot);
-  }
 
-  bindEventHandlers();
+    reconciliation($virtualRoot, $targetContainer);
+
+    updateEventHandlers();
+  }
 };
 
 export default render;

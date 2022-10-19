@@ -8,10 +8,10 @@ export default class Records extends Component {
   constructor(props) {
     super(props);
 
-    [this.modal, this.setModal] = this.useState({
-      isOpen: false,
+    this.state = {
+      isModalOpen: false,
       recordId: null,
-    });
+    };
   }
 
   DOMStr() {
@@ -22,7 +22,7 @@ export default class Records extends Component {
       <main class="main">
         <h2 class="title">Previous Records</h2>
         ${new RecordList({ openModal: this.openModal.bind(this) }).render()}
-        ${this.modal.isOpen
+        ${this.state.isModalOpen
           ? new DeleteModal({
               target: 'record',
               onRemove: this.removeRecord.bind(this),
@@ -34,15 +34,15 @@ export default class Records extends Component {
   }
 
   removeRecord() {
-    removeRecord(this.modal.recordId);
+    removeRecord(this.state.recordId);
     this.closeModal();
   }
 
   openModal(recordId) {
-    this.setModal({ isOpen: true, recordId });
+    this.setState({ isModalOpen: true, recordId });
   }
 
   closeModal() {
-    this.setModal({ isOpen: false, recordId: null });
+    this.setState({ isModalOpen: false, recordId: null });
   }
 }

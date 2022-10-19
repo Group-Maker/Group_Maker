@@ -22,9 +22,7 @@ export default class App extends Component {
   constructor() {
     super();
 
-    this.useEffect(() => {
-      this.init();
-    }, []);
+    this.init();
   }
 
   async init() {
@@ -58,7 +56,7 @@ export default class App extends Component {
   }
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
-  render() {
+  DOMStr() {
     if (isLoading()) {
       return new Loader().render();
     }

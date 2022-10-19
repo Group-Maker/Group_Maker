@@ -9,13 +9,13 @@ export default class Result extends Component {
   constructor(props) {
     super(props);
 
-    [this.state, this.setState] = this.useState({
+    this.state = {
       $dragTarget: null,
       $targetContainer: null,
       fromListId: null,
       // 테스트를 위한 상태값 고정
       isModalOpen: false,
-    });
+    };
   }
 
   DOMStr() {
