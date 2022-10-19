@@ -16,7 +16,7 @@ export default class MainLayout extends Component {
     ];
   }
 
-  render() {
+  DOMStr() {
     const user = getUser();
 
     // prettier-ignore
@@ -25,7 +25,7 @@ export default class MainLayout extends Component {
         <h1 class="${style.title}">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
         <p class="${
           style.description
-        }">In the repeated group activities,\nwe make a group\nwhere you can be with new people.</p>
+        }">In the repeated group activities, we make a group where you can be with new people.</p>
         ${user ? new SignOutButton().render() : new SignInLink().render()}
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
@@ -49,7 +49,6 @@ export default class MainLayout extends Component {
             </button>
           </li>
         </ul>
-      </section>
-    `;
+      </section>`;
   }
 }

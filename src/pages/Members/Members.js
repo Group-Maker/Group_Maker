@@ -16,31 +16,30 @@ export default class Members extends Component {
     };
   }
 
-  render() {
+  DOMStr() {
     // prettier-ignore
     return `
+    <div class="mainContainer">
       ${new MainLayout().render()}
-      <section class="${style.container}">
-        <h2 class="${style.title}">Manage Members</h2>
-        ${new MemberList( {
+      <main class="main">
+        <h2 class="title">Manage Members</h2>
+        ${new MemberList({
           editingMemberIds: this.state.editingMemberIds,
-          toggleEditMode: this.toggleEditMode.bind( this ),
+          toggleEditMode: this.toggleEditMode.bind(this),
           onAdd: this.onAdd.bind(this),
           onUpdate: this.onUpdate.bind(this),
-          openModal: this.openModal.bind( this )
-        } ).render()}
+          openModal: this.openModal.bind(this),
+        }).render()}
         <pre class="${style.guide}">Double click & press Enter to edit name</pre>
-      </section>
-        ${
-          this.state.isModalOpen
-            ? new DeleteModal({
-              target: 'member',
-              onRemove: this.onRemove.bind(this),
-              closeModal: this.closeModal.bind(this),
-            }).render()
-          : ''
-        }
-    `;
+      </main>
+      ${this.state.isModalOpen
+        ? new DeleteModal({
+            target: 'member',
+            onRemove: this.onRemove.bind(this),
+            closeModal: this.closeModal.bind(this),
+          }).render()
+        : ''}
+    </div>`;
   }
 
   toggleEditMode(id) {

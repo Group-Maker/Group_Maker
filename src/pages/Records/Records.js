@@ -14,24 +14,21 @@ export default class Records extends Component {
     };
   }
 
-  render() {
+  DOMStr() {
+    // prettier-ignore
     return `
     <div class="mainContainer">
       ${new MainLayout().render()}
       <main class="main">
         <h2 class="title">Previous Records</h2>
-        ${new RecordList({
-          openModal: this.openModal.bind(this),
-        }).render()}
-        ${
-          this.state.isModalOpen
-            ? new DeleteModal({
-                target: 'record',
-                onRemove: this.removeRecord.bind(this),
-                closeModal: this.closeModal.bind(this),
-              }).render()
-            : ''
-        }
+        ${new RecordList({ openModal: this.openModal.bind(this) }).render()}
+        ${this.state.isModalOpen
+          ? new DeleteModal({
+              target: 'record',
+              onRemove: this.removeRecord.bind(this),
+              closeModal: this.closeModal.bind(this),
+            }).render()
+          : ''}
       </main>
     </div>`;
   }

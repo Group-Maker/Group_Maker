@@ -11,6 +11,8 @@ const initialState = {
 
 const [getGlobalState, setGlobalState] = useGlobalState(initialState);
 
+const getInitialState = () => initialState;
+
 const isLoading = () => getGlobalState().isLoading;
 const setIsLoading = isLoading => {
   setGlobalState(prevState => ({
@@ -79,7 +81,7 @@ const removeMember = id => {
 
 const getRecords = () => getGlobalState().organization.records;
 const setRecords = records => {
-  this.setState(prevState => ({
+  setGlobalState(prevState => ({
     ...prevState,
     organization: { ...prevState.organization, records },
   }));
@@ -97,6 +99,7 @@ const removeRecord = id => {
 };
 
 export {
+  getInitialState,
   isLoading,
   setIsLoading,
   getUser,

@@ -29,13 +29,8 @@ app.get('/auth/check', (req, res) => {
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (decoded) {
-        const { organization } = users.findUserByUserid(decoded.userid);
-        return res.send(
-          JSON.stringify({
-            user: { name: '커넥투 1기' },
-            organization,
-          })
-        );
+        const { user, organization } = users.findUserByUserid(decoded.userid);
+        return res.send(JSON.stringify({ user, organization }));
       }
     }
 
@@ -47,6 +42,7 @@ app.get('/auth/check', (req, res) => {
 
 app.post('/auth/signin', (req, res) => {
   const { userid, password } = req.body;
+  console.log(req.body);
 
   // 401 Unauthorized
   if (!userid || !password) {
@@ -84,6 +80,7 @@ app.get('/auth/signout', (req, res) => {
   res.send('clearCookie');
 });
 
+// TODO: 주소 이름 변경 필요
 app.post('/auth/checkDuplicated', (req, res) => {
   const { inputId } = req.body;
   const existingUser = users.findUserByUserid(inputId);
@@ -91,13 +88,14 @@ app.post('/auth/checkDuplicated', (req, res) => {
 });
 
 app.post('/auth/signup', (req, res) => {
-  const { userid, username, password } = req.body;
+  const { userid, name, password } = req.body;
+  console.log(req.body);
 
-  if (!userid || !username || !password) {
+  if (!userid || !name || !password) {
     return res.status(401).send({ error: '사용자 아이디 또는 이름 또는 패스워드가 전달되지 않았습니다.' });
   }
 
-  users.createUser(userid, password, username);
+  users.createUser(userid, password, name);
 });
 
 // app.post('/auth/signout', (_, res) => res.clearCookie('accessToken'));

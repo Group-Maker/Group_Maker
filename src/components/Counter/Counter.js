@@ -8,22 +8,22 @@ export default class Counter extends Component {
     this.state = { count: 0 };
   }
 
-  render() {
+  DOMStr() {
     const { minCount, maxCount } = this.props;
     return `
       <div class=${style.container}>
-        <button class="decrease ${style.button}" ${this.state.count <= minCount ? 'disabled' : ''}>-</button>
+        <button class="${style.decreaseBtn}" ${this.state.count <= minCount ? 'disabled' : ''}>-</button>
         <div class="counter ${style.count}">${this.state.count}</div>
-        <button class="increase ${style.button}" ${this.state.count >= maxCount ? 'disabled' : ''}>+</button>
+        <button class="${style.increaseBtn}" ${this.state.count >= maxCount ? 'disabled' : ''}>+</button>
       </div>`;
-  }
-
-  increase() {
-    this.setState({ count: this.state.count + 1 });
   }
 
   decrease() {
     this.setState({ count: this.state.count - 1 });
+  }
+
+  increase() {
+    this.setState({ count: this.state.count + 1 });
   }
 
   getCount() {
@@ -34,13 +34,13 @@ export default class Counter extends Component {
     return [
       {
         type: 'click',
-        selector: '.increase',
-        handler: () => this.increase(),
+        selector: `.${style.decreaseBtn}`,
+        handler: () => this.decrease(),
       },
       {
         type: 'click',
-        selector: '.decrease',
-        handler: () => this.decrease(),
+        selector: `.${style.increaseBtn}`,
+        handler: () => this.increase(),
       },
     ];
   }
