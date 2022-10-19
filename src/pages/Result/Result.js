@@ -1,3 +1,4 @@
+import { throttle } from 'lodash';
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import SaveModal from '../../components/modals/SaveModal.js';
@@ -68,7 +69,7 @@ export default class Result extends Component {
       {
         type: 'dragover',
         selector: `.${style.dropContainer}`,
-        handler: _.throttle(this.onDragover.bind(this)),
+        handler: throttle(this.onDragover.bind(this)),
       },
       {
         type: 'drop',
