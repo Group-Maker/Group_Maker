@@ -9,7 +9,7 @@ export default class signIn extends Component {
   constructor(props) {
     super(props);
     const initialSignInForm = {
-      email: { value: '', isDirty: false },
+      userid: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
@@ -41,9 +41,9 @@ export default class signIn extends Component {
   }
 
   render() {
-    const emailValue = this.signInForm.email.value;
+    const useridValue = this.signInForm.userid.value;
     const passwordValue = this.signInForm.password.value;
-    const isEmailValid = signInSchema.email.isValid(emailValue);
+    const isUseridValid = signInSchema.userid.isValid(useridValue);
     const isPasswordValid = signInSchema.password.isValid(passwordValue);
 
     return `
@@ -51,12 +51,12 @@ export default class signIn extends Component {
     <form class="${style.signInForm}">
       <h2 class="${style.subTitle}">SIGN IN</h2>
       <div class="${style.inputContainer}">
-        <label class="${style.label}" for="email">EMAIL</label>
+        <label class="${style.label}" for="userid">EMAIL</label>
         <input class="${
           style.input
-        }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}" />
+        }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
         <div class="${style.validateError}">${
-      this.signInForm.email.isDirty && !isEmailValid ? signInSchema.email.error : ''
+      this.signInForm.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
@@ -72,7 +72,7 @@ export default class signIn extends Component {
       this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
     }</p>
       <button class="submit-btn ${style.submitBtn}" ${
-      isEmailValid && isPasswordValid ? '' : 'disabled'
+      isUseridValid && isPasswordValid ? '' : 'disabled'
     }>SIGN IN</button>
       ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
     </form>`;

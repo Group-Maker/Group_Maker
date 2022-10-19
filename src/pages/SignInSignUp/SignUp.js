@@ -10,7 +10,7 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
     const initialSignUpForm = {
-      email: { value: '', isDirty: false },
+      userid: { value: '', isDirty: false },
       name: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },
@@ -19,9 +19,9 @@ export default class SignUp extends Component {
     [this.signUpForm, this.setSignUpForm] = this.useState(initialSignUpForm);
   }
 
-  async checkDuplicatedEmail(inputEmail) {
+  async checkDuplicatedUserid(inputUserid) {
     try {
-      const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputEmail });
+      const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputUserid });
 
       if (isDuplicated) {
         this.setSignUpForm(prevState => ({ ...prevState, isSignUpFailed: true }));
@@ -41,7 +41,7 @@ export default class SignUp extends Component {
     );
 
     try {
-      await axios.post(`/auth/signUp`, payload);
+      await axios.post(`/auth/signup`, payload);
       // TODO: 모달 관련 코드 수정 필요
       document.querySelector('.modal').classList.remove('hidden');
     } catch (err) {
@@ -52,11 +52,11 @@ export default class SignUp extends Component {
   }
 
   render() {
-    const emailValue = this.signUpForm.email.value;
+    const useridValue = this.signUpForm.userid.value;
     const nameValue = this.signUpForm.name.value;
     const passwordValue = this.signUpForm.password.value;
     const confirmPasswordValue = this.signUpForm.confirmPassword.value;
-    const isEmailValid = signUpSchema.email.isValid(emailValue);
+    const isUseridValid = signUpSchema.userid.isValid(useridValue);
     const isNameValid = !!nameValue;
     const isPasswordValid = signUpSchema.password.isValid(passwordValue);
     const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
@@ -66,19 +66,19 @@ export default class SignUp extends Component {
     <form class="${style.signUpForm}">
       <h2 class="${style.subTitle}">SIGN-UP</h2>
       <div class="${style.inputContainer}">
-        <label class="${style.label}" for="email">EMAIL</label>
-        <input class="emailInput ${
+        <label class="${style.label}" for="userid">EMAIL</label>
+        <input class="useridInput ${
           style.input
-        }" type="text" id="email" name="email" required autocomplete="off" value="${emailValue}"/>
+        }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
         ${
-          this.signUpForm.email.isDirty
-            ? isEmailValid
+          this.signUpForm.userid.isDirty
+            ? isUseridValid
               ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
               : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
             : ''
         }
         <div class="${style.validateError}">${
-      this.signUpForm.email.isDirty && !isEmailValid ? signUpSchema.email.error : ''
+      this.signUpForm.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
     }</div>
       </div>
       <div class="${style.inputContainer}">
@@ -135,7 +135,7 @@ export default class SignUp extends Component {
       </div>
       <p class="signUpError ${style.authorizeError}"></p>
       <button class="submit-btn ${style.submitBtn}" ${
-      isEmailValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
+      isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
     }>SIGN UP</button>
       <section class="modal hidden">
         ${new SignupModal().render()}
@@ -158,8 +158,8 @@ export default class SignUp extends Component {
       },
       {
         type: 'input',
-        selector: `.emailInput`,
-        handler: e => this.checkDuplicatedEmail(e.target.value),
+        selector: `.useridInput`,
+        handler: e => this.checkDuplicatedUserid(e.target.value),
       },
       {
         type: 'submit',
