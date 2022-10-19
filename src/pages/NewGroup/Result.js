@@ -1,7 +1,7 @@
 import { Component } from '../../../library/CBD/index.js';
-import SaveModal from '../../components/modals/SaveModal.js';
-import Member from './Result/Member.js';
-import Groups from './Result/Groups.js';
+import SaveModal from '../../components/Modals/SaveModal.js';
+import Member from '../../components/Result/Member.js';
+import Groups from '../../components/Result/Groups.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
