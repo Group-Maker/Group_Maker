@@ -51,7 +51,13 @@ export default class SignUp extends Component {
     }
   }
 
-  render() {
+  renderIcon(isValid) {
+    return isValid
+      ? `<box-icon class="${style.icon} ${style.iconSuccess}" name="check-circle"></box-icon>`
+      : `<box-icon class="${style.icon} ${style.iconError}" name="x-circle"></box-icon>`;
+  }
+
+  DOMStr() {
     const useridValue = this.signUpForm.userid.value;
     const nameValue = this.signUpForm.name.value;
     const passwordValue = this.signUpForm.password.value;
@@ -61,87 +67,66 @@ export default class SignUp extends Component {
     const isPasswordValid = signUpSchema.password.isValid(passwordValue);
     const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
 
+    // prettier-ignore
     return `
-    <h1 class="${style.title}">GROUP-MAKER</h1>
-    <form class="${style.signUpForm}">
-      <h2 class="${style.subTitle}">SIGN-UP</h2>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="userid">EMAIL</label>
-        <input class="useridInput ${
-          style.input
-        }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
-        ${
-          this.signUpForm.userid.isDirty
-            ? isUseridValid
-              ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-              : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-            : ''
-        }
-        <div class="${style.validateError}">${
-      this.signUpForm.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
-    }</div>
-      </div>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="name">NAME</label>
-        <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
-      this.signUpForm.name.value
-    }"/>
-    ${
-      this.signUpForm.name.isDirty
-        ? isNameValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
-        <div class="${style.validateError}">${
-      this.signUpForm.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
-    }</div>
-      </div>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="password">PASSWORD</label>
-        <input class="${
-          style.input
-        }" type="password" id="password" name="password" required autocomplete="off" value="${
-      this.signUpForm.password.value
-    }"/>
-    ${
-      this.signUpForm.password.isDirty
-        ? isPasswordValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
-        <div class="validateError ${style.validateError}">${
-      this.signUpForm.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
-    }</div>
-      </div>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="confirmPassword">CONFIRM PASSWORD</label>
-        <input class="${
-          style.input
-        }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
-      this.signUpForm.confirmPassword.value
-    }"/>
-    ${
-      this.signUpForm.confirmPassword.isDirty
-        ? isConfirmPasswordValid
-          ? `<box-icon class="${style.icon} ${style.iconSuccess}" name='check-circle'></box-icon>`
-          : `<box-icon class="${style.icon} ${style.iconError}" name='x-circle'></box-icon>`
-        : ''
-    }
-        <div class="validateError ${style.validateError}">${
-      this.signUpForm.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
-    }</div>
-      </div>
-      <p class="signUpError ${style.authorizeError}"></p>
-      <button class="submit-btn ${style.submitBtn}" ${
-      isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
-    }>SIGN UP</button>
-      <section class="modal hidden">
-        ${new SignupModal().render()}
-      </section>
-      ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
-    </form>`;
+      <div>
+        <h1 class="${style.title}">GROUP-MAKER</h1>
+        <form class="${style.signUpForm}">
+          <h2 class="${style.subTitle}">SIGN-UP</h2>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="userid">EMAIL</label>
+            <input class="useridInput ${
+              style.input
+            }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
+            ${this.signUpForm.userid.isDirty ? this.renderIcon(isUseridValid) : ''}
+            <div class="${style.validateError}">${
+              this.signUpForm.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
+            }</div>
+          </div>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="name">NAME</label>
+            <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
+              this.signUpForm.name.value
+            }"/>
+            ${this.signUpForm.name.isDirty ? this.renderIcon(isNameValid) : ''}
+            <div class="${style.validateError}">${
+              this.signUpForm.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
+            }</div>
+          </div>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="password">PASSWORD</label>
+            <input class="${
+              style.input
+            }" type="password" id="password" name="password" required autocomplete="off" value="${
+              this.signUpForm.password.value
+            }"/>
+            ${this.signUpForm.password.isDirty ? this.renderIcon(isPasswordValid) : ''}
+            <div class="validateError ${style.validateError}">${
+              this.signUpForm.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
+            }</div>
+          </div>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="confirmPassword">CONFIRM PASSWORD</label>
+            <input class="${
+              style.input
+            }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
+              this.signUpForm.confirmPassword.value
+            }"/>
+            ${this.signUpForm.confirmPassword.isDirty ? this.renderIcon(isConfirmPasswordValid) : ''}
+            <div class="validateError ${style.validateError}">${
+              this.signUpForm.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
+            }</div>
+          </div>
+          <p class="signUpError ${style.authorizeError}"></p>
+          <button class="submit-btn ${style.submitBtn}" ${
+            isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
+          }>SIGN UP</button>
+          <section class="modal hidden">
+            ${new SignupModal().render()}
+          </section>
+          ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
+        </form>
+      </div>`;
   }
 
   setEvent() {
@@ -158,7 +143,7 @@ export default class SignUp extends Component {
       },
       {
         type: 'input',
-        selector: `.useridInput`,
+        selector: '.useridInput',
         handler: e => this.checkDuplicatedUserid(e.target.value),
       },
       {
@@ -168,7 +153,7 @@ export default class SignUp extends Component {
       },
       {
         type: 'click',
-        selector: `.switchSignInSignUp`,
+        selector: '.switchSignInSignUp',
         handler: () => this.setSignUpForm(this.initialSignUpForm),
       },
     ];

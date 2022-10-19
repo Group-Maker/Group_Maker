@@ -3,7 +3,7 @@ import { Link } from '../../../library/SPA-router/index.js';
 import style from './Modal.module.css';
 
 export default class SaveModal extends Component {
-  render() {
+  DOMStr() {
     // prettier-ignore
     return `
       <div class="modal">
@@ -15,8 +15,7 @@ export default class SaveModal extends Component {
             ${new Link({ path: '/newgroup', classNames: [style.button], content: '조 더 짜기!' }).render()}
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   setEvent() {

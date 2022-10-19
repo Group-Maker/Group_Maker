@@ -2,7 +2,7 @@ import { Component } from '../../../library/CBD/index.js';
 import style from './Modal.module.css';
 
 export default class DeleteModal extends Component {
-  render() {
+  DOMStr() {
     const { target } = this.props;
     // prettier-ignore
     return `
@@ -11,16 +11,14 @@ export default class DeleteModal extends Component {
         <div class="${style.content}">
           <div class="${style.message}">
           <div>ARE YOU SURE?</div>
-            This ${target} will be\n
-            deleted permanently!
+            This ${target} will be<br>deleted permanently!
           </div>
           <div class="${style.buttons}">
             <button class="closeTarget ${style.button}">CANCEL</button>
             <button class="removeBtn ${style.button} ${style.warning}">DELETE</button>
           </div>
         </div>
-      </section>
-    `;
+      </section>`;
   }
 
   setEvent() {

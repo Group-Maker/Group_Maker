@@ -18,25 +18,34 @@ export default class Result extends Component {
     });
   }
 
-  render() {
+  DOMStr() {
     const { result, currentView } = this.props.resultState;
+
     // prettier-ignore
     return `
-    <section class="${style.result}">
-      <h2 class="${style.title}">Result</h2>
-      <div class="${style.dropContainer} ${style.members}">${currentView === 'autoResult' ? '' : new Members().render()}</div>
-      <div class="${style.groups}">${new Groups({ result }).render()}</div>
-      <div class="${style.buttons}">
-        ${currentView === 'autoResult' ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
-        <button class="${style.save}">SAVE</button>
-      </div>
-      ${this.state.isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
-    </section>
-    `;
+      <div>
+        <h2 class="title">Result</h2>
+        <div class="${style.dropContainer} ${style.members}">${
+          currentView === 'autoResult' ? '' : new Members().render()
+        }</div>
+        <div class="${style.groups}">${new Groups({ result }).render()}</div>
+        <div class="${style.buttons}">
+          ${currentView === 'autoResult'
+            ? `<button class="${style.retry}">RETRY</button>`
+            : `<button class="${style.reset}">RESET</button>`}
+          <button class="${style.save}">SAVE</button>
+        </div>
+        ${this.state.isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
+      </div>`;
   }
 
   setEvent() {
     return [
+      {
+        type: 'click',
+        selector: `.${style.retry}`,
+        handler: () => this.props.createNewGroup(this.groupCounter.getCount()),
+      },
       {
         type: 'click',
         selector: `.${style.save}`,

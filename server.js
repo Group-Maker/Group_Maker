@@ -80,6 +80,7 @@ app.get('/auth/signout', (req, res) => {
   res.send('clearCookie');
 });
 
+// TODO: 주소 이름 변경 필요
 app.post('/auth/checkDuplicated', (req, res) => {
   const { inputId } = req.body;
   const existingUser = users.findUserByUserid(inputId);

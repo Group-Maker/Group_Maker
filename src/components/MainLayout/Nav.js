@@ -3,13 +3,13 @@ import { Link } from '../../../library/SPA-router/index.js';
 import style from './Nav.module.css';
 
 export default class Nav extends Component {
-  render() {
+  DOMStr() {
     const currentPath = window.location.pathname;
 
     // prettier-ignore
     return `
       <nav>
-        <ul>
+        <ul class="${style.ul}">
           ${this.props.linkInfo.map(linkInfo => `
             <li class="${style.li} ${linkInfo.path === currentPath ? style.active : ''}">
               ${new Link(linkInfo).render()}

@@ -6,12 +6,12 @@ import { loadOrganization } from '../../utils/localStorage.js';
 import style from './SignInAndOut.module.css';
 
 class SignInLink extends Component {
-  render() {
+  DOMStr() {
     return new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render();
   }
 }
 class SignOutButton extends Component {
-  render() {
+  DOMStr() {
     return `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`;
   }
 
