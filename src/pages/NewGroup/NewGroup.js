@@ -34,7 +34,7 @@ export default class NewGroup extends Component {
       <div class="mainContainer">
         ${new MainLayout().render()}
         <main class="main">
-          ${this.resultState.currentView === 'selectGroupCnt'
+          ${this.state.currentView === 'selectGroupCnt'
             ? new SelectGroupCnt({ setState: this.setState.bind(this), createNewGroup:this.createNewGroup }).render()
             : new Result({ resultState: this.state, createNewGroup:this.createNewGroup }).render()}
         </main>

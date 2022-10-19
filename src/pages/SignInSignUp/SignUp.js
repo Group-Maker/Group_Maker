@@ -11,7 +11,7 @@ export default class SignUp extends Component {
     super(props);
 
     this.initialSignUpForm = {
-      email: { value: '', isDirty: false },
+      userid: { value: '', isDirty: false },
       name: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },

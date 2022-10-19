@@ -10,7 +10,7 @@ export default class signIn extends Component {
     super(props);
 
     this.initialSignInForm = {
-      email: { value: '', isDirty: false },
+      userid: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
@@ -42,9 +42,9 @@ export default class signIn extends Component {
   }
 
   DOMStr() {
-    const useridValue = this.state.email.value;
+    const useridValue = this.state.userid.value;
     const passwordValue = this.state.password.value;
-    const isUseridValid = signInSchema.email.isValid(useridValue);
+    const isUseridValid = signInSchema.userid.isValid(useridValue);
     const isPasswordValid = signInSchema.password.isValid(passwordValue);
 
     // prettier-ignore
@@ -59,7 +59,7 @@ export default class signIn extends Component {
               style.input
             }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
             <div class="${style.validateError}">${
-              this.signInForm.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
+              this.state.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
             }</div>
           </div>
           <div class="${style.inputContainer}">
@@ -68,11 +68,11 @@ export default class signIn extends Component {
               style.input
             }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
             <div class="${style.validateError}">${
-              this.signInForm.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
+              this.state.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
             }</div>
           </div>
           <p class="signInError ${style.authorizeError}">${
-            this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
+            this.state.isSignInFailed ? 'Incorrect email or password' : ''
           }</p>
           <button class="submit-btn ${style.submitBtn}" ${
             isUseridValid && isPasswordValid ? '' : 'disabled'
