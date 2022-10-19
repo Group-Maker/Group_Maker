@@ -1,7 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
-import solver from '../../core/solver.js';
-import { getMemberIds, getMembersLength, getRecords } from '../../state/index.js';
+import { getMembersLength } from '../../state/index.js';
 import style from './NewGroup.module.css';
 
 export default class SelectGroupCnt extends Component {
@@ -32,18 +31,7 @@ export default class SelectGroupCnt extends Component {
       {
         type: 'click',
         selector: '.optimizedGroupBtn',
-        handler: () => {
-          const data = {
-            records: getRecords(),
-            groupNum: this.groupCounter.getCount(),
-            peopleArr: getMemberIds(),
-            totalPeopleNum: getMembersLength(),
-            forbiddenPairs: [],
-          };
-          const { newRecord } = solver(data);
-          this.props.setState({ result: newRecord, currentView: 'autoResult' });
-          console.log(newRecord);
-        },
+        handler: () => this.props.createNewGroup(this.groupCounter.getCount()),
       },
       {
         type: 'click',

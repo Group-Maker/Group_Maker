@@ -37,6 +37,11 @@ export default class Result extends Component {
     return [
       {
         type: 'click',
+        selector: `.${style.retry}`,
+        handler: () => this.props.createNewGroup(this.groupCounter.getCount()),
+      },
+      {
+        type: 'click',
         selector: `.${style.save}`,
         handler: this.saveRecord.bind(this),
       },
