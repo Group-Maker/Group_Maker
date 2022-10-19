@@ -1,17 +1,17 @@
 import { Component } from '../../../library/CBD/index.js';
+import { getRecords } from '../../state/index.js';
 import RecordItem from './RecordItem.js';
 import style from './Records.module.css';
 
 export default class RecordList extends Component {
   render() {
-    const { organization, openModal } = this.props;
-    const { records, members } = organization;
+    const { openModal } = this.props;
 
     // prettier-ignore
     return `
       <ol class="${style.recordList}">
-        ${records.map(({ id, record }, idx) =>
-            new RecordItem({ id, record, recordOrder: idx + 1, members, openModal }).render()
+        ${getRecords().map(({ id, record }, idx) =>
+            new RecordItem({ id, record, recordOrder: idx + 1, openModal }).render()
           ).join('')}
       </ol>
     `;

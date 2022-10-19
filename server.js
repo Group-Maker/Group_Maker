@@ -30,11 +30,16 @@ app.get('/auth/check', (req, res) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (decoded) {
         const { organization } = users.findUserByUserid(decoded.userid);
-        res.send(JSON.stringify({ isSignedIn: true, organization }));
+        return res.send(
+          JSON.stringify({
+            user: { name: '커넥투 1기' },
+            organization,
+          })
+        );
       }
     }
 
-    res.send(JSON.stringify({ isSignedIn: false }));
+    res.send(JSON.stringify({ user: null }));
   } catch (error) {
     console.log(error);
   }
@@ -66,7 +71,12 @@ app.post('/auth/signin', (req, res) => {
   });
 
   // 로그인 성공
-  res.send({ userid, username: user.name, organization: user.organization });
+  res.send({
+    user: {
+      name: user.name,
+    },
+    organization: user.organization,
+  });
 });
 
 app.get('/auth/signout', (req, res) => {

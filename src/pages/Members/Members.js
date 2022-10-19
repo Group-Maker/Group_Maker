@@ -1,6 +1,7 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/modals/DeleteModal.js';
+import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
 import MemberList from './MemberList.js';
 
 import style from './Members.module.css';
@@ -16,15 +17,12 @@ export default class Members extends Component {
   }
 
   render() {
-    const { isSignedIn, organization, signOutSetState } = this.props;
-    const { members } = organization;
     // prettier-ignore
     return `
-      ${new MainLayout({ isSignedIn, signOutSetState }).render()}
+      ${new MainLayout().render()}
       <section class="${style.container}">
         <h2 class="${style.title}">Manage Members</h2>
         ${new MemberList( {
-          members,
           editingMemberIds: this.state.editingMemberIds,
           toggleEditMode: this.toggleEditMode.bind( this ),
           onAdd: this.onAdd.bind(this),
@@ -45,11 +43,6 @@ export default class Members extends Component {
     `;
   }
 
-  isDuplicated(name) {
-    console.log(this.props.organization.members);
-    return this.props.organization.members.find(member => member.name === name) !== undefined;
-  }
-
   toggleEditMode(id) {
     this.setState(prevState => ({
       ...prevState,
@@ -58,12 +51,12 @@ export default class Members extends Component {
   }
 
   onAdd({ id, name }) {
-    if (this.isDuplicated(name)) {
+    if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
       return;
     }
 
-    this.props.addMember(name);
+    addMember(name);
     this.setState(prevState => ({
       ...prevState,
       editingMemberIds: prevState.editingMemberIds.filter(_id => _id !== id),
@@ -72,13 +65,12 @@ export default class Members extends Component {
   }
 
   onUpdate({ id, name }) {
-    if (this.isDuplicated(name)) {
+    if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
-      console.log(123);
       return;
     }
 
-    this.props.updateMember({ id, name });
+    updateMember({ id, name });
     this.setState(prevState => ({
       ...prevState,
       editingMemberIds: prevState.editingMemberIds.filter(_id => _id !== id),
@@ -86,7 +78,7 @@ export default class Members extends Component {
   }
 
   onRemove() {
-    this.props.removeMember(this.state.removeMemberId);
+    removeMember(this.state.removeMemberId);
     this.closeModal();
   }
 

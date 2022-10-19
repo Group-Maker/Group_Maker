@@ -5,6 +5,7 @@ import SaveModal from '../../components/modals/SaveModal.js';
 // import Members from './Members.js';
 import Member from './Member.js';
 import Groups from './Groups.js';
+import { addRecord } from '../../state/index.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
@@ -30,16 +31,15 @@ export default class Result extends Component {
   }
 
   render() {
-    const { isSignedIn, signOut, organization } = this.props;
     const { isAuto, result, isModalOpen } = this.state;
-    console.log(organization);
+
     // prettier-ignore
     return `
-    ${new MainLayout({ isSignedIn, signOut }).render()}
+    ${new MainLayout().render()}
     <section class="${style.result}">
       <h2 class="${style.title}">Result</h2>
-      <div class="${style.dropContainer} ${style.members}">${isAuto ? '' : new Member({ organization }).render()}</div>
-      <div class="${style.groups}">${new Groups({ organization, result }).render()}</div>
+      <div class="${style.dropContainer} ${style.members}">${isAuto ? '' : new Member().render()}</div>
+      <div class="${style.groups}">${new Groups({ result }).render()}</div>
       <div class="${style.buttons}">
         ${isAuto ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
         <button class="${style.save}">SAVE</button>
@@ -122,7 +122,7 @@ export default class Result extends Component {
 
   saveRecord() {
     this.state.result = this.getResult();
-    this.props.addRecord(this.state.result);
+    addRecord(this.state.result);
 
     this.openModal();
   }

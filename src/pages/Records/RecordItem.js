@@ -1,4 +1,5 @@
 import { Component } from '../../../library/CBD/index.js';
+import { getMemberNameById } from '../../state/index.js';
 import style from './Records.module.css';
 
 export default class RecordItem extends Component {
@@ -14,7 +15,7 @@ export default class RecordItem extends Component {
             <h4 class="${style.groupTitle}">Group ${groupOrder + 1}</h4>
             ${group.filter( member => member !== null ).map( memberId => `
               <li class="${style.groupItem}">
-                <span>${this.getMemberName(memberId)}</span>
+                <span>${getMemberNameById(memberId)}</span>
               </li>
             `).join( '' )}
           </ul>
@@ -22,10 +23,6 @@ export default class RecordItem extends Component {
         <button type="button" class="${style.removeBtn}">X</button>
       </li>
     `;
-  }
-
-  getMemberName(id) {
-    return this.props.members.find(member => member.id === id).name;
   }
 
   setEvent() {
