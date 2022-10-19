@@ -57,7 +57,7 @@ input {
 
 :global .main {
   width: 100%;
-  max-height: 90vh;
+  min-width: 35rem;
   margin: 2rem;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 1rem;
