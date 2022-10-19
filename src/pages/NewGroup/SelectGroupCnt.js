@@ -2,12 +2,13 @@ import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
 import solver from '../../../core/solver.js';
 import style from './NewGroup.module.css';
+import { getMemberIds, getMembers, getMembersLength, getRecords } from '../../state/index.js';
 
 export default class SelectGroupCnt extends Component {
   constructor(props, setState) {
     super(props);
     this.setState = setState;
-    this.memberCnt = props.organization.members.length;
+    this.memberCnt = getMembersLength();
     this.groupCounter = new Counter(this.props, 0, this.memberCnt);
   }
 
@@ -33,10 +34,10 @@ export default class SelectGroupCnt extends Component {
         selector: '.optimizedGroupBtn',
         handler: () => {
           const data = {
-            records: this.props.organization.records,
+            records: getRecords(),
             groupNum: this.groupCounter.getCount(),
-            peopleArr: this.props.organization.members.map(member => member.id),
-            totalPeopleNum: this.props.organization.members.length,
+            peopleArr: getMemberIds(),
+            totalPeopleNum: getMembersLength(),
             forbiddenPairs: [],
           };
           const { newRecord } = solver(data);

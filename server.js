@@ -30,11 +30,16 @@ app.get('/auth/check', (req, res) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (decoded) {
         const { organization } = users.findUserByUserid(decoded.userid);
-        res.send(JSON.stringify({ isSignedIn: true, organization }));
+        return res.send(
+          JSON.stringify({
+            user: { name: '커넥투 1기' },
+            organization,
+          })
+        );
       }
     }
 
-    res.send(JSON.stringify({ isSignedIn: false }));
+    res.send(JSON.stringify({ user: null }));
   } catch (error) {
     console.log(error);
   }

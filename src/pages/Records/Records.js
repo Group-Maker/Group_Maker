@@ -1,6 +1,7 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/modals/DeleteModal.js';
+import { removeRecord } from '../../state/index.js';
 import RecordList from './RecordList.js';
 
 export default class Records extends Component {
@@ -20,7 +21,6 @@ export default class Records extends Component {
       <main class="main">
         <h2 class="title">Previous Records</h2>
         ${new RecordList({
-          organization: this.props.organization,
           openModal: this.openModal.bind(this),
         }).render()}
         ${
@@ -37,7 +37,7 @@ export default class Records extends Component {
   }
 
   removeRecord() {
-    this.props.removeRecord(this.modal.recordId);
+    removeRecord(this.modal.recordId);
     this.closeModal();
   }
 

@@ -4,6 +4,7 @@ import SaveModal from '../../components/modals/SaveModal.js';
 // import Members from './Members.js';
 import Member from './Member.js';
 import Groups from './Groups.js';
+import { addRecord } from '../../state/index.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
@@ -29,15 +30,13 @@ export default class Result extends Component {
   }
 
   render() {
-    const { organization } = this.props;
-    console.log(organization);
     // prettier-ignore
     return `
     ${new MainLayout().render()}
     <section class="${style.result}">
       <h2 class="${style.title}">Result</h2>
-      <div class="${style.dropContainer} ${style.members}">${this.state.isauto ? '' : new Member({ organization }).render()}</div>
-      <div class="${style.groups}">${new Groups({ organization, result: this.state.result}).render()}</div>
+      <div class="${style.dropContainer} ${style.members}">${this.state.isauto ? '' : new Member().render()}</div>
+      <div class="${style.groups}">${new Groups({ result: this.state.result}).render()}</div>
       <div class="${style.buttons}">
         ${this.state.isauto ? `<button class="${style.retry}">RETRY</button>` : `<button class="${style.reset}">RESET</button>`}
         <button class="${style.save}">SAVE</button>
@@ -124,7 +123,7 @@ export default class Result extends Component {
 
   saveRecord() {
     this.state.result = this.getResult();
-    this.props.addRecord(this.state.result);
+    addRecord(this.state.result);
 
     this.openModal();
   }

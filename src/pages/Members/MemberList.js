@@ -2,18 +2,18 @@ import { Component } from '../../../library/CBD/index.js';
 import MemberItem from './MemberItem.js';
 import style from './Members.module.css';
 import 'boxicons';
+import { getMembers } from '../../state/index.js';
 
 export default class MemberList extends Component {
   render() {
-    const { members, openModal, onUpdate, toggleEditMode } = this.props;
+    const { openModal, onUpdate, toggleEditMode } = this.props;
 
     // prettier-ignore
     return `
       <ul class="${style.list}">
-        ${members
+        ${getMembers()
           .map(member =>
             new MemberItem({
-              member,
               isEditing: this.isEditing(member.id),
               openModal,
               onUpdate,

@@ -6,7 +6,6 @@ import SelectGroupCnt from './SelectGroupCnt.js';
 export default class NewGroup extends Component {
   constructor(props) {
     super(props);
-    // [this.state, this.setState] = this.useState({ isCreateGroupMode: false, result: [] });
     [this.state, this.setState] = this.useState({ result: null });
   }
 
@@ -14,11 +13,7 @@ export default class NewGroup extends Component {
     return `
       ${new MainLayout().render()}
       <div class="mainContainer">
-        ${
-          this.state.result
-            ? new Result(this.props, this.state.result).render()
-            : new SelectGroupCnt(this.props, this.setState).render()
-        }
+        ${this.state.result ? new Result(this.state.result).render() : new SelectGroupCnt(this.setState).render()}
       </div>
     `;
   }
