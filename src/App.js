@@ -32,7 +32,6 @@ export default class App extends Component {
 
     // 함수 이름 변경 필요
     this.useEffect(() => {
-      console.log('effect');
       this.init();
     }, []);
   }
@@ -54,7 +53,6 @@ export default class App extends Component {
         ...initialState,
         isLoading: false,
       }));
-
     } catch (err) {
       console.error(err);
     }
@@ -80,6 +78,7 @@ export default class App extends Component {
       addMember: this.addMember.bind(this),
       updateMember: this.updateMember.bind(this),
       removeMember: this.removeMember.bind(this),
+      removeRecord: this.removeRecord.bind(this),
     }).render();
   }
 
@@ -111,9 +110,7 @@ export default class App extends Component {
     this.setState(prevState => ({
       ...prevState,
       organization: { ...prevState.organization, records },
-
-  getNextMemberId() {
-    return Math.max(...this.state.organization.members.map(member => member.id), 0) + 1;
+    }));
   }
 
   addMember(name) {
@@ -146,6 +143,17 @@ export default class App extends Component {
       organization: {
         ...prevState.organization,
         members,
+      },
+    }));
+  }
+
+  removeRecord(id) {
+    const records = this.state.organization.records.filter(record => record.id !== id);
+    this.setState(prevState => ({
+      ...prevState,
+      organization: {
+        ...prevState.organization,
+        records,
       },
     }));
   }
