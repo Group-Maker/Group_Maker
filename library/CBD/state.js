@@ -39,7 +39,7 @@ const useLocalState = initialState => {
 
 const useGlobalState = initialState => {
   let state = initialState;
-  const getState = () => state;
+
   const setState = nextState => {
     state = typeof nextState === 'function' ? nextState(state) : nextState;
 
@@ -47,7 +47,7 @@ const useGlobalState = initialState => {
     render();
   };
 
-  return [getState, setState];
+  return [state, setState];
 };
 
 export { useGlobalState, useLocalState, useEffect, resetHookIdx };

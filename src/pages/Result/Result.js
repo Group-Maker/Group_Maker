@@ -29,11 +29,11 @@ export default class Result extends Component {
   }
 
   render() {
-    const { isSignedIn, signOut, organization } = this.props;
+    const { organization } = this.props;
     console.log(organization);
     // prettier-ignore
     return `
-    ${new MainLayout({ isSignedIn, signOut }).render()}
+    ${new MainLayout().render()}
     <section class="${style.result}">
       <h2 class="${style.title}">Result</h2>
       <div class="${style.dropContainer} ${style.members}">${this.state.isauto ? '' : new Member({ organization }).render()}</div>

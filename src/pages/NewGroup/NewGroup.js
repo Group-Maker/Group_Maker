@@ -11,10 +11,8 @@ export default class NewGroup extends Component {
   }
 
   render() {
-    const { isSignedIn, signOutSetState } = this.props;
-
     return `
-      ${new MainLayout({ isSignedIn, signOutSetState }).render()}
+      ${new MainLayout().render()}
       <div class="mainContainer">
         ${
           this.state.result

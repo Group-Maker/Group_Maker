@@ -2,9 +2,9 @@ import { Component } from '../../../library/CBD/index.js';
 import { Link } from '../../../library/SPA-router/index.js';
 import { SignInLink, SignOutButton } from './SignInAndOut.js';
 import Nav from './Nav.js';
+import { getUser } from '../../state/index.js';
 import style from './MainLayout.module.css';
 import 'boxicons';
-
 
 export default class MainLayout extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class MainLayout extends Component {
   }
 
   render() {
-    const { isSignedIn, signOutSetState } = this.props;
+    const user = getUser();
 
     // prettier-ignore
     return `
@@ -26,7 +26,7 @@ export default class MainLayout extends Component {
         <p class="${
           style.description
         }">In the repeated group activities,\nwe make a group\nwhere you can be with new people.</p>
-        ${isSignedIn ? new SignOutButton({ signOutSetState }).render() : new SignInLink().render()}
+        ${user ? new SignOutButton().render() : new SignInLink().render()}
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
           <li>

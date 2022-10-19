@@ -66,7 +66,12 @@ app.post('/auth/signin', (req, res) => {
   });
 
   // 로그인 성공
-  res.send({ userid, username: user.name, organization: user.organization });
+  res.send({
+    user: {
+      name: user.name,
+    },
+    organization: user.organization,
+  });
 });
 
 app.get('/auth/signout', (req, res) => {
