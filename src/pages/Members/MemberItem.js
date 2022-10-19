@@ -2,7 +2,7 @@ import { Component } from '../../../library/CBD/index.js';
 import style from './Members.module.css';
 
 export default class MemberItem extends Component {
-  render() {
+  DOMStr() {
     const { isEditing, member } = this.props;
     const { id, name } = member;
 
@@ -13,8 +13,7 @@ export default class MemberItem extends Component {
           <button type="button" class="${style.removeBtn}">X</button>
         </div>
         <input type="text" value="${name}" class="${style.edit}" data-id="${id}" />
-      </li>
-    `;
+      </li>`;
   }
 
   setEvent() {

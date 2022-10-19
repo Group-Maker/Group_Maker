@@ -16,7 +16,7 @@ export default class Members extends Component {
     });
   }
 
-  render() {
+  DOMStr() {
     // prettier-ignore
     return `
     <div class="mainContainer">

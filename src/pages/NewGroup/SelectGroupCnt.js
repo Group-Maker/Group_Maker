@@ -11,19 +11,21 @@ export default class SelectGroupCnt extends Component {
     this.groupCounter = new Counter({ ...this.props, minCount: 0, maxCount: this.memberCnt });
   }
 
-  render() {
+  // prettier-ignore
+  DOMStr() {
     return `
-      <h2 class="title">Make New Group</h2>
-      <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt}</p>
-      <p>How many groups do you want?</p>
-      ${this.groupCounter.render()}
-      <button class="manualGroupBtn" ${
-        this.groupCounter.getCount() ? '' : 'disabled'
-      }>MANUALLY<br>CREATE GROUPS</button>
-      <button class="optimizedGroupBtn" ${
-        this.groupCounter.getCount() ? '' : 'disabled'
-      }>CREATE<br>OPTIMIZED GROUPS</button>
-    `;
+      <div>
+        <h2 class="title">Make New Group</h2>
+        <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt}</p>
+        <p>How many groups do you want?</p>
+        ${this.groupCounter.render()}
+        <button class="manualGroupBtn" ${
+          this.groupCounter.getCount() ? '' : 'disabled'
+        }>MANUALLY<br>CREATE GROUPS</button>
+        <button class="optimizedGroupBtn" ${
+          this.groupCounter.getCount() ? '' : 'disabled'
+        }>CREATE<br>OPTIMIZED GROUPS</button>
+      </div>`;
   }
 
   setEvent() {

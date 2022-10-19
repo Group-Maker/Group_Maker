@@ -2,11 +2,9 @@ import { Component } from '../CBD/index.js';
 import { navigate } from './router.js';
 
 export default class Link extends Component {
-  render() {
+  DOMStr() {
     const { path = '/', content = '', classNames = [] } = this.props;
-    return `
-      <a href="${path}" class="innerLink ${classNames.join(' ')}">${content}</a>
-    `;
+    return `<a href="${path}" class="innerLink ${classNames.join(' ')}">${content}</a>`;
   }
 
   setEvent() {

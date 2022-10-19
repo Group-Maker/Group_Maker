@@ -28,17 +28,16 @@ export default class NewGroup extends Component {
     console.log(newRecord);
   }
 
-  render() {
+  DOMStr() {
     // prettier-ignore
     return `
-    <div class="mainContainer">
-      ${new MainLayout().render()}
-      <main class="main">
-        ${this.resultState.currentView === 'selectGroupCnt'
-          ? new SelectGroupCnt({ setState: this.setState, createNewGroup:this.createNewGroup }).render()
-          : new Result({ resultState: this.resultState, createNewGroup:this.createNewGroup }).render()}
-      </main>
-    </div>
-    `;
+      <div class="mainContainer">
+        ${new MainLayout().render()}
+        <main class="main">
+          ${this.resultState.currentView === 'selectGroupCnt'
+            ? new SelectGroupCnt({ setState: this.setState, createNewGroup:this.createNewGroup }).render()
+            : new Result({ resultState: this.resultState, createNewGroup:this.createNewGroup }).render()}
+        </main>
+      </div>`;
   }
 }

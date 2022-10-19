@@ -8,7 +8,7 @@ export default class Counter extends Component {
     [this.state, this.setState] = this.useState({ count: 0 });
   }
 
-  render() {
+  DOMStr() {
     const { minCount, maxCount } = this.props;
     return `
       <div class=${style.container}>

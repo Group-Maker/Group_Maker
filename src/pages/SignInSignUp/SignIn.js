@@ -40,42 +40,45 @@ export default class signIn extends Component {
     }
   }
 
-  render() {
+  DOMStr() {
     const useridValue = this.signInForm.userid.value;
     const passwordValue = this.signInForm.password.value;
     const isUseridValid = signInSchema.userid.isValid(useridValue);
     const isPasswordValid = signInSchema.password.isValid(passwordValue);
 
+    // prettier-ignore
     return `
-    <h1 class="${style.title}">GROUP-MAKER</h1>
-    <form class="${style.signInForm}">
-      <h2 class="${style.subTitle}">SIGN IN</h2>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="userid">EMAIL</label>
-        <input class="${
-          style.input
-        }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
-        <div class="${style.validateError}">${
-      this.signInForm.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
-    }</div>
-      </div>
-      <div class="${style.inputContainer}">
-        <label class="${style.label}" for="password">PASSWORD</label>
-        <input class="${
-          style.input
-        }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
-        <div class="${style.validateError}">${
-      this.signInForm.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
-    }</div>
-      </div>
-      <p class="signInError ${style.authorizeError}">${
-      this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
-    }</p>
-      <button class="submit-btn ${style.submitBtn}" ${
-      isUseridValid && isPasswordValid ? '' : 'disabled'
-    }>SIGN IN</button>
-      ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
-    </form>`;
+      <div>
+        <h1 class="${style.title}">GROUP-MAKER</h1>
+        <form class="${style.signInForm}">
+          <h2 class="${style.subTitle}">SIGN IN</h2>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="userid">EMAIL</label>
+            <input class="${
+              style.input
+            }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
+            <div class="${style.validateError}">${
+              this.signInForm.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
+            }</div>
+          </div>
+          <div class="${style.inputContainer}">
+            <label class="${style.label}" for="password">PASSWORD</label>
+            <input class="${
+              style.input
+            }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
+            <div class="${style.validateError}">${
+              this.signInForm.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
+            }</div>
+          </div>
+          <p class="signInError ${style.authorizeError}">${
+            this.signInForm.isSignInFailed ? 'Incorrect email or password' : ''
+          }</p>
+          <button class="submit-btn ${style.submitBtn}" ${
+            isUseridValid && isPasswordValid ? '' : 'disabled'
+          }>SIGN IN</button>
+          ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
+        </form>
+      </div>`;
   }
 
   setEvent() {

@@ -3,7 +3,7 @@ import { Link } from '../../../library/SPA-router/index.js';
 import style from './Nav.module.css';
 
 export default class Nav extends Component {
-  render() {
+  DOMStr() {
     const currentPath = window.location.pathname;
 
     // prettier-ignore

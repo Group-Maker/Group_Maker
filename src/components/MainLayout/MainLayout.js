@@ -16,7 +16,7 @@ export default class MainLayout extends Component {
     ];
   }
 
-  render() {
+  DOMStr() {
     const user = getUser();
 
     // prettier-ignore
@@ -49,7 +49,6 @@ export default class MainLayout extends Component {
             </button>
           </li>
         </ul>
-      </section>
-    `;
+      </section>`;
   }
 }
