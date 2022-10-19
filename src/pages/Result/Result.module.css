@@ -1,0 +1,45 @@
+.result {
+  position: absolute;
+  margin-left: 27vw;
+  font-size: 25px;
+}
+.title {
+  font-size: 60px;
+  color: #ffffff;
+}
+.members {
+  width: 70vw;
+  background-color: rgba(137, 43, 226, 0.441);
+  margin-bottom: 30px;
+  border-radius: 10px;
+  padding: 20px;
+}
+.groups {
+  display: flex;
+  gap: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.retry,
+.reset,
+.save {
+  width: 180px;
+  height: 60px;
+  color: #000000;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  text-decoration-line: none;
+}
+.dragging {
+  opacity: 0.5;
+}

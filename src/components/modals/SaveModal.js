@@ -6,25 +6,26 @@ export default class SaveModal extends Component {
   render() {
     // prettier-ignore
     return `
-      <div class="closeTarget ${style.overlay}"></div>
-      <div class="${style.content}">
-        <div class="${style.message}">Store Records!</div>
-        <div class="${style.buttons}">
-          ${new Link({ path: '/records', classNames: [style.button], content: '모든 기록 보기' }).render()}
-          ${new Link({ path: '/newgroup', classNames: [style.button], content: '조 더 짜기!' }).render()}
+      <div class="modal">
+        <div class="closeTarget ${style.overlay}"></div>
+        <div class="${style.content}">
+          <div class="${style.message}">Store Records!</div>
+          <div class="${style.buttons}">
+            ${new Link({ path: '/records', classNames: [style.button], content: '모든 기록 보기' }).render()}
+            ${new Link({ path: '/newgroup', classNames: [style.button], content: '조 더 짜기!' }).render()}
+          </div>
         </div>
       </div>
     `;
   }
 
   setEvent() {
+    const { closeModal } = this.props;
     return [
       {
         type: 'click',
         selector: '.closeTarget',
-        handler: e => {
-          e.target.closest('.modal').classList.add('hidden');
-        },
+        handler: closeModal,
       },
     ];
   }

@@ -38,6 +38,7 @@ button {
   border-radius: 0;
   overflow: visible;
   cursor: pointer;
+  font-family: inherit;
 }
 pre,
 input {
