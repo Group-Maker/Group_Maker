@@ -4,7 +4,7 @@ import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
 import { loadOrganization, saveOrganization } from './utils/localStorage.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
-import { getOrganization, getUser, isLoading, setGlobalState } from './state/index.js';
+import { getOrganization, isLoading, setGlobalState } from './state/index.js';
 import style from './App.module.css';
 
 const routes = [
