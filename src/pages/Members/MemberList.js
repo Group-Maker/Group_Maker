@@ -7,7 +7,7 @@ import 'boxicons';
 export default class MemberList extends Component {
   DOMStr() {
     const { openModal, onUpdate, toggleEditMode } = this.props;
-    console.log(this.props);
+
     // prettier-ignore
     return `
       <ul class="${style.list}">
@@ -31,7 +31,6 @@ export default class MemberList extends Component {
   }
 
   isEditing(id) {
-    console.log(this.props);
     return this.props.editingMemberIds.includes(id);
   }
 

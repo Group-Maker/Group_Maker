@@ -8,9 +8,9 @@ export default class Groups extends Component {
     // prettier-ignore
     return `
       <div>
-        ${result.map(result => `
+        ${result.map(members => `
           <div class="${style.dropContainer} ${style.group}">
-            ${result.map(id => `
+            ${members.filter(memberId => memberId !== null).map(id => `
               <div class="${style.member}" data-list-id="${id}" draggable="true">
                 ${getMemberNameById(id)}
               </div>`).join('')}

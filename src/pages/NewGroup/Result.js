@@ -31,8 +31,8 @@ export default class Result extends Component {
         <div class="${style.groups}">${new Groups({ result }).render()}</div>
         <div class="${style.buttons}">
           ${currentView === 'autoResult'
-            ? `<button class="${style.retry}">RETRY</button>`
-            : `<button class="${style.reset}">RESET</button>`}
+            ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
+            : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`}
           <button class="${style.save}">SAVE</button>
         </div>
         ${this.state.isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
@@ -43,8 +43,8 @@ export default class Result extends Component {
     return [
       {
         type: 'click',
-        selector: `.${style.retry}`,
-        handler: () => this.props.createNewGroup(this.groupCounter.getCount()),
+        selector: `.${style.buttons} .resetBtn`,
+        handler: () => this.props.resetGroup(),
       },
       {
         type: 'click',

@@ -5,7 +5,7 @@ import style from './Records.module.css';
 export default class RecordItem extends Component {
   DOMStr() {
     const { id, record, recordOrder } = this.props;
-
+    console.log(record);
     // prettier-ignore
     return `
       <li class="${style.recordItem}" data-id="${id}">
