@@ -4,35 +4,27 @@
   align-items: stretch;
   gap: 1rem;
   justify-content: space-between;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 2rem;
   text-align: center;
   width: 25%;
-  min-width: 18rem;
+  min-width: 20rem;
   min-height: 100vh;
-  /* background: rgba(77, 37, 190, 0.28); */
 }
 
 .title {
-  font-style: 'Emelind';
-  font-size: 4.5rem;
-  line-height: 1;
-  text-align: center;
+  font-size: 4rem;
+  line-height: 3.5rem;
   color: rgb(39, 50, 84);
 }
 
 .description {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.474);
-  /* white-space: pre; */
+  font-size: 1.2rem;
+  color: rgba(247, 247, 247, 0.7);
 }
 
 .link {
-  display: inline-block;
-  width: 100%;
-  padding: 0.6rem;
-  font-size: 1.5rem;
-  color: #fff;
-  transition: all 150ms;
+  line-height: 3rem;
+  font-size: 1.3rem;
 }
 
 .membersLink {
@@ -45,9 +37,8 @@
 
 .newgroupLink {
   composes: link;
-  font-size: 2.3rem;
-  text-align: center;
-  /* line-height: 1; */
+  line-height: 2.5rem;
+  font-size: 1.8rem;
 }
 
 .subMenu {
@@ -56,31 +47,26 @@
   justify-content: space-between;
 }
 
-.subMenuItem {
-  width: 2.5rem;
-  height: 2.5rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
+.githubLink,
+.issueLink,
+.settingBtn {
+  width: 2.3rem;
+  height: 2.3rem;
+  background-color: rgba(247, 247, 247, 0.2);
   border-radius: 50%;
-}
-.subMenuItem:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 150ms;
+  display: inline-block;
+  fill: rgba(247, 247, 247);
 }
 
-.githubLink {
-  composes: subMenuItem;
-  display: inline-block;
+.githubLink:hover,
+.issueLink:hover,
+.settingBtn:hover {
+  background: rgba(247, 247, 247, 0.8);
+  transition: all 0.3ms;
+  fill: rgb(39, 40, 84);
 }
-.issueLink {
-  composes: subMenuItem;
-  display: inline-block;
-}
-.settingBtn {
-  composes: subMenuItem;
-  cursor: pointer;
-}
+
 .icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.3rem;
+  height: 2.3rem;
 }

@@ -15,8 +15,9 @@
 .list {
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
   align-items: center;
-  gap: 5%;
+  gap: 1rem;
 }
 
 .listItem {
@@ -25,7 +26,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 5%;
-  width: 21.25%;
+  width: 12rem;
   height: 6rem;
   background: rgba(173, 171, 171, 0.316);
   border: 1px solid #ffffff;
@@ -37,7 +38,7 @@
 }
 
 .name {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .removeBtn {
