@@ -6,20 +6,23 @@ import 'boxicons';
 
 export default class MemberList extends Component {
   DOMStr() {
-    const { openModal, onUpdate, toggleEditMode } = this.props;
+    const { openModal, onUpdate, toggleEditMode, editingMemberId } = this.props;
 
     // prettier-ignore
     return `
       <ul class="${style.list}">
-        ${getActiveMembers().map(member =>
-          new MemberItem( {
-            member,
-            isEditing: this.isEditing(member.id),
-            openModal,
-            onUpdate,
-            toggleEditMode,
-          }).render()).join('')}
-        <li class="${style.listItem} ${this.isEditing(style.addBtn) ? style.editing : ''}" >
+        ${getActiveMembers()
+          .map(member =>
+            new MemberItem({
+              member,
+              isEditing: editingMemberId === member.id,
+              openModal,
+              onUpdate,
+              toggleEditMode,
+            }).render()
+          )
+          .join('')}
+        <li class="${style.listItem} ${editingMemberId === style.addBtn ? style.editing : ''}" >
           <div class="${style.view}">
             <button type="button" class="${style.addBtn}">
               <box-icon name='plus-circle' class="${style.icon}"></box-icon>
@@ -28,10 +31,6 @@ export default class MemberList extends Component {
           <input type="text" class="${style.edit} addMember" />
         </li>
       </ul>`;
-  }
-
-  isEditing(id) {
-    return this.props.editingMemberIds.includes(id);
   }
 
   setEvent() {
@@ -58,7 +57,7 @@ export default class MemberList extends Component {
           }
 
           const name = e.target.value;
-          onAdd({ id: style.addBtn, name });
+          onAdd(name);
         },
       },
     ];
