@@ -41,7 +41,7 @@ const setUserAndOrganization = ({ user, organization }) => {
 
 const getOrganization = () => getGlobalState().organization;
 
-const generateNextId = arr => Math.max(...arr.map(item => item.id), 0) + 1;
+const generateNextId = arr => Math.max(...arr.map(item => item.id), -1) + 1;
 
 // members
 

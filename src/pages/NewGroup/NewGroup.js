@@ -46,6 +46,7 @@ export default class NewGroup extends Component {
       totalPeopleNum: getMembersLength(),
       forbiddenPairs: [],
     };
+    console.log(getRecords().map(({ record }) => record));
     const { newRecord } = solver(data);
     this.setState({
       result: newRecord,

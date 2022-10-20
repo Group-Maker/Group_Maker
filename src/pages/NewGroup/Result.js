@@ -1,9 +1,11 @@
+import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import SaveModal from '../../components/Modals/SaveModal.js';
 import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
-import { addRecord } from '../../state/index.js';
+import { addRecord, getOrganization, getUser } from '../../state/index.js';
 import style from './Result.module.css';
+import { saveOrganization } from '../../utils/localStorage.js';
 
 export default class Result extends Component {
   constructor(props) {
@@ -126,9 +128,22 @@ export default class Result extends Component {
     return groupsArr;
   }
 
-  saveRecord() {
-    this.state.result = this.getResult();
-    addRecord(this.state.result);
+  async saveRecord() {
+    const record = this.getResult();
+    addRecord(record);
+
+    try {
+      if (getUser() === null) {
+        const organization = getOrganization();
+        saveOrganization(organization);
+      } else {
+        const payload = { record };
+        const { data } = await axios.post('/api/organization/record', payload);
+        console.log(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
 
     this.openModal();
   }

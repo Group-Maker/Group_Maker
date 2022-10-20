@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
-import { loadOrganization } from './utils/localStorage.js';
+import { loadOrganization, saveOrganization } from './utils/localStorage.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
 import { getInitialState, isLoading, setGlobalState } from './state/index.js';
@@ -44,6 +44,8 @@ export default class App extends Component {
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
+        } else {
+          saveOrganization(initialState.organization);
         }
       }
 

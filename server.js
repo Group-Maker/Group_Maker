@@ -22,23 +22,30 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get('/auth/check', (req, res) => {
+const getAuthedUserId = req => {
   try {
     const token = req.cookies.accessToken;
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if (decoded) {
-        const { name, organization } = users.findUserByUserid(decoded.userid);
-
-        return res.send(JSON.stringify({ user: { name }, organization }));
+        return decoded.userid;
       }
     }
-
-    res.send(JSON.stringify({ user: null }));
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
+    return null;
   }
+};
+
+app.get('/auth/check', (req, res) => {
+  const authedUserId = getAuthedUserId(req);
+  if (authedUserId) {
+    const { name, organization } = users.findUserByUserid(authedUserId);
+
+    return res.send(JSON.stringify({ user: { name }, organization }));
+  }
+  res.send(JSON.stringify({ user: null }));
 });
 
 app.post('/auth/signin', (req, res) => {
@@ -99,7 +106,18 @@ app.post('/auth/signup', (req, res) => {
   users.createUser(userid, password, name);
 });
 
-// app.post('/auth/signout', (_, res) => res.clearCookie('accessToken'));
+app.post('/api/organization/record', (req, res) => {
+  const authedUserId = getAuthedUserId(req);
+  if (authedUserId) {
+    console.log(req.body);
+    const { record } = req.body;
+    users.addRecord(authedUserId, record);
+
+    return res.send(JSON.stringify({ success: true }));
+  }
+  // JWT인증이 실패한 경우에 대한 처리 필요
+  res.send({ error: '인증 실패' });
+});
 
 // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)
 // 브라우저 새로고침 시 서버는 index.html을 전달하고 클라이언트는 window.location.pathname를 참조해 다시 라우팅한다.
