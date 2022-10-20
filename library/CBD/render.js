@@ -67,29 +67,40 @@ const reconciliation = ($virtualNode, $realNode) => {
   }
 };
 
-let $realRoot = null;
+let init = true;
+let $rootContainer = null;
 let RootComponentInstance = null;
 
+const createVirtualRoot = DOMStr => {
+  const $temp = document.createElement('div');
+  $temp.innerHTML = DOMStr;
+  if ($temp.childElementCount > 1) {
+    throw new Error('컴포넌트는 반드시 하나의 요소로 감싸야 합니다!');
+  }
+  return $temp.firstElementChild;
+};
+
 const render = ($container, componentInstance) => {
-  if ($container && !$realRoot) {
-    $realRoot = $container;
+  let $real;
+  let $virtual;
+
+  if (init || !componentInstance) {
+    if (init) {
+      $rootContainer = $container;
+      RootComponentInstance = componentInstance;
+      init = false;
+    }
+    $real = $rootContainer;
+    $virtual = $real.cloneNode(false);
+    $virtual.innerHTML = RootComponentInstance.render();
+  } else {
+    $real = $container;
+    $virtual = createVirtualRoot(componentInstance.render());
   }
-  if (componentInstance && !RootComponentInstance) {
-    RootComponentInstance = componentInstance;
-  }
 
-  const $targetContainer = $container ?? $realRoot;
-  const CurrentInstance = componentInstance ?? RootComponentInstance;
+  reconciliation($virtual, $real);
 
-  const domStr = CurrentInstance.render();
-  if (typeof domStr === 'string') {
-    const $virtualRoot = $targetContainer.cloneNode(false);
-    $virtualRoot.innerHTML = domStr;
-
-    reconciliation($virtualRoot, $targetContainer);
-
-    updateEventHandlers();
-  }
+  updateEventHandlers();
 };
 
 export default render;
