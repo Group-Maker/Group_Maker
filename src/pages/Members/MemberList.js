@@ -6,7 +6,7 @@ import 'boxicons';
 
 export default class MemberList extends Component {
   DOMStr() {
-    const { openModal, onUpdate, toggleEditMode, editingMemberId } = this.props;
+    const { openModal, onUpdate, toggleEditMode, editingMember } = this.props;
 
     // prettier-ignore
     return `
@@ -15,14 +15,14 @@ export default class MemberList extends Component {
           .map(member =>
             new MemberItem({
               member,
-              isEditing: editingMemberId === member.id,
+              editingMember,
               openModal,
               onUpdate,
               toggleEditMode,
             }).render()
           )
           .join('')}
-        <li class="${style.listItem} ${editingMemberId === style.addBtn ? style.editing : ''}" >
+        <li class="${style.listItem} ${editingMember.id === style.addBtn ? style.editing : ''}" >
           <div class="${style.view}">
             <button type="button" class="${style.addBtn}">
               <box-icon name='plus-circle' class="${style.icon}"></box-icon>
@@ -42,7 +42,7 @@ export default class MemberList extends Component {
         handler: e => {
           const $li = e.target.closest(`.${style.listItem}`);
           const id = style.addBtn;
-          toggleEditMode(id);
+          toggleEditMode({ id, name: null });
 
           $li.lastElementChild.setSelectionRange(0, -1);
           $li.lastElementChild.focus();

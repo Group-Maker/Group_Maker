@@ -31,7 +31,7 @@ export default class App extends Component {
       let initialState = getInitialState();
 
       const { data: response } = await axios.get('/auth/check');
-      console.log(response);
+
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
       if (response.user) {
         initialState = { ...initialState, ...response };

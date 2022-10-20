@@ -97,7 +97,7 @@ const render = ($container, componentInstance) => {
     $real = $container;
     $virtual = createVirtualRoot(componentInstance.render());
   }
-  console.log($virtual, $real);
+
   reconciliation($virtual, $real);
 
   updateEventHandlers();

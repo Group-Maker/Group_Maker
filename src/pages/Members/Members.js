@@ -11,7 +11,10 @@ export default class Members extends Component {
     super(props);
     this.state = {
       removeMemberId: null,
-      editingMemberId: null,
+      editingMember: {
+        id: null,
+        name: null,
+      },
       isModalOpen: false,
     };
   }
@@ -24,7 +27,7 @@ export default class Members extends Component {
       <main class="main">
         <h2 class="title">Manage Members</h2>
         ${new MemberList({
-          editingMemberId: this.state.editingMemberId,
+          editingMember: this.state.editingMember,
           toggleEditMode: this.toggleEditMode.bind(this),
           onAdd: this.onAdd.bind(this),
           onUpdate: this.onUpdate.bind(this),
@@ -42,10 +45,10 @@ export default class Members extends Component {
     </div>`;
   }
 
-  toggleEditMode(editingMemberId) {
+  toggleEditMode(editingMember) {
     this.setState(prevState => ({
       ...prevState,
-      editingMemberId,
+      editingMember,
     }));
   }
 

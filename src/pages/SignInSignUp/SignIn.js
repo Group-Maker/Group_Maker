@@ -9,12 +9,11 @@ export default class signIn extends Component {
   constructor(props) {
     super(props);
 
-    this.initialSignInForm = {
+    this.state = {
       userid: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
-    this.state = this.initialSignInForm;
   }
 
   async signIn(e) {
@@ -98,11 +97,6 @@ export default class signIn extends Component {
         type: 'submit',
         selector: `.${style.signInForm}`,
         handler: e => this.signIn(e),
-      },
-      {
-        type: 'click',
-        selector: `.switchSignInSignUp`,
-        handler: () => this.setState(this.initialSignInForm),
       },
     ];
   }
