@@ -122,7 +122,6 @@ export default class Result extends Component {
       });
       groupsArr.push(groupArr);
     });
-    console.log(groupsArr);
     return groupsArr;
   }
 

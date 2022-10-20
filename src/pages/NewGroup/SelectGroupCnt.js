@@ -1,20 +1,20 @@
 import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
-import { getMembersLength } from '../../state/index.js';
+import { getActiveMembersLength } from '../../state/index.js';
 import style from './NewGroup.module.css';
 
 export default class SelectGroupCnt extends Component {
   constructor(props) {
     super(props);
 
-    this.memberCnt = getMembersLength();
+    this.memberCnt = getActiveMembersLength();
     this.groupCounter = new Counter({ ...this.props, minCount: 1, maxCount: this.memberCnt });
   }
 
   // prettier-ignore
   DOMStr ()
   {
-    const noMember = getMembersLength() === 0;
+    const noMember = this.memberCnt === 0;
     return `
       <div>
         <h2 class="title">Make New Group</h2>

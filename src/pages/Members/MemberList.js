@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import MemberItem from './MemberItem.js';
-import { getMembers } from '../../state/index.js';
+import { getActiveMembers } from '../../state/index.js';
 import style from './Members.module.css';
 import 'boxicons';
 
@@ -11,7 +11,7 @@ export default class MemberList extends Component {
     // prettier-ignore
     return `
       <ul class="${style.list}">
-        ${getMembers().map(member =>
+        ${getActiveMembers().map(member =>
           new MemberItem( {
             member,
             isEditing: this.isEditing(member.id),

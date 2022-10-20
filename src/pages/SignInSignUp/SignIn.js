@@ -29,7 +29,7 @@ export default class signIn extends Component {
     try {
       const { data } = await axios.post(`/auth/signin`, payload);
       const { user, organization } = data;
-
+      console.log(data);
       setUserAndOrganization({ user, organization });
       navigate('/');
     } catch (err) {

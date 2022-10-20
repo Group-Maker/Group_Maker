@@ -13,7 +13,6 @@ const routes = [
   { path: '/signin', component: SignIn },
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
-  // { path: '/newgroup/result', component: NewGroup },
   { path: '/records', component: Records },
   { path: '*', component: NotFound },
 ];
@@ -21,8 +20,8 @@ const routes = [
 createRoutes(routes);
 
 export default class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.init();
   }
@@ -32,7 +31,7 @@ export default class App extends Component {
       let initialState = getInitialState();
 
       const { data: response } = await axios.get('/auth/check');
-
+      console.log(response);
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
       if (response.user) {
         initialState = { ...initialState, ...response };
@@ -61,15 +60,19 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   DOMStr() {
-    this.storeState();
-
     if (isLoading()) {
       return new Loader().render();
     }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
 
-    return new Component().render();
+    // return new Component().render();
+
+    return `
+      <div>
+        ${new Component().render()}
+      </div>
+    `;
   }
 
   async storeState() {
@@ -87,10 +90,23 @@ export default class App extends Component {
   setEvent() {
     return [
       {
+        type: 'DOMContentLoaded',
+        selector: 'window',
+        handler: this.init.bind(this),
+      },
+      {
         type: 'beforeunload',
         selector: 'window',
-        handler: this.storeState,
+        handler: () => {
+          alert('진짜?');
+          this.storeState().bind(this);
+        },
       },
     ];
   }
 }
+
+// window.addEventListener('beforeunload', e => {
+//   e.preventDefault();
+//   alert('진짜?');
+// });

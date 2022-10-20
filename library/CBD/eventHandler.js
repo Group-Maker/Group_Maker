@@ -15,13 +15,13 @@ const validateEventHandler = eventHandlers => {
 
     // 핸들러 중복 등록을 방지하기 위해 익명함수를 사용하지 못하도록 함
 
-    if (handler.name === '' || handler.name === 'default' || handler.name === 'anonymous') {
-      throw new Error('Use named function for event handler');
-    }
+    // if (handler.name === '' || handler.name === 'default' || handler.name === 'anonymous') {
+    //   throw new Error('Use named function for event handler');
+    // }
 
     // 제대로 된 CSS 선택자인지 확인
 
-    document.querySelector(selector);
+    // document.querySelector(selector);
   });
 };
 
@@ -36,7 +36,6 @@ const holdEventHandlers = eventHandlers => {
   validateEventHandler(eventHandlers);
   eventHandlers.forEach(eventHandler => {
     const { selector, handler } = eventHandler;
-
     eventHandler.handler = e => {
       if (selector === 'window' || selector === 'document' || e.target.closest(selector)) {
         handler(e);
@@ -52,6 +51,7 @@ const updateEventHandlers = () => {
 
   handlersHolder.forEach(handlerInfo => {
     const { id, type, handler } = handlerInfo;
+    // console.log(id);
 
     if (document.querySelector(`[data-component-id="${id}"]`)) {
       window.addEventListener(type, handler);

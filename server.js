@@ -42,8 +42,13 @@ app.get('/auth/check', (req, res) => {
   const authedUserId = getAuthedUserId(req);
   if (authedUserId) {
     const { name, organization } = users.findUserByUserid(authedUserId);
-
-    return res.send(JSON.stringify({ user: { name }, organization }));
+    console.log(45, authedUserId, organization);
+    return res.send(
+      JSON.stringify({
+        user: { name },
+        organization,
+      })
+    );
   }
   res.send(JSON.stringify({ user: null }));
 });
