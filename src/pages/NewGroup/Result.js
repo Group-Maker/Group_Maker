@@ -21,14 +21,17 @@ export default class Result extends Component {
   DOMStr() {
     const { returnToSelectCount, resultState } = this.props;
     const { result, currentView } = resultState;
+    console.log(this.state);
 
     // prettier-ignore
     return `
       <div>
         <h2 class="title">Result</h2>
-        <div class="${style.dropContainer} ${style.members}">${
-      currentView === 'autoResult' ? '' : new Members().render()
-    }</div>
+        <div class="${style.dropContainer} ${style.members}">
+          <h3 class="${style.subTitle}">Member List</h3>
+          ${
+          currentView === 'autoResult' ? '' : new Members().render()
+          }</div>
         <div class="${style.groups}">${new Groups({ result }).render()}</div>
         <div class="${style.buttons}">
           ${
@@ -129,10 +132,12 @@ export default class Result extends Component {
   saveRecord() {
     const record = this.getResult();
     addRecord(record);
+
     this.openModal();
   }
 
   openModal() {
+    console.log('open!!!!!');
     this.setState(prevState => ({ ...prevState, isModalOpen: true }));
   }
 

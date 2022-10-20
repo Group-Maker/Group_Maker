@@ -67,7 +67,7 @@ input {
 :global .title {
   font-size: 3rem;
   text-align: center;
-  color: #fff;
+  color: rgb(39, 50, 84);
 }
 
 :global .modal {

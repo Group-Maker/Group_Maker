@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import { getMemberNameById } from '../../state/index.js';
-import style from './Groups.module.css';
+import style from '../../pages/NewGroup/Result.module.css';
 
 export default class Groups extends Component {
   DOMStr() {

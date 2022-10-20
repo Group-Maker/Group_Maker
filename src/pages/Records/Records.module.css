@@ -1,11 +1,12 @@
 .recordList {
+  margin-top: 1rem;
   padding: 0 2rem 2rem;
   max-height: 30rem;
   overflow-y: scroll;
 }
 
 .recordList::-webkit-scrollbar {
-  width: 1rem;
+  width: 0.8rem;
 }
 .recordList::-webkit-scrollbar-thumb {
   background-color: rgba(144, 30, 184, 0.2);
@@ -36,10 +37,10 @@
   align-items: center;
   width: 2.5rem;
   height: 2.5rem;
-  font-size: 2.5rem;
-  color: red;
+  font-size: 1.6rem;
+  color: rgb(189, 64, 64);
   background-color: #ddd;
-  border: 2px solid #000;
+  /* border: 2px solid #000; */
   border-radius: 50%;
   opacity: 0;
   transform: translate3D(50%, -50%, 0);
@@ -63,6 +64,7 @@
 
 .groupTitle {
   font-size: 1.5rem;
+  color: rgb(39, 50, 84, 0.7);
 }
 
 .groupItem {

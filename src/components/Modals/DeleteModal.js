@@ -10,7 +10,7 @@ export default class DeleteModal extends Component {
         <div class="closeTarget ${style.overlay} "></div>
         <div class="${style.content}">
           <div class="${style.message}">
-          <div>ARE YOU SURE?</div>
+          <div class="${style.alertMessage}">ARE YOU SURE?</div>
             This ${target} will be<br>deleted permanently!
           </div>
           <div class="${style.buttons}">
