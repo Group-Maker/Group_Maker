@@ -90,23 +90,10 @@ export default class App extends Component {
   setEvent() {
     return [
       {
-        type: 'DOMContentLoaded',
-        selector: 'window',
-        handler: this.init.bind(this),
-      },
-      {
         type: 'beforeunload',
         selector: 'window',
-        handler: () => {
-          alert('진짜?');
-          this.storeState().bind(this);
-        },
+        handler: () => this.storeState().bind(this),
       },
     ];
   }
 }
-
-// window.addEventListener('beforeunload', e => {
-//   e.preventDefault();
-//   alert('진짜?');
-// });
