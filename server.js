@@ -42,8 +42,12 @@ app.get('/auth/check', (req, res) => {
   const authedUserId = getAuthedUserId(req);
   if (authedUserId) {
     const { name, organization } = users.findUserByUserid(authedUserId);
-
-    return res.send(JSON.stringify({ user: { name }, organization }));
+    return res.send(
+      JSON.stringify({
+        user: { name },
+        organization,
+      })
+    );
   }
   res.send(JSON.stringify({ user: null }));
 });
@@ -109,7 +113,6 @@ app.post('/auth/signup', (req, res) => {
 app.post('/api/organization', (req, res) => {
   const authedUserId = getAuthedUserId(req);
   if (authedUserId) {
-    console.log(req.body);
     const { addOrganization } = req.body;
     users.addOrganization(authedUserId, addOrganization);
 

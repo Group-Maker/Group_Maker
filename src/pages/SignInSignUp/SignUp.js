@@ -10,14 +10,13 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
 
-    this.initialSignUpForm = {
+    this.state = {
       userid: { value: '', isDirty: false },
       name: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },
       isSignUpFailed: false,
     };
-    this.state = this.initialSignUpForm;
   }
 
   async checkDuplicatedUserid(inputUserid) {
@@ -151,11 +150,6 @@ export default class SignUp extends Component {
         type: 'submit',
         selector: `.${style.signUpForm}`,
         handler: e => this.signUp(e),
-      },
-      {
-        type: 'click',
-        selector: `.switchSignInSignUp`,
-        handler: () => this.setState(this.initialSignUpForm),
       },
     ];
   }

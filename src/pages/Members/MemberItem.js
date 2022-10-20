@@ -3,11 +3,12 @@ import style from './Members.module.css';
 
 export default class MemberItem extends Component {
   DOMStr() {
-    const { isEditing, member } = this.props;
+    const { member, editingMember } = this.props;
     const { id, name } = member;
+    const isEditing = editingMember.id === id;
 
     return `
-      <li class="${style.listItem} ${isEditing ? style.editing : ''}" data-id="${id}">
+      <li class="${style.listItem} ${isEditing ? style.editing : ''}" data-id="${id}" data-name="${name}">
         <div class="${style.view}">
           <span class="${style.name}">${name}</span>
           <button type="button" class="${style.removeBtn}">X</button>
@@ -17,7 +18,7 @@ export default class MemberItem extends Component {
   }
 
   setEvent() {
-    const { openModal, onUpdate, toggleEditMode } = this.props;
+    const { openModal, onUpdate, toggleEditMode, editingMember } = this.props;
     return [
       {
         type: 'click',
@@ -32,8 +33,8 @@ export default class MemberItem extends Component {
         selector: `.${style.listItem}`,
         handler: e => {
           const $li = e.target.closest(`.${style.listItem}`);
-          const id = +$li.dataset.id;
-          toggleEditMode(id);
+          const { id, name } = $li.dataset;
+          toggleEditMode({ id: +id, name });
 
           $li.lastElementChild.setSelectionRange(0, -1);
           $li.lastElementChild.focus();
@@ -49,6 +50,12 @@ export default class MemberItem extends Component {
 
           const id = +e.target.closest(`.${style.listItem}`).dataset.id;
           const name = e.target.value;
+          console.log(id, name, editingMember);
+          if (editingMember.id === id && editingMember.name === name) {
+            toggleEditMode({ id: null, name: null });
+            return;
+          }
+
           onUpdate({ id, name });
         },
       },
