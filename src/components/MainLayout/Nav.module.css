@@ -4,13 +4,25 @@
   gap: 1rem;
 }
 .li {
-  border: 1px solid #ffffff;
+  /* border: 1px solid #ffffff; */
+  border: 2px solid #f7f7f7;
+
   border-radius: 10px;
-  background: rgba(144, 30, 184, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  transition: 0.3s;
+
+  /* background: rgba(144, 30, 184, 0.2); */
 }
 .li:hover {
-  background: rgba(144, 30, 184, 0.4);
+  background: rgba(255, 255, 255, 0.8);
+}
+.li:hover > a {
+  color: rgb(39, 50, 84);
 }
 .li.active {
-  background: rgba(144, 30, 184, 0.75);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.li.active > a {
+  color: rgb(39, 50, 84);
 }
