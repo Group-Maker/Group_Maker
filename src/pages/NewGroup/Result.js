@@ -1,5 +1,4 @@
 import { Component } from '../../../library/CBD/index.js';
-import SaveModal from '../../components/Modals/SaveModal.js';
 import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
 import { addRecord } from '../../state/index.js';
@@ -14,12 +13,11 @@ export default class Result extends Component {
       $targetContainer: null,
       fromListId: null,
       // 테스트를 위한 상태값 고정
-      isModalOpen: false,
     };
   }
 
   DOMStr() {
-    const { returnToSelectCount, resultState } = this.props;
+    const { resultState } = this.props;
     const { result, currentView } = resultState;
     console.log(this.state);
 
@@ -41,11 +39,6 @@ export default class Result extends Component {
           }
           <button class="${style.save}">SAVE</button>
         </div>
-        ${
-          this.state.isModalOpen
-            ? new SaveModal({ closeModal: this.closeModal.bind(this), returnToSelectCount }).render()
-            : ''
-        }
       </div>`;
   }
 
@@ -125,23 +118,12 @@ export default class Result extends Component {
       });
       groupsArr.push(groupArr);
     });
-    console.log(groupsArr);
     return groupsArr;
   }
 
   saveRecord() {
     const record = this.getResult();
     addRecord(record);
-
-    this.openModal();
-  }
-
-  openModal() {
-    console.log('open!!!!!');
-    this.setState(prevState => ({ ...prevState, isModalOpen: true }));
-  }
-
-  closeModal() {
-    this.setState(prevState => ({ ...prevState, isModalOpen: false }));
+    alert('Successfully saved!');
   }
 }

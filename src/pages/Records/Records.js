@@ -35,7 +35,6 @@ export default class Records extends Component {
 
   removeRecord() {
     removeRecord(this.state.recordId);
-    this.closeModal();
   }
 
   openModal(recordId) {

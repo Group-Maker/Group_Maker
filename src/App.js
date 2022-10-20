@@ -13,7 +13,6 @@ const routes = [
   { path: '/signin', component: SignIn },
   { path: '/signup', component: SignUp },
   { path: '/newgroup', component: NewGroup },
-  // { path: '/newgroup/result', component: NewGroup },
   { path: '/records', component: Records },
   { path: '*', component: NotFound },
 ];
@@ -21,8 +20,8 @@ const routes = [
 createRoutes(routes);
 
 export default class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.init();
   }
@@ -61,15 +60,19 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   DOMStr() {
-    this.storeState();
-
     if (isLoading()) {
       return new Loader().render();
     }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
 
-    return new Component().render();
+    // return new Component().render();
+
+    return `
+      <div>
+        ${new Component().render()}
+      </div>
+    `;
   }
 
   async storeState() {
@@ -89,7 +92,7 @@ export default class App extends Component {
       {
         type: 'beforeunload',
         selector: 'window',
-        handler: this.storeState,
+        handler: () => this.storeState().bind(this),
       },
     ];
   }

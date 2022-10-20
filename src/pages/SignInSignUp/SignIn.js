@@ -9,12 +9,11 @@ export default class signIn extends Component {
   constructor(props) {
     super(props);
 
-    this.initialSignInForm = {
+    this.state = {
       userid: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
-    this.state = this.initialSignInForm;
   }
 
   async signIn(e) {
@@ -29,7 +28,7 @@ export default class signIn extends Component {
     try {
       const { data } = await axios.post(`/auth/signin`, payload);
       const { user, organization } = data;
-
+      console.log(data);
       setUserAndOrganization({ user, organization });
       navigate('/');
     } catch (err) {
@@ -49,35 +48,39 @@ export default class signIn extends Component {
 
     // prettier-ignore
     return `
-      <div>
-        <h1 class="${style.title}">GROUP-MAKER</h1>
+      <div class="${style.container}">
+        <h1 class="title">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
         <form class="${style.signInForm}">
           <h2 class="${style.subTitle}">SIGN IN</h2>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="userid">EMAIL</label>
-            <input class="${
-              style.input
-            }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
-            <div class="${style.validateError}">${
-              this.state.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
-            }</div>
+          <div class="${style.inputWrapper}">
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="userid">EMAIL</label>
+              <input class="${
+                style.input
+              }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}" />
+              <div class="${style.validateError}">${
+                this.state.userid.isDirty && !isUseridValid ? signInSchema.userid.error : ''
+              }</div>
+            </div>
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="password">PASSWORD</label>
+              <input class="${
+                style.input
+              }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
+              <div class="${style.validateError}">${
+                this.state.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
+              }</div>
+            </div>
           </div>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="password">PASSWORD</label>
-            <input class="${
-              style.input
-            }" type="password" id="password" name="password" required autocomplete="off" value="${passwordValue}"/>
-            <div class="${style.validateError}">${
-              this.state.password.isDirty && !isPasswordValid ? signInSchema.password.error : ''
-            }</div>
+          <div class="${style.btnWrapper}">
+            <p class="signInError ${style.authorizeError}">${
+              this.state.isSignInFailed ? 'Incorrect email or password' : ' '
+            }</p>
+            <button class="submit-btn ${style.submitBtn}" ${
+              isUseridValid && isPasswordValid ? '' : 'disabled'
+            }>SIGN IN</button>
+            ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
-          <p class="signInError ${style.authorizeError}">${
-            this.state.isSignInFailed ? 'Incorrect email or password' : ''
-          }</p>
-          <button class="submit-btn ${style.submitBtn}" ${
-            isUseridValid && isPasswordValid ? '' : 'disabled'
-          }>SIGN IN</button>
-          ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
         </form>
       </div>`;
   }
@@ -98,11 +101,6 @@ export default class signIn extends Component {
         type: 'submit',
         selector: `.${style.signInForm}`,
         handler: e => this.signIn(e),
-      },
-      {
-        type: 'click',
-        selector: `.switchSignInSignUp`,
-        handler: () => this.setState(this.initialSignInForm),
       },
     ];
   }
