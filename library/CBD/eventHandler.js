@@ -51,8 +51,8 @@ const updateEventHandlers = () => {
 
   handlersHolder.forEach(handlerInfo => {
     const { id, type, handler } = handlerInfo;
-
-    if (document.querySelector(`[data-component-id="${id}"]`)) {
+    // TODO: 회피하지 말고 'beforeunload' 이벤트를 등록할 방법을 찾아내자
+    if (document.querySelector(`[data-component-id="${id}"]`) || type === 'beforeunload') {
       window.addEventListener(type, handler);
     } else {
       window.removeEventListener(type, handler);
