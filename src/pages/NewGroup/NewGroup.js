@@ -22,18 +22,16 @@ export default class NewGroup extends Component {
       <div class="mainContainer">
         ${new MainLayout().render()}
         <main class="main">
-          ${
-            this.state.currentView === 'selectGroupCnt'
-              ? new SelectGroupCnt({
-                  createManualGroup: this.createManualGroup.bind(this),
-                  createOptimizedGroup: this.createOptimizedGroup.bind(this),
-                }).render()
-              : new Result({
-                  resultState: this.state,
-                  resetGroup: this.resetGroup.bind(this),
-                  returnToSelectCount: this.returnToSelectCount.bind(this),
-                }).render()
-          }
+          ${this.state.currentView === 'selectGroupCnt'
+            ? new SelectGroupCnt({
+                createManualGroup: this.createManualGroup.bind(this),
+                createOptimizedGroup: this.createOptimizedGroup.bind(this),
+              }).render()
+            : new Result({
+                resultState: this.state,
+                resetGroup: this.resetGroup.bind(this),
+                returnToSelectCount: this.returnToSelectCount.bind(this),
+              }).render()}
         </main>
       </div>`;
   }

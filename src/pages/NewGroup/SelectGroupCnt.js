@@ -8,7 +8,7 @@ export default class SelectGroupCnt extends Component {
     super(props);
 
     this.memberCnt = getActiveMembersLength();
-    this.groupCounter = new Counter({ ...this.props, minCount: 1, maxCount: this.memberCnt });
+    this.groupCounter = new Counter({ minCount: 1, maxCount: this.memberCnt });
   }
 
   // prettier-ignore
@@ -16,13 +16,18 @@ export default class SelectGroupCnt extends Component {
   {
     const noMember = this.memberCnt === 0;
     return `
-      <div>
+      <div class="test ${style.container}">
         <h2 class="title">Make New Group</h2>
-        <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt}</p>
-        <p>${noMember ? 'Create member before make group!' : 'How many groups do you want?'}</p>
-        ${this.groupCounter.render()}
-        <button class="manualGroupBtn" ${noMember ? 'disabled' : ''}>MANUALLY<br>CREATE GROUPS</button>
-        <button class="optimizedGroupBtn" ${noMember ? 'disabled' : ''}>CREATE<br>OPTIMIZED GROUPS</button>
+        <div class="${style.innerContainer}">
+          <p class="${style.msg} ${this.memberCnt ? '' : style.errorMsg}">There are currently ${
+      this.memberCnt
+    } members.<br>${noMember ? 'Create member before make group!' : 'How many groups do you want?'}</p>
+          ${this.groupCounter.render()}
+          <div class="${style.btnContainer}">
+            <button class="${style.manualGroupBtn}" ${noMember ? 'disabled' : ''}>MANUALLY<br>CREATE GROUPS</button>
+            <button class="${style.optimizedGroupBtn}" ${noMember ? 'disabled' : ''}>CREATE<br>OPTIMIZED GROUPS</button>
+          </div>
+        </div>
       </div>`;
   }
 
@@ -30,12 +35,12 @@ export default class SelectGroupCnt extends Component {
     return [
       {
         type: 'click',
-        selector: '.optimizedGroupBtn',
+        selector: `.${style.optimizedGroupBtn}`,
         handler: () => this.props.createOptimizedGroup(this.groupCounter.getCount()),
       },
       {
         type: 'click',
-        selector: '.manualGroupBtn',
+        selector: `.${style.manualGroupBtn}`,
         handler: () => this.props.createManualGroup(this.groupCounter.getCount()),
       },
     ];

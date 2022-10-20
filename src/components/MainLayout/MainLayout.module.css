@@ -8,7 +8,7 @@
   text-align: center;
   width: 25%;
   min-width: 20rem;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .title {
@@ -56,6 +56,7 @@
   border-radius: 50%;
   display: inline-block;
   fill: rgba(247, 247, 247);
+  transition: 0.3s;
 }
 
 .githubLink:hover,
