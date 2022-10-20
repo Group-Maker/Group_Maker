@@ -53,15 +53,24 @@ export default class Members extends Component {
   }
 
   onAdd(name) {
+    if (name.trim() === '') {
+      this.toggleEditMode({ id: null, name: null });
+      return;
+    }
+
     if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
       return;
     }
-
     addMember(name);
   }
 
   onUpdate({ id, name }) {
+    if (name.trim() === '') {
+      this.toggleEditMode({ id: null, name: null });
+      return;
+    }
+
     if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
       return;
