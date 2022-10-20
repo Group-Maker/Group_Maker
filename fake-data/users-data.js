@@ -100,6 +100,11 @@ const getUsers = () => users;
 
 const generateNextId = arr => Math.max(...arr.map(item => item.id), 0) + 1;
 
+const addOrganization = (userid, organization) => {
+  const user = findUserByUserid(userid);
+  user.organization = organization;
+};
+
 const addRecord = (userid, record) => {
   const user = findUserByUserid(userid);
   const { records } = user.organization;
@@ -107,4 +112,4 @@ const addRecord = (userid, record) => {
   user.organization.records.push({ id: generateNextId(records), record });
 };
 
-module.exports = { createUser, findUserByUserid, findUser, getUsers, addRecord };
+module.exports = { createUser, findUserByUserid, findUser, getUsers, addRecord, addOrganization };

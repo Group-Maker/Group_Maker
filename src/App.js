@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { Component } from '../library/CBD/index.js';
 import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
-import { loadOrganization, saveOrganization } from './utils/localStorage.js';
+import { loadFromLocalStorage, storeOnLocalStorage } from './utils/localStorage.js';
+import storeOnServer from './api/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
-import { getInitialState, isLoading, setGlobalState } from './state/index.js';
+import { getInitialState, getUser, isLoading, setGlobalState } from './state/index.js';
 import style from './App.module.css';
 
 const routes = [
@@ -40,12 +41,12 @@ export default class App extends Component {
       // 토큰이 없거나 유효하지 않으면(로그인 실패)
       else {
         // 로컬스토리지 확인
-        const localOrganization = loadOrganization();
+        const localOrganization = loadFromLocalStorage();
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
         } else {
-          saveOrganization(initialState.organization);
+          storeOnLocalStorage(initialState.organization);
         }
       }
 
@@ -60,6 +61,8 @@ export default class App extends Component {
 
   // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   DOMStr() {
+    this.storeState();
+
     if (isLoading()) {
       return new Loader().render();
     }
@@ -67,5 +70,27 @@ export default class App extends Component {
     const Component = resolveComponent(path);
 
     return new Component().render();
+  }
+
+  async storeState() {
+    try {
+      if (getUser()) {
+        await storeOnServer();
+      } else {
+        storeOnLocalStorage();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'beforeunload',
+        selector: 'window',
+        handler: this.storeState,
+      },
+    ];
   }
 }

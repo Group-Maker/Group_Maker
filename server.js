@@ -106,12 +106,12 @@ app.post('/auth/signup', (req, res) => {
   users.createUser(userid, password, name);
 });
 
-app.post('/api/organization/record', (req, res) => {
+app.post('/api/organization', (req, res) => {
   const authedUserId = getAuthedUserId(req);
   if (authedUserId) {
     console.log(req.body);
-    const { record } = req.body;
-    users.addRecord(authedUserId, record);
+    const { addOrganization } = req.body;
+    users.addOrganization(authedUserId, addOrganization);
 
     return res.send(JSON.stringify({ success: true }));
   }
