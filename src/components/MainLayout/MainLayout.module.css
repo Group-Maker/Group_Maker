@@ -13,6 +13,7 @@
 
 .title {
   font-size: 4rem;
+  line-height: 3.5rem;
   color: rgb(39, 50, 84);
 }
 
@@ -22,7 +23,6 @@
 }
 
 .link {
-  height: 3rem;
   line-height: 3rem;
   font-size: 1.3rem;
 }
@@ -37,7 +37,7 @@
 
 .newgroupLink {
   composes: link;
-  height: 6rem;
+  line-height: 2.5rem;
   font-size: 1.8rem;
 }
 

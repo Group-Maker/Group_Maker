@@ -5,6 +5,7 @@
 }
 
 .li {
+  padding: 0.5rem;
   border: 2px solid rgba(247, 247, 247, 0.8);
   border-radius: 0.5rem;
   color: #f7f7f7;
