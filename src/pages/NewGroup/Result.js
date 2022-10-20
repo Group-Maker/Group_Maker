@@ -19,23 +19,30 @@ export default class Result extends Component {
   }
 
   DOMStr() {
-    const { result, currentView } = this.props.resultState;
+    const { returnToSelectCount, resultState } = this.props;
+    const { result, currentView } = resultState;
 
     // prettier-ignore
     return `
       <div>
         <h2 class="title">Result</h2>
         <div class="${style.dropContainer} ${style.members}">${
-          currentView === 'autoResult' ? '' : new Members().render()
-        }</div>
+      currentView === 'autoResult' ? '' : new Members().render()
+    }</div>
         <div class="${style.groups}">${new Groups({ result }).render()}</div>
         <div class="${style.buttons}">
-          ${currentView === 'autoResult'
-            ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
-            : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`}
+          ${
+            currentView === 'autoResult'
+              ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
+              : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`
+          }
           <button class="${style.save}">SAVE</button>
         </div>
-        ${this.state.isModalOpen ? new SaveModal({ closeModal: this.closeModal.bind(this) }).render() : ''}
+        ${
+          this.state.isModalOpen
+            ? new SaveModal({ closeModal: this.closeModal.bind(this), returnToSelectCount }).render()
+            : ''
+        }
       </div>`;
   }
 
@@ -108,21 +115,20 @@ export default class Result extends Component {
   // 수정이 필요하다,,
   getResult() {
     const groupsArr = [];
-    document.querySelectorAll(`.${style.groups} > div`).forEach(group => {
+    document.querySelectorAll(`.${style.groups} > div > div`).forEach(group => {
       const groupArr = [];
       group.querySelectorAll('div').forEach(el => {
         groupArr.push(this.getMemberId(el));
       });
       groupsArr.push(groupArr);
     });
-
+    console.log(groupsArr);
     return groupsArr;
   }
 
   saveRecord() {
-    this.state.result = this.getResult();
-    addRecord(this.state.result);
-
+    const record = this.getResult();
+    addRecord(record);
     this.openModal();
   }
 

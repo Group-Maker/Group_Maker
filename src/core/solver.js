@@ -142,7 +142,7 @@ const solver = ({ records, groupNum, peopleArr, totalPeopleNum, forbiddenPairs }
   roundScore += bestOption.total;
   updateWeights(bestOption.groups, weights);
   return {
-    newRecord: bestOption.groups,
+    newRecord: bestOption.groups.map(group => group.filter(member => member !== null)),
     roundScore,
     weights,
   };

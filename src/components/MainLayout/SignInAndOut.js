@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link } from '../../../library/SPA-router/index.js';
 import { setUserAndOrganization } from '../../state/index.js';
-import { loadOrganization } from '../../utils/localStorage.js';
+import { loadFromLocalStorage } from '../../utils/localStorage.js';
 import style from './SignInAndOut.module.css';
 
 class SignInLink extends Component {
@@ -19,7 +19,7 @@ class SignOutButton extends Component {
     try {
       // TODO 로그아웃 기능을 하는 함수로 다시 받을 것
       await axios.get('/auth/signout');
-      const organization = loadOrganization();
+      const organization = loadFromLocalStorage();
       setUserAndOrganization({
         user: null,
         organization,

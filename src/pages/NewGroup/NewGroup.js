@@ -31,6 +31,7 @@ export default class NewGroup extends Component {
               : new Result({
                   resultState: this.state,
                   resetGroup: this.resetGroup.bind(this),
+                  returnToSelectCount: this.returnToSelectCount.bind(this),
                 }).render()
           }
         </main>
@@ -46,6 +47,7 @@ export default class NewGroup extends Component {
       forbiddenPairs: [],
     };
     const { newRecord } = solver(data);
+
     this.setState({
       result: newRecord,
       groupCnt,
@@ -64,5 +66,10 @@ export default class NewGroup extends Component {
   resetGroup() {
     const { currentView, groupCnt } = this.state;
     currentView === 'manualResult' ? this.createManualGroup(groupCnt) : this.createOptimizedGroup(groupCnt);
+  }
+
+  returnToSelectCount() {
+    this.setState(prevState => ({ ...prevState, currentView: 'selectGroupCnt' }));
+    console.log(this.state);
   }
 }

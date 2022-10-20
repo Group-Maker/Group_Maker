@@ -48,9 +48,9 @@ let users = [
         {
           id: 3,
           record: [
-            [1, 2, 4, null],
-            [3, 8, 5, null],
-            [0, 11, 13, null],
+            [1, 2, 4],
+            [3, 8, 5],
+            [0, 11, 13],
             [6, 9, 12, 14],
             [7, 10, 15, 16],
           ],
@@ -98,4 +98,18 @@ const createUser = (userid, password, name) => {
 
 const getUsers = () => users;
 
-module.exports = { createUser, findUserByUserid, findUser, getUsers };
+const generateNextId = arr => Math.max(...arr.map(item => item.id), 0) + 1;
+
+const addOrganization = (userid, organization) => {
+  const user = findUserByUserid(userid);
+  user.organization = organization;
+};
+
+const addRecord = (userid, record) => {
+  const user = findUserByUserid(userid);
+  const { records } = user.organization;
+
+  user.organization.records.push({ id: generateNextId(records), record });
+};
+
+module.exports = { createUser, findUserByUserid, findUser, getUsers, addRecord, addOrganization };
