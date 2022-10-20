@@ -34,10 +34,16 @@
   border-radius: 0.5rem;
   font-size: 1.7rem;
   background-color: rgb(247, 247, 247, 0.5);
+  transition: 0.3s;
 }
 
 .manualGroupBtn:disabled,
 .optimizedGroupBtn:disabled {
   color: rgba(39, 50, 84, 0.5);
   background-color: rgba(131, 131, 131, 0.2);
+}
+
+.manualGroupBtn:hover,
+.optimizedGroupBtn:hover {
+  background-color: rgb(247, 247, 247, 0);
 }

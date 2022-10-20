@@ -69,62 +69,62 @@ export default class SignUp extends Component {
 
     // prettier-ignore
     return `
-      <div>
-        <h1 class="${style.title}">GROUP-MAKER</h1>
+      <div class="${style.container}">
+        <h1 class="title">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
         <form class="${style.signUpForm}">
           <h2 class="${style.subTitle}">SIGN-UP</h2>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="userid">EMAIL</label>
-            <input class="useridInput ${
-              style.input
-            }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
-            ${this.state.userid.isDirty ? this.renderIcon(isUseridValid) : ''}
-            <div class="${style.validateError}">${
-              this.state.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
-            }</div>
+          <div class="${style.inputWrapper}">
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="userid">EMAIL</label>
+              <input class="useridInput ${
+                style.input
+              }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
+              ${this.state.userid.isDirty ? this.renderIcon(isUseridValid) : ''}
+              <div class="${style.validateError}">${
+                this.state.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
+              }</div>
+            </div>
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="name">NAME</label>
+              <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
+                this.state.name.value
+              }"/>
+              ${this.state.name.isDirty ? this.renderIcon(isNameValid) : ''}
+              <div class="${style.validateError}">${
+                this.state.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
+              }</div>
+            </div>
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="password">PASSWORD</label>
+              <input class="${
+                style.input
+              }" type="password" id="password" name="password" required autocomplete="off" value="${
+                this.state.password.value
+              }"/>
+              ${this.state.password.isDirty ? this.renderIcon(isPasswordValid) : ''}
+              <div class="validateError ${style.validateError}">${
+                this.state.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
+              }</div>
+            </div>
+            <div class="${style.inputContainer}">
+              <label class="${style.label}" for="confirmPassword">CONFIRM PASSWORD</label>
+              <input class="${
+                style.input
+              }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
+                this.state.confirmPassword.value
+              }"/>
+              ${this.state.confirmPassword.isDirty ? this.renderIcon(isConfirmPasswordValid) : ''}
+              <div class="validateError ${style.validateError}">${
+                this.state.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
+              }</div>
+            </div>
           </div>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="name">NAME</label>
-            <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
-              this.state.name.value
-            }"/>
-            ${this.state.name.isDirty ? this.renderIcon(isNameValid) : ''}
-            <div class="${style.validateError}">${
-              this.state.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
-            }</div>
+          <div class="${style.btnWrapper}">
+            <button class="submit-btn ${style.submitBtn}" ${
+              isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
+            }>SIGN UP</button>
+            ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="password">PASSWORD</label>
-            <input class="${
-              style.input
-            }" type="password" id="password" name="password" required autocomplete="off" value="${
-              this.state.password.value
-            }"/>
-            ${this.state.password.isDirty ? this.renderIcon(isPasswordValid) : ''}
-            <div class="validateError ${style.validateError}">${
-              this.state.password.isDirty && !isPasswordValid ? signUpSchema.password.error : ''
-            }</div>
-          </div>
-          <div class="${style.inputContainer}">
-            <label class="${style.label}" for="confirmPassword">CONFIRM PASSWORD</label>
-            <input class="${
-              style.input
-            }" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off" value="${
-              this.state.confirmPassword.value
-            }"/>
-            ${this.state.confirmPassword.isDirty ? this.renderIcon(isConfirmPasswordValid) : ''}
-            <div class="validateError ${style.validateError}">${
-              this.state.confirmPassword.isDirty && !isConfirmPasswordValid ? signUpSchema.confirmPassword.error : ''
-            }</div>
-          </div>
-          <p class="signUpError ${style.authorizeError}"></p>
-          <button class="submit-btn ${style.submitBtn}" ${
-            isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
-          }>SIGN UP</button>
-          <section class="modal hidden">
-            ${new SignupModal().render()}
-          </section>
-          ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
         </form>
       </div>`;
   }
