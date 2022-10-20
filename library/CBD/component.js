@@ -5,7 +5,7 @@ class Component {
   constructor(props) {
     this.props = props;
     this.state = null;
-    this.componentId = self.crypto.randomUUID().slice(0, 8);
+    this.componentId = this.constructor.name + '-' + self.crypto.randomUUID().slice(0, 8);
 
     this.updateEventHandlers();
   }

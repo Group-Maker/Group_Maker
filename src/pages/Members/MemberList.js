@@ -1,25 +1,28 @@
 import { Component } from '../../../library/CBD/index.js';
 import MemberItem from './MemberItem.js';
-import { getMembers } from '../../state/index.js';
+import { getActiveMembers } from '../../state/index.js';
 import style from './Members.module.css';
 import 'boxicons';
 
 export default class MemberList extends Component {
   DOMStr() {
-    const { openModal, onUpdate, toggleEditMode } = this.props;
+    const { openModal, onUpdate, toggleEditMode, editingMember } = this.props;
 
     // prettier-ignore
     return `
       <ul class="${style.list}">
-        ${getMembers().map(member =>
-          new MemberItem( {
-            member,
-            isEditing: this.isEditing(member.id),
-            openModal,
-            onUpdate,
-            toggleEditMode,
-          }).render()).join('')}
-        <li class="${style.listItem} ${this.isEditing(style.addBtn) ? style.editing : ''}" >
+        ${getActiveMembers()
+          .map(member =>
+            new MemberItem({
+              member,
+              editingMember,
+              openModal,
+              onUpdate,
+              toggleEditMode,
+            }).render()
+          )
+          .join('')}
+        <li class="${style.listItem} ${editingMember.id === style.addBtn ? style.editing : ''}" >
           <div class="${style.view}">
             <button type="button" class="${style.addBtn}">
               <box-icon name='plus-circle' class="${style.icon}"></box-icon>
@@ -28,10 +31,6 @@ export default class MemberList extends Component {
           <input type="text" class="${style.edit} addMember" />
         </li>
       </ul>`;
-  }
-
-  isEditing(id) {
-    return this.props.editingMemberIds.includes(id);
   }
 
   setEvent() {
@@ -43,7 +42,7 @@ export default class MemberList extends Component {
         handler: e => {
           const $li = e.target.closest(`.${style.listItem}`);
           const id = style.addBtn;
-          toggleEditMode(id);
+          toggleEditMode({ id, name: null });
 
           $li.lastElementChild.setSelectionRange(0, -1);
           $li.lastElementChild.focus();
@@ -58,7 +57,7 @@ export default class MemberList extends Component {
           }
 
           const name = e.target.value;
-          onAdd({ id: style.addBtn, name });
+          onAdd(name);
         },
       },
     ];

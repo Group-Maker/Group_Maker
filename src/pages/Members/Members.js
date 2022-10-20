@@ -11,7 +11,10 @@ export default class Members extends Component {
     super(props);
     this.state = {
       removeMemberId: null,
-      editingMemberIds: [],
+      editingMember: {
+        id: null,
+        name: null,
+      },
       isModalOpen: false,
     };
   }
@@ -24,7 +27,7 @@ export default class Members extends Component {
       <main class="main">
         <h2 class="title">Manage Members</h2>
         ${new MemberList({
-          editingMemberIds: this.state.editingMemberIds,
+          editingMember: this.state.editingMember,
           toggleEditMode: this.toggleEditMode.bind(this),
           onAdd: this.onAdd.bind(this),
           onUpdate: this.onUpdate.bind(this),
@@ -42,44 +45,42 @@ export default class Members extends Component {
     </div>`;
   }
 
-  toggleEditMode(id) {
+  toggleEditMode(editingMember) {
     this.setState(prevState => ({
       ...prevState,
-      editingMemberIds: [...prevState.editingMemberIds, id],
+      editingMember,
     }));
   }
 
-  onAdd({ id, name }) {
+  onAdd(name) {
+    if (name.trim() === '') {
+      this.toggleEditMode({ id: null, name: null });
+      return;
+    }
+
     if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
       return;
     }
-
     addMember(name);
-    console.log(id);
-    this.setState(prevState => ({
-      ...prevState,
-      editingMemberIds: prevState.editingMemberIds.filter(_id => _id !== id),
-    }));
-    console.log(this.state.editingMemberIds);
   }
 
   onUpdate({ id, name }) {
+    if (name.trim() === '') {
+      this.toggleEditMode({ id: null, name: null });
+      return;
+    }
+
     if (isDuplicatedMemberName(name)) {
       alert('중복금지!중복금지!!');
       return;
     }
 
     updateMember({ id, name });
-    this.setState(prevState => ({
-      ...prevState,
-      editingMemberIds: prevState.editingMemberIds.filter(_id => _id !== id),
-    }));
   }
 
   onRemove() {
     removeMember(this.state.removeMemberId);
-    this.closeModal();
   }
 
   openModal(removeMemberId) {

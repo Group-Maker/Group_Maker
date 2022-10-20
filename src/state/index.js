@@ -55,9 +55,14 @@ const setMembers = members => {
     },
   }));
 };
+
 const getMembersLength = () => getMembers().length;
 const getMemberIds = () => getMembers().map(member => member.id);
 const getMemberNameById = id => getMembers().find(member => member.id === id)?.name;
+
+const getActiveMembers = () => getMembers().filter(member => member.isActive);
+const getActiveMemberIds = () => getActiveMembers().map(member => member.id);
+const getActiveMembersLength = () => getActiveMembers().length;
 
 const isDuplicatedMemberName = name => getMembers().find(member => member.name === name) !== undefined;
 
@@ -73,7 +78,7 @@ const updateMember = ({ id, name }) => {
 };
 
 const removeMember = id => {
-  const members = getMembers().filter(member => member.id !== id);
+  const members = getMembers().map(member => (member.id === id ? { ...member, isActive: false } : member));
   setMembers(members);
 };
 
@@ -88,7 +93,6 @@ const setRecords = records => {
 };
 
 const addRecord = record => {
-  console.log(record);
   const prevRecords = getRecords();
   const records = [...prevRecords, { id: generateNextId(prevRecords), record }];
   setRecords(records);
@@ -111,6 +115,9 @@ export {
   getMembersLength,
   getMemberIds,
   getMemberNameById,
+  getActiveMembers,
+  getActiveMemberIds,
+  getActiveMembersLength,
   isDuplicatedMemberName,
   addMember,
   updateMember,
