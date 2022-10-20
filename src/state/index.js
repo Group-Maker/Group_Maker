@@ -88,6 +88,7 @@ const setRecords = records => {
 };
 
 const addRecord = record => {
+  console.log(record);
   const prevRecords = getRecords();
   const records = [...prevRecords, { id: generateNextId(prevRecords), record }];
   setRecords(records);
