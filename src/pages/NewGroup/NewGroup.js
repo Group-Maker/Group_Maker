@@ -11,21 +11,9 @@ export default class NewGroup extends Component {
 
     this.state = {
       result: null,
+      groupCnt: 1,
       currentView: 'selectGroupCnt',
     };
-  }
-
-  createNewGroup(groupCnt) {
-    const data = {
-      records: getRecords(),
-      groupNum: groupCnt,
-      peopleArr: getMemberIds(),
-      totalPeopleNum: getMembersLength(),
-      forbiddenPairs: [],
-    };
-    const { newRecord } = solver(data);
-    this.props.setState({ result: newRecord, currentView: 'autoResult' });
-    console.log(newRecord);
   }
 
   DOMStr() {
@@ -34,10 +22,47 @@ export default class NewGroup extends Component {
       <div class="mainContainer">
         ${new MainLayout().render()}
         <main class="main">
-          ${this.state.currentView === 'selectGroupCnt'
-            ? new SelectGroupCnt({ setState: this.setState.bind(this), createNewGroup:this.createNewGroup }).render()
-            : new Result({ resultState: this.state, createNewGroup:this.createNewGroup }).render()}
+          ${
+            this.state.currentView === 'selectGroupCnt'
+              ? new SelectGroupCnt({
+                  createManualGroup: this.createManualGroup.bind(this),
+                  createOptimizedGroup: this.createOptimizedGroup.bind(this),
+                }).render()
+              : new Result({
+                  resultState: this.state,
+                  resetGroup: this.resetGroup.bind(this),
+                }).render()
+          }
         </main>
       </div>`;
+  }
+
+  createOptimizedGroup(groupCnt) {
+    const data = {
+      records: getRecords().map(({ record }) => record),
+      groupNum: groupCnt,
+      peopleArr: getMemberIds(),
+      totalPeopleNum: getMembersLength(),
+      forbiddenPairs: [],
+    };
+    const { newRecord } = solver(data);
+    this.setState({
+      result: newRecord,
+      groupCnt,
+      currentView: 'autoResult',
+    });
+  }
+
+  createManualGroup(groupCnt) {
+    this.setState({
+      result: Array.from({ length: groupCnt }, () => []),
+      groupCnt,
+      currentView: 'manualResult',
+    });
+  }
+
+  resetGroup() {
+    const { currentView, groupCnt } = this.state;
+    currentView === 'manualResult' ? this.createManualGroup(groupCnt) : this.createOptimizedGroup(groupCnt);
   }
 }

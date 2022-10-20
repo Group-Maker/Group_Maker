@@ -8,23 +8,21 @@ export default class SelectGroupCnt extends Component {
     super(props);
 
     this.memberCnt = getMembersLength();
-    this.groupCounter = new Counter({ ...this.props, minCount: 0, maxCount: this.memberCnt });
+    this.groupCounter = new Counter({ ...this.props, minCount: 1, maxCount: this.memberCnt });
   }
 
   // prettier-ignore
-  DOMStr() {
+  DOMStr ()
+  {
+    const noMember = getMembersLength() === 0;
     return `
       <div>
         <h2 class="title">Make New Group</h2>
-        <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt}</p>
+        <p class=${this.memberCnt ? '' : style.errorMsg}>Current member count: ${this.memberCnt} ${noMember ? '<br/>Create member before make group!' : ''}</p>
         <p>How many groups do you want?</p>
         ${this.groupCounter.render()}
-        <button class="manualGroupBtn" ${
-          this.groupCounter.getCount() ? '' : 'disabled'
-        }>MANUALLY<br>CREATE GROUPS</button>
-        <button class="optimizedGroupBtn" ${
-          this.groupCounter.getCount() ? '' : 'disabled'
-        }>CREATE<br>OPTIMIZED GROUPS</button>
+        <button class="manualGroupBtn" ${noMember ? 'disabled' : ''}>MANUALLY<br>CREATE GROUPS</button>
+        <button class="optimizedGroupBtn" ${noMember ? 'disabled' : ''}>CREATE<br>OPTIMIZED GROUPS</button>
       </div>`;
   }
 
@@ -33,15 +31,12 @@ export default class SelectGroupCnt extends Component {
       {
         type: 'click',
         selector: '.optimizedGroupBtn',
-        handler: () => this.props.createNewGroup(this.groupCounter.getCount()),
+        handler: () => this.props.createOptimizedGroup(this.groupCounter.getCount()),
       },
       {
         type: 'click',
         selector: '.manualGroupBtn',
-        handler: () => {
-          const groupNum = this.groupCounter.getCount();
-          this.props.setState({ result: Array.from({ length: groupNum }, () => []), currentView: 'manualResult' });
-        },
+        handler: () => this.props.createManualGroup(this.groupCounter.getCount()),
       },
     ];
   }

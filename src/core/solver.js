@@ -27,7 +27,7 @@ const updateWeights = (round, weights) => {
 // 초기값(0)으로 가중치 배열 생성한 뒤 누적 라운드 순회하며 가중치 업데이트 후 반환
 const initWeights = (totalPeopleNum, records) => {
   const weights = _.range(totalPeopleNum).map(() => _.range(totalPeopleNum).fill(0));
-  records.forEach(round => updateWeights(round, weights));
+  records.forEach(record => updateWeights(record, weights));
   return weights;
 };
 

@@ -57,7 +57,7 @@ const setMembers = members => {
 };
 const getMembersLength = () => getMembers().length;
 const getMemberIds = () => getMembers().map(member => member.id);
-const getMemberNameById = id => getMembers().find(member => member.id === id);
+const getMemberNameById = id => getMembers().find(member => member.id === id)?.name;
 
 const isDuplicatedMemberName = name => getMembers().find(member => member.name === name) !== undefined;
 
