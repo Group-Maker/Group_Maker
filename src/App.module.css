@@ -62,7 +62,6 @@ input {
   border-radius: 1rem;
   margin: 2rem 2rem 2rem 0;
   padding: 2rem;
-  overflow: scroll;
 }
 
 :global .title {
