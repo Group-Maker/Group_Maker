@@ -6,15 +6,15 @@ export default class SignupModal extends Component {
   DOMStr() {
     // prettier-ignore
     return `
-      <div>
+      <section class="modal">
         <div class="closeTarget ${style.overlay}"></div>
         <div class="${style.content}">
-          <div class="${style.message}">Congratulation!\n Now you can Sign in</div>
+          <div class="${style.message}">Congratulation!<br> Now you can Sign in</div>
           <div class="${style.buttons}">
             ${new Link({ path: '/signin', classNames: [style.button], content: 'Sign in' }).render()}
           </div>
         </div>
-      </div>`;
+      </section>`;
   }
 
   setEvent() {
@@ -22,9 +22,7 @@ export default class SignupModal extends Component {
       {
         type: 'click',
         selector: '.closeTarget',
-        handler: e => {
-          e.target.closest('.modal').classList.add('hidden');
-        },
+        handler: this.props.closeModal,
       },
     ];
   }

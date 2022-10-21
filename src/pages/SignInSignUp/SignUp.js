@@ -16,6 +16,7 @@ export default class SignUp extends Component {
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },
       isSignUpFailed: false,
+      isModalOpen: false,
     };
   }
 
@@ -126,6 +127,7 @@ export default class SignUp extends Component {
             ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
         </form>
+        ${this.state.isModalOpen ? new SignupModal({closeModal: this.closeModal.bind(this)}).render() : ''}
       </div>`;
   }
 
@@ -151,6 +153,19 @@ export default class SignUp extends Component {
         selector: `.${style.signUpForm}`,
         handler: e => this.signUp(e),
       },
+      {
+        type: 'click',
+        selector: `.${style.submitBtn}`,
+        handler: () => this.openModal(),
+      },
     ];
+  }
+
+  openModal(removeMemberId) {
+    this.setState(prevState => ({ ...prevState, isModalOpen: true, removeMemberId }));
+  }
+
+  closeModal() {
+    this.setState(prevState => ({ ...prevState, isModalOpen: false, removeMemberId: null }));
   }
 }

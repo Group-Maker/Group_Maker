@@ -1,3 +1,4 @@
+import { throttle } from 'lodash';
 import { Component } from '../../../library/CBD/index.js';
 import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
@@ -11,15 +12,13 @@ export default class Result extends Component {
     this.state = {
       $dragTarget: null,
       $targetContainer: null,
-      fromListId: null,
-      // 테스트를 위한 상태값 고정
+      fromMemberId: null,
     };
   }
 
   DOMStr() {
     const { resultState } = this.props;
     const { result, currentView } = resultState;
-    console.log(this.state);
 
     // prettier-ignore
     return `
@@ -67,7 +66,7 @@ export default class Result extends Component {
       {
         type: 'dragover',
         selector: `.${style.dropContainer}`,
-        handler: _.throttle(this.onDragover.bind(this)),
+        handler: throttle(this.onDragover.bind(this)),
       },
       {
         type: 'drop',
@@ -81,31 +80,25 @@ export default class Result extends Component {
     return +$target.closest('div').dataset.listId;
   }
 
-  getMemberName(id) {
-    return id.closest('div').dataset.listIdx;
-  }
-
   onDragstart(e) {
-    this.$dragTarget = e.target.closest('div');
-    this.$dragTarget.classList.add(`${style.dragging}`);
-    this.fromMemberId = this.getMemberId(this.$dragTarget);
+    this.state.$dragTarget = e.target.closest('div');
+    this.state.$dragTarget.classList.add(`${style.dragging}`);
+    this.state.fromMemberId = this.getMemberId(this.$dragTarget);
   }
 
   onDragend() {
-    this.$dragTarget.classList.remove(`${style.dragging}`);
+    this.state.$dragTarget.classList.remove(`${style.dragging}`);
   }
 
   onDragover(e) {
     e.preventDefault();
 
-    this.targetContainer = e.target.closest(`.${style.dropContainer}`);
-    this.targetContainer.appendChild(this.$dragTarget);
+    this.state.$targetContainer = e.target.closest(`.${style.dropContainer}`);
+    this.state.$targetContainer.appendChild(this.state.$dragTarget);
   }
 
   onDrop(e) {
     e.preventDefault();
-    e.stopPropagation();
-    // console.log(e.dataTransfer);
   }
 
   // 수정이 필요하다,,
