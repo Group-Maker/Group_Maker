@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import solver from '../../core/solver.js';
-import { getMemberIds, getMembersLength, getRecords } from '../../state/index.js';
+import { getActiveMemberIds, getMembersLength, getRecords } from '../../state/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import SelectGroupCnt from './SelectGroupCnt.js';
 import Result from './Result.js';
@@ -40,7 +40,7 @@ export default class NewGroup extends Component {
     const data = {
       records: getRecords().map(({ record }) => record),
       groupNum: groupCnt,
-      peopleArr: getMemberIds(),
+      peopleArr: getActiveMemberIds(),
       totalPeopleNum: getMembersLength(),
       forbiddenPairs: [],
     };
