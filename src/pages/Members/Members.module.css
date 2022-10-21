@@ -7,6 +7,7 @@
   /* padding: 0 2rem 2rem; */
   max-height: 30rem;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .list::-webkit-scrollbar {
