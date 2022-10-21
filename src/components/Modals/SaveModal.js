@@ -4,6 +4,7 @@ import style from './Modal.module.css';
 
 export default class SaveModal extends Component {
   DOMStr() {
+    console.log('modalsave');
     // prettier-ignore
     return `
       <div class="modal">

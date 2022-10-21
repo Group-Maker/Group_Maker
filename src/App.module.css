@@ -21,7 +21,8 @@ body {
 }
 
 ol,
-ul {
+ul,
+li {
   list-style: none;
 }
 
@@ -67,6 +68,7 @@ input {
 :global .title {
   font-size: 3.4rem;
   text-align: center;
+  color: rgb(39, 50, 84);
 }
 
 :global .modal {

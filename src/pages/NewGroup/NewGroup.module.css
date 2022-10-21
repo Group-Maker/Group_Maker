@@ -37,6 +37,15 @@
   transition: 0.3s;
 }
 
+.manualGroupBtn:hover,
+.optimizedGroupBtn:hover {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.7rem;
+  transition: 0.5s;
+  background-color: rgb(112, 111, 111);
+}
+
 .manualGroupBtn:disabled,
 .optimizedGroupBtn:disabled {
   color: rgba(39, 50, 84, 0.5);

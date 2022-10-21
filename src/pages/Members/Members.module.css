@@ -3,9 +3,19 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
+  /* padding: 0 2rem 2rem; */
+  max-height: 30rem;
+  overflow-y: scroll;
 }
 
+.list::-webkit-scrollbar {
+  width: 0.8rem;
+}
+.list::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 30, 184, 0.2);
+  border-radius: 1rem;
+}
 .listItem {
   position: relative;
   display: flex;
@@ -13,9 +23,9 @@
   align-items: center;
   margin-top: 5%;
   width: 12rem;
-  height: 6rem;
+  height: 5rem;
   background: rgba(173, 171, 171, 0.316);
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   border-radius: 20px;
   transition: all 200ms;
 }
@@ -24,7 +34,7 @@
 }
 
 .name {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 .removeBtn {
@@ -34,12 +44,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
-  font-size: 3rem;
-  color: red;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.6rem;
+  color: rgb(189, 64, 64);
   background-color: #ddd;
-  border: 2px solid #000;
+  /* border: 2px solid #000; */
   border-radius: 50%;
   opacity: 0;
   transform: translate3D(50%, -50%, 0);
@@ -65,7 +75,7 @@
   display: none;
   width: 100%;
   height: 100%;
-  font-size: 3rem;
+  font-size: 2rem;
   text-align: center;
   border: 1px solid #ffffff;
   border-radius: 20px;
@@ -78,11 +88,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   font-size: 6rem;
   background: rgba(77, 37, 190, 0.28);
   border-radius: 50%;
+  color: rgb(39, 50, 84);
 }
 
 .listItem.editing .edit {
@@ -95,5 +106,8 @@
 }
 
 .guide {
-  font-size: 3rem;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+  color: rgb(39, 50, 84, 0.7);
 }

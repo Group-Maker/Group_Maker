@@ -26,6 +26,7 @@ export default class Members extends Component {
       ${new MainLayout().render()}
       <main class="main">
         <h2 class="title">Manage Members</h2>
+        <pre class="${style.guide}">Double click & press Enter to edit name</pre>
         ${new MemberList({
           editingMember: this.state.editingMember,
           toggleEditMode: this.toggleEditMode.bind(this),
@@ -33,7 +34,6 @@ export default class Members extends Component {
           onUpdate: this.onUpdate.bind(this),
           openModal: this.openModal.bind(this),
         }).render()}
-        <pre class="${style.guide}">Double click & press Enter to edit name</pre>
       </main>
       ${this.state.isModalOpen
         ? new DeleteModal({
