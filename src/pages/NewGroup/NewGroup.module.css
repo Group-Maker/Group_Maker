@@ -43,7 +43,7 @@
   border-radius: 0.5rem;
   font-size: 1.7rem;
   transition: 0.5s;
-  background-color: #999;
+  background-color: rgb(112, 111, 111);
 }
 
 .manualGroupBtn:disabled,
