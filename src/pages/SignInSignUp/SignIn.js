@@ -28,15 +28,15 @@ export default class signIn extends Component {
     try {
       const { data } = await axios.post(`/auth/signin`, payload);
       const { user, organization } = data;
-      console.log(data);
+      console.log(organization);
       setUserAndOrganization({ user, organization });
       navigate('/');
     } catch (err) {
-      // if (err.response.status === 401) {
-      // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
-      // this.setState({ isSignInFailed: true });
-      this.setState(prevState => ({ ...prevState, isSignInFailed: true }));
-      // }
+      if (err.response.status === 401) {
+        // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
+        // this.setState({ isSignInFailed: true });
+        this.setState(prevState => ({ ...prevState, isSignInFailed: true }));
+      }
     }
   }
 

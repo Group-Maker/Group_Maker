@@ -31,7 +31,6 @@ export default class App extends Component {
       let initialState = getInitialState();
 
       const { data: response } = await axios.get('/auth/check');
-
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
       if (response.user) {
         initialState = { ...initialState, ...response };
@@ -42,6 +41,7 @@ export default class App extends Component {
         // 로컬스토리지 확인
         const localOrganization = loadFromLocalStorage();
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
+        console.log(loadFromLocalStorage());
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
         } else {
@@ -92,7 +92,7 @@ export default class App extends Component {
       {
         type: 'beforeunload',
         selector: 'window',
-        handler: () => this.storeState().bind(this),
+        handler: this.storeState.bind(this),
       },
     ];
   }
