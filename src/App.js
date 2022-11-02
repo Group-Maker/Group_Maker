@@ -41,7 +41,6 @@ export default class App extends Component {
         // 로컬스토리지 확인
         const localOrganization = loadFromLocalStorage();
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
-        console.log(loadFromLocalStorage());
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
         } else {
@@ -58,21 +57,14 @@ export default class App extends Component {
     }
   }
 
-  // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   DOMStr() {
-    if (isLoading()) {
-      return new Loader().render();
-    }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
 
-    // return new Component().render();
-
     return `
       <div>
-        ${new Component().render()}
-      </div>
-    `;
+        ${isLoading() ? new Loader().render() : new Component().render()}
+      </div>`;
   }
 
   async storeState() {

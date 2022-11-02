@@ -17,7 +17,7 @@ class Component {
   }
 
   render() {
-    return this.labelDOMStr(this.DOMStr());
+    return this.labelDOMStr(this.DOMStr().trim());
   }
 
   DOMStr() {
@@ -25,8 +25,12 @@ class Component {
   }
 
   labelDOMStr(DOMStr) {
-    const openTagRegex = /<[^>]*>/;
-    return DOMStr.replace(openTagRegex, openTag => `${openTag.slice(0, -1)} data-component-id="${this.componentId}"/>`);
+    const isComponentIdExist = /^<.*(data-component-id=)+.*>/.test(DOMStr);
+    if (isComponentIdExist) {
+      throw new Error('컴포넌트는 무조건 하나의 요소로 감싸야 합니다');
+    }
+
+    return DOMStr.replace(/<[^>]*>/, openTag => `${openTag.slice(0, -1)} data-component-id="${this.componentId}"/>`);
   }
 
   updateEventHandlers() {
