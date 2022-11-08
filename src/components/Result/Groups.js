@@ -9,11 +9,13 @@ export default class Groups extends Component {
     return `
       <div>
         ${result.map(group => `
-          <div class="${style.dropContainer} ${style.group}">
+          <div class="dropzone ${style.group}" draggable="true">
+            <ul class="${style.memberList}">
             ${group.map(id => `
-              <div class="${style.member}" data-list-id="${id}" draggable="true">
+              <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">
                 ${getMemberNameById(id)}
-              </div>`).join('')}
+              </li>`).join('')}
+            </ul>
           </div>`).join('')}
       </div>`;
   }

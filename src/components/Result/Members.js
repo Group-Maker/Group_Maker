@@ -6,9 +6,9 @@ export default class Members extends Component {
   DOMStr() {
     // prettier-ignore
     return `
-    <li class="${style.memberList}">
+    <ul class="dropzone ${style.memberList}">
       ${getActiveMembers().map(({ id, name }) => `
-        <div class="${style.member}" data-list-id="${id}" draggable="true">${name}</div>`).join('')}
-    </li>`;
+        <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">${name}</li>`).join('')}
+    </ul>`
   }
 }
