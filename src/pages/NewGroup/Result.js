@@ -11,7 +11,8 @@ export default class Result extends Component {
 
     this.state = {
       $dragTarget: null,
-      $targetContainer: null,
+      $startzone: null,
+      $targetzone: null,
       fromMemberId: null,
     };
   }
@@ -24,11 +25,12 @@ export default class Result extends Component {
     return `
       <div>
         <h2 class="title">Result</h2>
-        <div class="${style.dropContainer} ${style.members}">
-          <h3 class="${style.subTitle}">Member List</h3>
+        <h3 class="${style.subTitle}">MemberList</h3>
+        <div class="dropzone ${style.members}">
           ${
-          currentView === 'autoResult' ? '' : new Members().render()
-          }</div>
+            currentView === 'autoResult' ? '<ul></ul>' : new Members().render()
+          }
+        </div>
         <div class="${style.groups}">${new Groups({ result }).render()}</div>
         <div class="${style.buttons}">
           ${
@@ -65,36 +67,45 @@ export default class Result extends Component {
       },
       {
         type: 'dragover',
-        selector: `.${style.dropContainer}`,
+        selector: `.dropzone`,
         handler: throttle(this.onDragover.bind(this)),
       },
       {
         type: 'drop',
-        selector: `.${style.dropContainer}`,
+        selector: 'document',
         handler: this.onDrop.bind(this),
       },
     ];
   }
 
   getMemberId($target) {
-    return +$target.closest('div').dataset.listId;
+    // console.log($target.dataset.listId);
+    return +$target.dataset.listId;
   }
 
   onDragstart(e) {
-    this.state.$dragTarget = e.target.closest('div');
+    this.state.$dragTarget = e.target.closest('.draggable');
     this.state.$dragTarget.classList.add(`${style.dragging}`);
-    this.state.fromMemberId = this.getMemberId(this.$dragTarget);
+    this.state.$startzone = e.target.closest('.dropzone');
+    this.state.fromMemberId = this.getMemberId(this.state.$dragTarget);
+    // console.log('dragstart');
   }
 
   onDragend() {
     this.state.$dragTarget.classList.remove(`${style.dragging}`);
+    // console.log('dragEnd');
   }
 
   onDragover(e) {
+    // console.log('dragover');
     e.preventDefault();
 
-    this.state.$targetContainer = e.target.closest(`.${style.dropContainer}`);
-    this.state.$targetContainer.appendChild(this.state.$dragTarget);
+    this.state.$targetzone = e.target.closest('.dropzone');
+    if (this.state.$targetzone !== this.state.$startzone) {
+      this.state.$startzone = this.state.$targetzone;
+      // console.log(this.state.$targetzone);
+      this.state.$targetzone.children[0].appendChild(this.state.$dragTarget);
+    }
   }
 
   onDrop(e) {
