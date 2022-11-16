@@ -9,12 +9,14 @@ export default class Result extends Component {
   constructor(props) {
     super(props);
 
+    this.$dragTarget = null;
+    this.$dropTarget = null;
+    this.$startzone = null;
+    this.$targetzone = null;
+
     this.state = {
-      $dragTarget: null,
-      $dropTarget: null,
-      $startzone: null,
-      $targetzone: null,
       fromMemberId: null,
+      groupArr: this.props.resultState.result,
     };
   }
 
@@ -80,7 +82,6 @@ export default class Result extends Component {
   }
 
   swap($node1, $node2) {
-    if ($node1 === $node2) return;
     // console.log($node1);
     // console.log($node2);
     // console.log($node1.parentNode);
@@ -96,9 +97,9 @@ export default class Result extends Component {
 
   // appendDragImage() {
   //   const $ghost = document.createElement('div');
-  //   const $ghostChild = this.state.$dragTarget.cloneNode(true);
+  //   const $ghostChild = this.$dragTarget.cloneNode(true);
 
-  //   this.state.$dragTarget.classList.add(`${style.dragging}`);
+  //   this.$dragTarget.classList.add(`${style.dragging}`);
 
   //   $ghost.appendChild($ghostChild);
   //   document.body.appendChild($ghost);
@@ -110,24 +111,24 @@ export default class Result extends Component {
     console.log(e.target);
 
     if (e.target.matches(`.${style.group}`)) {
-      this.state.$dragTarget = e.target;
-      // this.state.$dragTarget.classList.add(`${style.dragging}`);
+      this.$dragTarget = e.target;
+      // this.$dragTarget.classList.add(`${style.dragging}`);
     }
 
     if (e.target.matches(`.${style.member}`)) {
-      this.state.$dragTarget = e.target.closest('.draggable');
+      this.$dragTarget = e.target.closest('.draggable');
       // e.dataTransfer.setDragImage(this.appendDragImage(), e.offsetX, e.offsetY);
-      this.state.$dragTarget.classList.add(`${style.dragging}`);
+      this.$dragTarget.classList.add(`${style.dragging}`);
 
-      this.state.$startzone = e.target.closest('.dropzone');
-      this.state.fromMemberId = this.getMemberId(this.state.$dragTarget);
+      this.$startzone = e.target.closest('.dropzone');
+      this.state.fromMemberId = this.getMemberId(this.$dragTarget);
     }
 
     // console.log('dragstart');
   }
 
   onDragend() {
-    this.state.$dragTarget.classList.remove(`${style.dragging}`);
+    this.$dragTarget.classList.remove(`${style.dragging}`);
     // console.log('dragEnd');
   }
 
@@ -135,12 +136,12 @@ export default class Result extends Component {
     // console.log('dragover');
     e.preventDefault();
 
-    if (this.state.$dragTarget.matches(`.${style.member}`)) {
-      this.state.$targetzone = e.target.closest('.dropzone');
-      if (this.state.$targetzone !== this.state.$startzone) {
-        this.state.$startzone = this.state.$targetzone;
-        // console.log(this.state.$targetzone);
-        this.state.$targetzone.children[0].appendChild(this.state.$dragTarget);
+    if (this.$dragTarget.matches(`.${style.member}`)) {
+      this.$targetzone = e.target.closest('.dropzone');
+      if (this.$targetzone !== this.$startzone) {
+        this.$startzone = this.$targetzone;
+        // console.log(this.$targetzone);
+        this.$targetzone.children[0].appendChild(this.$dragTarget);
       }
     }
   }
@@ -148,10 +149,11 @@ export default class Result extends Component {
   onDrop(e) {
     e.preventDefault();
 
-    if (this.state.$dragTarget.matches(`.${style.group}`)) {
-      this.state.$dropTarget = e.target.closest(`.${style.group}`);
+    if (this.$dragTarget.matches(`.${style.group}`)) {
+      this.$dropTarget = e.target.closest(`.${style.group}`) ?? null;
 
-      this.swap(this.state.$dropTarget, this.state.$dragTarget);
+      if (!this.$dropTarget || this.$dragTarget === this.$dropTarget) return;
+      this.swap(this.$dropTarget, this.$dragTarget);
     }
   }
 
