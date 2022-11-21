@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'Emelind';
+  src: url('./fonts/Emelind.woff') format('woff');
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  color: rgb(39, 50, 84);
+  height: 100%;
+  font-family: 'Emelind';
+  background: #8bc6ec linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%);
+  background-attachment: fixed;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  color: inherit;
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  /* overflow: visible; */
+  cursor: pointer;
+  font-family: inherit;
+}
+
+pre,
+input {
+  font-family: inherit;
+}
+
+:global .hidden {
+  display: none !important;
+}
+
+:global .mainContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+:global .main {
+  width: 100%;
+  min-width: 40rem;
+  background-color: rgba(247, 247, 247, 0.25);
+  border-radius: 1rem;
+  margin: 2rem 2rem 2rem 0;
+  padding: 2rem;
+}
+
+:global .title {
+  font-size: 3.4rem;
+  text-align: center;
+  color: rgb(39, 50, 84);
+}
+
+:global .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global button:disabled {
+  cursor: not-allowed;
+}

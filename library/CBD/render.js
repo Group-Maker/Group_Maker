@@ -1,3 +1,5 @@
+import { updateEventHandlers } from './eventHandler';
+
 const reconciliation = ($virtualNode, $realNode) => {
   if ($virtualNode.nodeType !== $realNode.nodeType) {
     $realNode.replaceWith($virtualNode);
@@ -53,24 +55,52 @@ const reconciliation = ($virtualNode, $realNode) => {
     const $vNode = $virtualChildNodes[i];
     const $rNode = $realChildNodes[i];
 
-    if ($vNode && $rNode) reconciliation($vNode, $rNode);
-    if (!$vNode) $rNode.remove();
-    if (!$rNode) $realNode.appendChild($vNode);
+    if ($vNode && $rNode) {
+      reconciliation($vNode, $rNode);
+    }
+    if (!$vNode) {
+      $rNode.remove();
+    }
+    if (!$rNode) {
+      $realNode.appendChild($vNode);
+    }
   }
 };
 
-let $realRoot = null;
-let $virtualRoot = null;
-let rootComponent = null;
+let init = true;
+let $rootContainer = null;
+let RootComponentInstance = null;
 
-const render = ($rootContainer, RootComponent) => {
-  if ($rootContainer && RootComponent) {
-    $realRoot = $rootContainer;
-    $virtualRoot = $rootContainer.cloneNode(true);
-    rootComponent = new RootComponent();
+const createVirtualRoot = DOMStr => {
+  const $temp = document.createElement('div');
+  $temp.innerHTML = DOMStr;
+  if ($temp.childElementCount > 1) {
+    throw new Error('컴포넌트는 반드시 하나의 요소로 감싸야 합니다!');
   }
-  $virtualRoot.innerHTML = rootComponent.render();
-  reconciliation($virtualRoot, $realRoot);
+  return $temp.firstElementChild;
+};
+
+const render = ($container, componentInstance) => {
+  let $real;
+  let $virtual;
+
+  if (init || !componentInstance) {
+    if (init) {
+      $rootContainer = $container;
+      RootComponentInstance = componentInstance;
+      init = false;
+    }
+    $real = $rootContainer;
+    $virtual = $real.cloneNode(false);
+    $virtual.innerHTML = RootComponentInstance.render();
+  } else {
+    $real = $container;
+    $virtual = createVirtualRoot(componentInstance.render());
+  }
+
+  reconciliation($virtual, $real);
+
+  updateEventHandlers();
 };
 
 export default render;

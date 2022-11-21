@@ -1,0 +1,76 @@
+.result {
+  position: absolute;
+  margin-left: 27vw;
+  font-size: 25px;
+}
+.subTitle {
+  padding-bottom: 0.5rem;
+}
+.members {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 1rem 0;
+  border-radius: 10px;
+  padding: 20px;
+}
+.groups > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.groups > div::-webkit-scrollbar {
+  width: 0.8rem;
+}
+.groups > div::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 30, 184, 0.2);
+  border-radius: 1rem;
+}
+
+.group {
+  min-width: 12rem;
+  max-width: 30rem;
+  min-height: 20rem;
+  height: 20vh;
+  background-color: rgba(137, 43, 226, 0.441);
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.merberList {
+  display: inline;
+}
+.member {
+  background-color: rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  padding: 5px 10px;
+  margin: 5px 5px;
+  border-radius: 10px;
+}
+.buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.retry,
+.reset,
+.save {
+  width: 180px;
+  height: 60px;
+  color: #000000;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  text-decoration-line: none;
+}
+.dragging {
+  opacity: 0.5;
+}

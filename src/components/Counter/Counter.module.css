@@ -1,0 +1,28 @@
+.container {
+  width: 20rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 auto;
+  font-size: 6rem;
+}
+
+.increaseBtn,
+.decreaseBtn {
+  width: 3rem;
+  height: 3rem;
+  font-size: 3rem;
+  border-radius: 0.2rem;
+  background-color: rgb(247, 247, 247, 0.5);
+}
+
+.increaseBtn:disabled,
+.decreaseBtn:disabled {
+  color: rgba(39, 50, 84, 0.5);
+  background-color: rgba(131, 131, 131, 0.2);
+}
+
+.count {
+  text-align: center;
+}
