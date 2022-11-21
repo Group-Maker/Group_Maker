@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
+import { Link, navigate } from '../../../library/SPA-router/index.js';
 import { setUserAndOrganization } from '../../state/index.js';
 import { loadFromLocalStorage } from '../../utils/localStorage.js';
 import style from './SignInAndOut.module.css';
+import storeOnServer from '../../api/index';
 
 class SignInLink extends Component {
   DOMStr() {
@@ -17,13 +18,16 @@ class SignOutButton extends Component {
 
   async signout() {
     try {
-      // TODO 로그아웃 기능을 하는 함수로 다시 받을 것
+      storeOnServer();
+      console.log('stored');
       await axios.get('/auth/signout');
       const organization = loadFromLocalStorage();
       setUserAndOrganization({
         user: null,
+        userId: null,
         organization,
       });
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +38,7 @@ class SignOutButton extends Component {
       {
         type: 'click',
         selector: `.${style.signOutBtn}`,
-        handler: () => this.signout(),
+        handler: this.signout.bind(this),
       },
     ];
   }

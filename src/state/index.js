@@ -2,6 +2,7 @@ import { useGlobalState } from '../../library/CBD/index.js';
 
 const initialState = {
   isLoading: true,
+  userId: null,
   user: null,
   organization: {
     members: [],
@@ -14,25 +15,16 @@ const [getGlobalState, setGlobalState] = useGlobalState(initialState);
 const getInitialState = () => initialState;
 
 const isLoading = () => getGlobalState().isLoading;
-const setIsLoading = isLoading => {
-  setGlobalState(prevState => ({
-    ...prevState,
-    isLoading,
-  }));
-};
 
 const getUser = () => getGlobalState().user;
-const setUser = user => {
-  setGlobalState(prevState => ({
-    ...prevState,
-    user,
-  }));
-};
 
-const setUserAndOrganization = ({ user, organization }) => {
+const getuserId = () => getGlobalState().userId;
+
+const setUserAndOrganization = ({ user, userId, organization }) => {
   setGlobalState(prevState => ({
     ...prevState,
     user,
+    userId,
     organization,
   }));
 };
@@ -57,7 +49,6 @@ const setMembers = members => {
 };
 
 const getMembersLength = () => getMembers().length;
-const getMemberIds = () => getMembers().map(member => member.id);
 const getMemberNameById = id => getMembers().find(member => member.id === id)?.name;
 
 const getActiveMembers = () => getMembers().filter(member => member.isActive);
@@ -106,14 +97,11 @@ const removeRecord = id => {
 export {
   getInitialState,
   isLoading,
-  setIsLoading,
   getUser,
-  setUser,
+  getuserId,
   setUserAndOrganization,
   getOrganization,
-  getMembers,
   getMembersLength,
-  getMemberIds,
   getMemberNameById,
   getActiveMembers,
   getActiveMemberIds,

@@ -11,8 +11,8 @@ export default class SignUp extends Component {
     super(props);
 
     this.state = {
-      userid: { value: '', isDirty: false },
-      name: { value: '', isDirty: false },
+      userId: { value: '', isDirty: false },
+      user: { value: '', isDirty: false },
       password: { value: '', isDirty: false },
       confirmPassword: { value: '', isDirty: false },
       isSignUpFailed: false,
@@ -20,9 +20,9 @@ export default class SignUp extends Component {
     };
   }
 
-  async checkDuplicatedUserid(inputUserid) {
+  async checkDuplicateduserId(userId) {
     try {
-      const { data: isDuplicated } = await axios.post('/auth/checkDuplicated', { inputUserid });
+      const { data: isDuplicated } = await axios.post('/auth/userId', { userId });
 
       if (isDuplicated) {
         this.setState(prevState => ({ ...prevState, isSignUpFailed: true }));
@@ -46,8 +46,6 @@ export default class SignUp extends Component {
       // TODO: 모달 관련 코드 수정 필요
       document.querySelector('.modal').classList.remove('hidden');
     } catch (err) {
-      // if (err.response.status === 401) {
-      // }
       console.log(err);
     }
   }
@@ -59,12 +57,12 @@ export default class SignUp extends Component {
   }
 
   DOMStr() {
-    const useridValue = this.state.userid.value;
-    const nameValue = this.state.name.value;
+    const userIdValue = this.state.userId.value;
+    const userValue = this.state.user.value;
     const passwordValue = this.state.password.value;
     const confirmPasswordValue = this.state.confirmPassword.value;
-    const isUseridValid = signUpSchema.userid.isValid(useridValue);
-    const isNameValid = !!nameValue;
+    const isuserIdValid = signUpSchema.userId.isValid(userIdValue);
+    const isUserValid = !!userValue;
     const isPasswordValid = signUpSchema.password.isValid(passwordValue);
     const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
 
@@ -76,23 +74,23 @@ export default class SignUp extends Component {
           <h2 class="${style.subTitle}">SIGN-UP</h2>
           <div class="${style.inputWrapper}">
             <div class="${style.inputContainer}">
-              <label class="${style.label}" for="userid">EMAIL</label>
-              <input class="useridInput ${
+              <label class="${style.label}" for="userId">EMAIL</label>
+              <input class="userIdInput ${
                 style.input
-              }" type="text" id="userid" name="userid" required autocomplete="off" value="${useridValue}"/>
-              ${this.state.userid.isDirty ? this.renderIcon(isUseridValid) : ''}
+              }" type="text" id="userId" name="userId" required autocomplete="off" value="${userIdValue}"/>
+              ${this.state.userId.isDirty ? this.renderIcon(isuserIdValid) : ''}
               <div class="${style.validateError}">${
-                this.state.userid.isDirty && !isUseridValid ? signUpSchema.userid.error : ''
+                this.state.userId.isDirty && !isuserIdValid ? signUpSchema.userId.error : ''
               }</div>
             </div>
             <div class="${style.inputContainer}">
-              <label class="${style.label}" for="name">NAME</label>
-              <input class="${style.input}" type="text" id="name" name="name" required autocomplete="off" value="${
-                this.state.name.value
+              <label class="${style.label}" for="user">NAME</label>
+              <input class="${style.input}" type="text" id="user" name="user" required autocomplete="off" value="${
+                this.state.user.value
               }"/>
-              ${this.state.name.isDirty ? this.renderIcon(isNameValid) : ''}
+              ${this.state.user.isDirty ? this.renderIcon(isUserValid) : ''}
               <div class="${style.validateError}">${
-                this.state.name.isDirty && !isNameValid ? signUpSchema.name.error : ''
+                this.state.user.isDirty && !isUserValid ? signUpSchema.user.error : ''
               }</div>
             </div>
             <div class="${style.inputContainer}">
@@ -122,7 +120,7 @@ export default class SignUp extends Component {
           </div>
           <div class="${style.btnWrapper}">
             <button class="submit-btn ${style.submitBtn}" ${
-              isUseridValid && isNameValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
+              isuserIdValid && isUserValid && isPasswordValid && isConfirmPasswordValid ? '' : 'disabled'
             }>SIGN UP</button>
             ${new Link({ path: '/signin', content: 'Sign in', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
@@ -145,8 +143,8 @@ export default class SignUp extends Component {
       },
       {
         type: 'input',
-        selector: '.useridInput',
-        handler: e => this.checkDuplicatedUserid(e.target.value),
+        selector: '.userIdInput',
+        handler: e => this.checkDuplicateduserId(e.target.value),
       },
       {
         type: 'submit',

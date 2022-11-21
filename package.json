@@ -52,6 +52,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
-    "loadsh": "^0.0.4"
+    "loadsh": "^0.0.4",
+    "mongodb": "^4.12.0"
   }
 }
