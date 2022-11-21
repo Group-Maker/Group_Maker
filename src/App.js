@@ -27,13 +27,15 @@ export default class App extends Component {
   }
 
   async init() {
-    try {
-      let initialState = getInitialState();
+    let initialState = getInitialState();
 
-      const { data: response } = await axios.get('/auth/check');
+    try {
+      const { data: response } = await axios.get('/auth');
+
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
-      if (response.user) {
-        initialState = { ...initialState, ...response };
+      if (response.success) {
+        const { user, userId, organization } = response;
+        initialState = { ...initialState, user, userId, organization };
       }
 
       // 토큰이 없거나 유효하지 않으면(로그인 실패)
@@ -43,8 +45,6 @@ export default class App extends Component {
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
-        } else {
-          storeOnLocalStorage(initialState.organization);
         }
       }
 

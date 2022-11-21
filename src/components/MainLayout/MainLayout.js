@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
+import { Link, navigate } from '../../../library/SPA-router/index.js';
 import Nav from './Nav.js';
 import { getUser, setUserAndOrganization } from '../../state/index.js';
 import { loadFromLocalStorage } from '../../utils/localStorage.js';
+import storeOnServer from '../../api/index.js';
 import style from './MainLayout.module.css';
 import 'boxicons';
 
@@ -57,13 +58,15 @@ export default class MainLayout extends Component {
 
   async signout() {
     try {
-      // TODO 로그아웃 기능을 하는 함수로 다시 받을 것
+      storeOnServer();
       await axios.get('/auth/signout');
       const organization = loadFromLocalStorage();
       setUserAndOrganization({
         user: null,
+        userId: null,
         organization,
       });
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
@@ -74,7 +77,7 @@ export default class MainLayout extends Component {
       {
         type: 'click',
         selector: `.${style.signOutBtn}`,
-        handler: () => this.signout(),
+        handler: this.signout.bind(this),
       },
     ];
   }

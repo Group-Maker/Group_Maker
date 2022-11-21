@@ -1,5 +1,5 @@
 const signInSchema = {
-  userid: {
+  userId: {
     isValid(input) {
       return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(input);
     },
@@ -15,7 +15,7 @@ const signInSchema = {
 
 const signUpSchema = {
   ...signInSchema,
-  name: {
+  user: {
     error: '이름을 입력해 주세요.',
   },
   confirmPassword: {

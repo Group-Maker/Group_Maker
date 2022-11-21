@@ -50,7 +50,6 @@ export default class MemberItem extends Component {
 
           const id = +e.target.closest(`.${style.listItem}`).dataset.id;
           const name = e.target.value;
-          console.log(id, name, editingMember);
           if (editingMember.id === id && editingMember.name === name) {
             toggleEditMode({ id: null, name: null });
             return;
