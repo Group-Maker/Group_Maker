@@ -57,17 +57,14 @@ export default class App extends Component {
     }
   }
 
-  // 코드 더 깨끗하게 쓸 수 있을지 생각해보자!
   DOMStr() {
-    if (isLoading()) {
-      return new Loader().render();
-    }
     const path = window.location.pathname;
     const Component = resolveComponent(path);
 
-    // return new Component().render();
-
-    return `<div>${new Component().render()}</div>`;
+    return `
+      <div>
+        ${isLoading() ? new Loader().render() : new Component().render()}
+      </div>`;
   }
 
   async storeState() {

@@ -1,8 +1,10 @@
+import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
-import { SignInLink, SignOutButton } from './SignInAndOut.js';
+import { Link, navigate } from '../../../library/SPA-router/index.js';
 import Nav from './Nav.js';
-import { getUser } from '../../state/index.js';
+import { getUser, setUserAndOrganization } from '../../state/index.js';
+import { loadFromLocalStorage } from '../../utils/localStorage.js';
+import storeOnServer from '../../api/index.js';
 import style from './MainLayout.module.css';
 import 'boxicons';
 
@@ -26,7 +28,9 @@ export default class MainLayout extends Component {
         <p class="${
           style.description
         }">We make a group<br>where you can be with<br>new people.</p>
-        ${user ? new SignOutButton().render() : new SignInLink().render()}
+        ${user 
+          ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>` 
+          : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()}
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
           <li>
@@ -50,5 +54,31 @@ export default class MainLayout extends Component {
           </li>
         </ul>
       </section>`;
+  }
+
+  async signout() {
+    try {
+      storeOnServer();
+      await axios.get('/auth/signout');
+      const organization = loadFromLocalStorage();
+      setUserAndOrganization({
+        user: null,
+        userId: null,
+        organization,
+      });
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  setEvent() {
+    return [
+      {
+        type: 'click',
+        selector: `.${style.signOutBtn}`,
+        handler: this.signout.bind(this),
+      },
+    ];
   }
 }

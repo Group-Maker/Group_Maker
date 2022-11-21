@@ -52,7 +52,7 @@ const updateEventHandlers = () => {
   handlersHolder.forEach(handlerInfo => {
     const { id, type, handler } = handlerInfo;
 
-    if (document.querySelector(`[data-component-id="${id}"]`) || type === 'beforeunload') {
+    if (document.querySelector(`[data-component-id="${id}"]`)) {
       window.addEventListener(type, handler);
     } else {
       window.removeEventListener(type, handler);

@@ -73,3 +73,23 @@
   width: 2.3rem;
   height: 2.3rem;
 }
+
+.signInLink,
+.signOutBtn {
+  width: 8rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  margin: 0 auto;
+  font-size: 1rem;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  transition: 0.3s;
+  color: #f7f7f7;
+  background-color: rgba(247, 247, 247, 0.3);
+}
+
+.signInLink:hover,
+.signOutBtn:hover {
+  background-color: rgba(247, 247, 247, 0.8);
+  color: rgb(39, 50, 84);
+}
