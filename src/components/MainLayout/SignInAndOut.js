@@ -19,7 +19,6 @@ class SignOutButton extends Component {
   async signout() {
     try {
       storeOnServer();
-      console.log('stored');
       await axios.get('/auth/signout');
       const organization = loadFromLocalStorage();
       setUserAndOrganization({

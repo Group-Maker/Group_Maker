@@ -60,12 +60,8 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     const organization = JSON.stringify({ members: [], records: [] });
 
     try {
-      dbUsers.insertOne({ user, userId, password, organization }, err => {
-        if (err) {
-          throw err;
-        }
-        console.log('signup success!');
-      });
+      dbUsers.insertOne({ user, userId, password, organization });
+      console.log('signup success!');
       res.send('Success');
     } catch (err) {
       console.log(err.message);
