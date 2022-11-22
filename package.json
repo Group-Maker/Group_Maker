@@ -54,5 +54,9 @@
     "jsonwebtoken": "^8.5.1",
     "loadsh": "^0.0.4",
     "mongodb": "^4.12.0"
+  },
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.5.5"
   }
 }
