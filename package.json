@@ -4,7 +4,7 @@
   "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를만들어주는 프로그램입니다",
   "private": true,
   "scripts": {
-    "start": "node -e js,css,html --watch dist/ --watch server.js server.js",
+    "start": "node server.js",
     "build": "rm -rf dist && webpack"
   },
   "repository": {
