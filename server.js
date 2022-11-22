@@ -9,17 +9,19 @@ const cors = require('cors');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once('connection', () => {
-  setTimeout(() => {
-    liveReloadServer.refresh('/');
-  }, 100);
-});
-
 const app = express();
 const PORT = process.env.PORT || 5004;
 
-app.use(connectLiveReload());
+if (process.env.NODE_ENV === 'development') {
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.server.once('connection', () => {
+    setTimeout(() => {
+      liveReloadServer.refresh('/');
+    }, 100);
+  });
+  app.use(connectLiveReload());
+}
+
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
