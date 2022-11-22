@@ -2,23 +2,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const livereload = require('livereload');
-const connectLiveReload = require('connect-livereload');
-
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once('connection', () => {
-  setTimeout(() => {
-    liveReloadServer.refresh('/');
-  }, 100);
-});
-
 const app = express();
-const PORT = 5004;
+const PORT = process.env.PORT || 5004;
 
-app.use(connectLiveReload());
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
