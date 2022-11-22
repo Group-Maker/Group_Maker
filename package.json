@@ -4,9 +4,7 @@
   "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를만들어주는 프로그램입니다",
   "private": true,
   "scripts": {
-    "start": "run-p webpack-watch server",
-    "server": "nodemon -e js,css,html --watch dist/ --watch server.js server.js",
-    "webpack-watch": "webpack -w",
+    "start": "nodemon -e js,css,html --watch dist/ --watch server.js server.js",
     "build": "rm -rf dist && webpack"
   },
   "repository": {
@@ -53,6 +51,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "loadsh": "^0.0.4",
-    "mongodb": "^4.12.0"
+    "mongodb": "^4.12.0",
+    "netlify-cli": "^12.2.6"
   }
 }
