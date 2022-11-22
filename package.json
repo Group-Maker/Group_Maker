@@ -1,10 +1,11 @@
 {
   "name": "group_maker",
   "version": "1.0.0",
+  "type": "module",
   "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를만들어주는 프로그램입니다",
   "private": true,
   "scripts": {
-    "start": "run-p webpack-watch server",
+    "start": "node server.js",
     "server": "nodemon -e js,css,html --watch dist/ --watch server.js server.js",
     "webpack-watch": "webpack -w",
     "build": "rm -rf dist && webpack"
@@ -20,7 +21,7 @@
     "url": "https://github.com/Group-Maker/Group_Maker/issues"
   },
   "homepage": "https://github.com/Group-Maker/Group_Maker#readme",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.19.3",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/plugin-transform-runtime": "^7.19.1",
@@ -42,9 +43,7 @@
     "prettier": "2.7.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
-  },
-  "dependencies": {
+    "webpack-cli": "^4.10.0",
     "@babel/runtime-corejs3": "^7.19.4",
     "axios": "^1.1.2",
     "cookie-parser": "^1.4.6",

@@ -1,11 +1,16 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
-const livereload = require('livereload');
-const connectLiveReload = require('connect-livereload');
-const users = require('./fake-data/users-data.js');
-require('dotenv').config();
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import livereload from 'livereload';
+import connectLiveReload from 'connect-livereload';
+import users from './fake-data/users-data.js';
+from('dotenv').config();
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once('connection', () => {
@@ -15,7 +20,7 @@ liveReloadServer.server.once('connection', () => {
 });
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(connectLiveReload());
 app.use(express.static(path.join(__dirname, 'dist')));
