@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const cors = require('cors');
+// const cors = require('cors');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5004;
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: 'https://group-maker-vanillajs.netlify.app', credentials: true }));
+// app.use(cors({ origin: 'https://group-maker-vanillajs.netlify.app', credentials: true }));
 
 MongoClient.connect(process.env.DB_URL, (err, client) => {
   if (err) {
