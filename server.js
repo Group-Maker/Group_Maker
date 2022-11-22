@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const livereload = require('livereload');
 const connectLiveReload = require('connect-livereload');
+const cors = require('cors');
 
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
@@ -16,12 +17,13 @@ liveReloadServer.server.once('connection', () => {
 });
 
 const app = express();
-const PORT = 5004;
+const PORT = process.env.PORT || 5004;
 
 app.use(connectLiveReload());
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: 'https://group-maker-vanillajs.netlify.app', credentials: true }));
 
 MongoClient.connect(process.env.DB_URL, (err, client) => {
   if (err) {
