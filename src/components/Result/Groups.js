@@ -8,8 +8,8 @@ export default class Groups extends Component {
     // prettier-ignore
     return `
       <div>
-        ${result.map(group => `
-          <div class="dropzone ${style.group}" draggable="true">
+        ${result.map((group, i) => `
+          <div class="dropzone ${style.group}" data-list-id="${i}" draggable="true">
             <ul class="${style.memberList}">
             ${group.map(id => `
               <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">
