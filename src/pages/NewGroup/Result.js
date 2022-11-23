@@ -9,20 +9,23 @@ export default class Result extends Component {
   constructor(props) {
     super(props);
 
+    this.$initTargetzone = null;
     this.$dragTarget = null;
     this.$dropTarget = null;
     this.$startzone = null;
     this.$targetzone = null;
+    this.$ghost = null;
 
     this.state = {
-      fromMemberId: null,
       groupArr: this.props.resultState.result,
     };
   }
 
   DOMStr() {
-    const { resultState } = this.props;
-    const { result, currentView } = resultState;
+    const { groupArr } = this.state;
+    const {
+      resultState: { currentView },
+    } = this.props;
 
     // prettier-ignore
     return `
@@ -34,7 +37,7 @@ export default class Result extends Component {
             currentView === 'autoResult' ? '<ul></ul>' : new Members().render()
           }
         </div>
-        <div class="${style.groups}">${new Groups({ result }).render()}</div>
+        <div class="${style.groups}">${new Groups({ groupArr }).render()}</div>
         <div class="${style.buttons}">
           ${
             currentView === 'autoResult'
@@ -70,9 +73,14 @@ export default class Result extends Component {
       },
       {
         type: 'dragover',
-        selector: `.dropzone`,
+        selector: '.dropzone',
         handler: throttle(this.onDragover.bind(this)),
       },
+      // {
+      //   type: 'dragleave',
+      //   selector: '.dropzone',
+      //   handler: throttle(this.onDragleave.bind(this)),
+      // },
       {
         type: 'drop',
         selector: 'document',
@@ -81,98 +89,124 @@ export default class Result extends Component {
     ];
   }
 
-  swap($node1, $node2) {
-    // console.log($node1);
-    // console.log($node2);
-    // console.log($node1.parentNode);
-    // console.log($node2.parentNode);
-    $node1.parentNode.replaceChild($node2.cloneNode(true), $node1);
-    $node2.parentNode.replaceChild($node1.cloneNode(true), $node2);
-  }
-
   getMemberId($target) {
-    // console.log($target.dataset.listId);
     return +$target.dataset.listId;
   }
 
-  // appendDragImage() {
-  //   const $ghost = document.createElement('div');
-  //   const $ghostChild = this.$dragTarget.cloneNode(true);
+  getGroupId($target) {
+    return +$target.dataset.listId;
+  }
 
-  //   this.$dragTarget.classList.add(`${style.dragging}`);
+  swap($node1, $node2) {
+    const group1 = this.getGroupId($node1);
+    const group2 = this.getGroupId($node2);
 
-  //   $ghost.appendChild($ghostChild);
-  //   document.body.appendChild($ghost);
+    this.setState(({ groupArr }) => {
+      [groupArr[group1], groupArr[group2]] = [groupArr[group2], groupArr[group1]];
 
-  //   return $ghost;
-  // }
+      return { groupArr: groupArr };
+    });
+  }
+
+  appendDragImage() {
+    this.$ghost = document.createElement('div');
+    const $ghostChild = this.$dragTarget.cloneNode(true);
+
+    $ghostChild.classList.add(`${style.ghost}`);
+
+    this.$ghost.appendChild($ghostChild);
+    document.body.appendChild(this.$ghost);
+
+    return this.$ghost;
+  }
+
+  removeDragImage() {
+    document.body.removeChild(this.$ghost);
+  }
 
   onDragstart(e) {
-    console.log(e.target);
-
     if (e.target.matches(`.${style.group}`)) {
       this.$dragTarget = e.target;
-      // this.$dragTarget.classList.add(`${style.dragging}`);
+      this.$dragTarget.classList.add(`${style.dragging}`);
     }
 
     if (e.target.matches(`.${style.member}`)) {
       this.$dragTarget = e.target.closest('.draggable');
-      // e.dataTransfer.setDragImage(this.appendDragImage(), e.offsetX, e.offsetY);
       this.$dragTarget.classList.add(`${style.dragging}`);
-
+      e.dataTransfer.setDragImage(this.appendDragImage(), e.offsetX, e.offsetY);
+      this.$initTargetzone = e.target.closest('.dropzone');
       this.$startzone = e.target.closest('.dropzone');
-      this.state.fromMemberId = this.getMemberId(this.$dragTarget);
     }
-
-    // console.log('dragstart');
   }
 
-  onDragend() {
+  onDragend(e) {
     this.$dragTarget.classList.remove(`${style.dragging}`);
-    // console.log('dragEnd');
+
+    if (e.target.matches(`.${style.member}`)) {
+      // delete ghostimage
+      this.removeDragImage();
+    }
   }
 
   onDragover(e) {
-    // console.log('dragover');
     e.preventDefault();
 
     if (this.$dragTarget.matches(`.${style.member}`)) {
       this.$targetzone = e.target.closest('.dropzone');
-      if (this.$targetzone !== this.$startzone) {
-        this.$startzone = this.$targetzone;
-        // console.log(this.$targetzone);
-        this.$targetzone.children[0].appendChild(this.$dragTarget);
-      }
+      if (this.$targetzone === this.$startzone) return;
+
+      this.$startzone = this.$targetzone;
+      this.$targetzone.children[0].appendChild(this.$dragTarget);
     }
   }
 
+  // initialize location when target drops at NOTdropzone
+  // onDragleave(e) {
+  //   if (this.$targetzone !== this.$initTargetzone) {
+  //     this.$targetzone.children[0].removeChild(this.$dragTarget);
+  //     this.$initTargetzone.children[0].appendChild(this.$dragTarget);
+  //   }
+  // }
+
   onDrop(e) {
     e.preventDefault();
+
+    if (this.$dragTarget.matches(`.${style.member}`)) {
+      if (this.$targetzone === this.$initTargetzone) return;
+
+      if (this.$targetzone.matches(`.${style.group}`)) {
+        const to = this.getGroupId(this.$targetzone);
+        const targetId = this.getMemberId(this.$dragTarget);
+
+        // this.state.groupArr[from].filter(id => id !== targetId);
+        // this.state.groupArr[to].push(targetId);
+        // console.log(this.state.groupArr)
+
+        this.setState(({ groupArr }) => {
+          const nextState = groupArr.map((group, id) =>
+            id === to ? [...group, targetId] : group.filter(member => member !== targetId)
+          );
+
+          return {
+            groupArr: nextState,
+          };
+        });
+      }
+    }
 
     if (this.$dragTarget.matches(`.${style.group}`)) {
       this.$dropTarget = e.target.closest(`.${style.group}`) ?? null;
 
       if (!this.$dropTarget || this.$dragTarget === this.$dropTarget) return;
+
       this.swap(this.$dropTarget, this.$dragTarget);
     }
   }
 
-  // 수정이 필요하다,,
-  getResult() {
-    const groupsArr = [];
-    document.querySelectorAll(`.${style.groups} > div > div`).forEach(group => {
-      const groupArr = [];
-      group.querySelectorAll('div').forEach(el => {
-        groupArr.push(this.getMemberId(el));
-      });
-      groupsArr.push(groupArr);
-    });
-    return groupsArr;
-  }
-
   saveRecord() {
-    const record = this.getResult();
-    addRecord(record);
+    addRecord(this.state.groupArr);
+
+    // will change to dialog
     alert('Successfully saved!');
   }
 }
