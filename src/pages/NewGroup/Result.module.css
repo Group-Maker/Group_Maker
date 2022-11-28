@@ -8,8 +8,9 @@
 }
 .members {
   width: 100%;
+  min-height: 5rem;
   background-color: rgba(255, 255, 255, 0.5);
-  margin: 1rem 0;
+  margin: 0 0 1rem 0;
   border-radius: 10px;
   padding: 20px;
 }
@@ -30,21 +31,19 @@
 }
 
 .group {
-  min-width: 12rem;
-  max-width: 30rem;
+  width: 16rem;
   min-height: 20rem;
-  height: 20vh;
-  background-color: rgba(137, 43, 226, 0.441);
+  /* height: 20vh; */
   border-radius: 10px;
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-.merberList {
+.memberList {
   display: inline;
 }
 .member {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255);
   display: inline-flex;
   padding: 5px 10px;
   margin: 5px 5px;
@@ -73,4 +72,8 @@
 }
 .dragging {
   opacity: 0.5;
+}
+.ghost {
+  opacity: 1;
+  transform: rotate(12deg);
 }
