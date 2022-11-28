@@ -72,8 +72,8 @@
 }
 .dragging {
   opacity: 0.5;
-  font-style: italic;
 }
 .ghost {
   opacity: 1;
+  transform: rotate(12deg);
 }
