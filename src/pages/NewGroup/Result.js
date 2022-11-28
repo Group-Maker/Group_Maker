@@ -79,11 +79,6 @@ export default class Result extends Component {
         selector: '.dropzone',
         handler: throttle(this.onDragover.bind(this)),
       },
-      // {
-      //   type: 'dragleave',
-      //   selector: '.dropzone',
-      //   handler: throttle(this.onDragleave.bind(this)),
-      // },
       {
         type: 'drop',
         selector: 'document',
@@ -167,14 +162,6 @@ export default class Result extends Component {
     }
   }
 
-  // initialize location when target drops at NOTdropzone
-  // onDragleave(e) {
-  //   if (this.$targetzone !== this.$initTargetzone) {
-  //     this.$targetzone.children[0].removeChild(this.$dragTarget);
-  //     this.$initTargetzone.children[0].appendChild(this.$dragTarget);
-  //   }
-  // }
-
   onDrop(e) {
     e.preventDefault();
 
@@ -186,7 +173,6 @@ export default class Result extends Component {
         const targetId = this.getMemberId(this.$dragTarget);
 
         this.setState(({ memberArr, groupArr }) => {
-          // const nextState = groupArr.map((group, id) => id === to && [...group, targetId]);
           return {
             memberArr: memberArr.filter(member => member !== targetId),
             groupArr: groupArr.map((group, id) => (id === to ? [...group, targetId] : group)),
