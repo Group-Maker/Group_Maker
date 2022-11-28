@@ -2,7 +2,7 @@ import { throttle } from 'lodash';
 import { Component } from '../../../library/CBD/index.js';
 import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
-import { addRecord } from '../../state/index.js';
+import { addRecord, getActiveMemberIds } from '../../state/index.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
@@ -16,16 +16,21 @@ export default class Result extends Component {
     this.$targetzone = null;
     this.$ghost = null;
 
+    const {
+      resultState: { currentView, result },
+    } = this.props;
+
     this.state = {
-      groupArr: this.props.resultState.result,
+      memberArr: currentView === 'autoResult' ? [] : getActiveMemberIds(),
+      groupArr: result,
     };
   }
 
   DOMStr() {
-    const { groupArr } = this.state;
     const {
       resultState: { currentView },
     } = this.props;
+    const { memberArr, groupArr } = this.state;
 
     // prettier-ignore
     return `
@@ -33,9 +38,7 @@ export default class Result extends Component {
         <h2 class="title">Result</h2>
         <h3 class="${style.subTitle}">MemberList</h3>
         <div class="dropzone ${style.members}">
-          ${
-            currentView === 'autoResult' ? '<ul></ul>' : new Members().render()
-          }
+          ${new Members({ memberArr }).render()}
         </div>
         <div class="${style.groups}">${new Groups({ groupArr }).render()}</div>
         <div class="${style.buttons}">
@@ -101,10 +104,14 @@ export default class Result extends Component {
     const group1 = this.getGroupId($node1);
     const group2 = this.getGroupId($node2);
 
-    this.setState(({ groupArr }) => {
+    this.setState(prevState => {
+      let groupArr = prevState.groupArr;
       [groupArr[group1], groupArr[group2]] = [groupArr[group2], groupArr[group1]];
 
-      return { groupArr: groupArr };
+      return {
+        ...prevState,
+        groupArr: groupArr,
+      };
     });
   }
 
@@ -171,24 +178,53 @@ export default class Result extends Component {
   onDrop(e) {
     e.preventDefault();
 
-    if (this.$dragTarget.matches(`.${style.member}`)) {
-      if (this.$targetzone === this.$initTargetzone) return;
-
-      if (this.$targetzone.matches(`.${style.group}`)) {
+    // from memberList
+    if (this.$dragTarget.matches(`.${style.member}`) && this.$initTargetzone.matches(`.${style.members}`)) {
+      // to group
+      if (e.target.closest('.dropzone').matches(`.${style.group}`)) {
         const to = this.getGroupId(this.$targetzone);
         const targetId = this.getMemberId(this.$dragTarget);
 
-        // this.state.groupArr[from].filter(id => id !== targetId);
-        // this.state.groupArr[to].push(targetId);
-        // console.log(this.state.groupArr)
+        this.setState(({ memberArr, groupArr }) => {
+          // const nextState = groupArr.map((group, id) => id === to && [...group, targetId]);
+          return {
+            memberArr: memberArr.filter(member => member !== targetId),
+            groupArr: groupArr.map((group, id) => (id === to ? [...group, targetId] : group)),
+          };
+        });
+      }
+    }
 
-        this.setState(({ groupArr }) => {
-          const nextState = groupArr.map((group, id) =>
+    // from group
+    if (this.$dragTarget.matches(`.${style.member}`) && this.$initTargetzone.matches(`.${style.group}`)) {
+      if (this.$targetzone === this.$initTargetzone) return;
+
+      // to group
+      if (e.target.closest('.dropzone').matches(`.${style.group}`)) {
+        const to = this.getGroupId(this.$targetzone);
+        const targetId = this.getMemberId(this.$dragTarget);
+
+        this.setState(prevState => {
+          const nextState = prevState.groupArr.map((group, id) =>
             id === to ? [...group, targetId] : group.filter(member => member !== targetId)
           );
 
           return {
+            ...prevState,
             groupArr: nextState,
+          };
+        });
+      }
+
+      // to memberList
+      if (e.target.closest('.dropzone').matches(`.${style.members}`)) {
+        const targetId = this.getMemberId(this.$dragTarget);
+
+        this.setState(({ memberArr, groupArr }) => {
+          memberArr.push(targetId);
+          return {
+            memberArr: memberArr,
+            groupArr: groupArr.map(group => group.filter(member => member !== targetId)),
           };
         });
       }
