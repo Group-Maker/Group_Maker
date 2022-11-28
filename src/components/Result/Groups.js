@@ -4,11 +4,11 @@ import style from '../../pages/NewGroup/Result.module.css';
 
 export default class Groups extends Component {
   DOMStr() {
-    const { result } = this.props;
+    const { groupArr } = this.props;
     // prettier-ignore
     return `
       <div>
-        ${result.map((group, i) => `
+        ${groupArr.map((group, i) => `
           <div class="dropzone ${style.group}" data-list-id="${i}" draggable="true">
             <ul class="${style.memberList}">
             ${group.map(id => `
