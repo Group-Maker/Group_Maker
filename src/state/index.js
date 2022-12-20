@@ -14,7 +14,7 @@ const [getGlobalState, setGlobalState] = useGlobalState(initialState);
 
 const getInitialState = () => initialState;
 
-const isLoading = () => getGlobalState().isLoading;
+const getIsLoading = () => getGlobalState().isLoading;
 
 const getUser = () => getGlobalState().user;
 
@@ -48,12 +48,8 @@ const setMembers = members => {
   }));
 };
 
-const getMembersLength = () => getMembers().length;
 const getMemberNameById = id => getMembers().find(member => member.id === id)?.name;
-
 const getActiveMembers = () => getMembers().filter(member => member.isActive);
-const getActiveMemberIds = () => getActiveMembers().map(member => member.id);
-const getActiveMembersLength = () => getActiveMembers().length;
 
 const isDuplicatedMemberName = name => getMembers().find(member => member.name === name) !== undefined;
 
@@ -96,16 +92,14 @@ const removeRecord = id => {
 
 export {
   getInitialState,
-  isLoading,
+  getIsLoading,
   getUser,
   getuserId,
   setUserAndOrganization,
   getOrganization,
-  getMembersLength,
+  getMembers,
   getMemberNameById,
   getActiveMembers,
-  getActiveMemberIds,
-  getActiveMembersLength,
   isDuplicatedMemberName,
   addMember,
   updateMember,

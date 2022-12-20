@@ -5,7 +5,10 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "rm -rf dist && webpack"
+    "build": "rm -rf dist && webpack",
+    "dev": "run-p dev:client dev:server",
+    "dev:client": "webpack -w",
+    "dev:server": "nodemon -e js,css,html --watch dist/ --watch server.js server.js"
   },
   "repository": {
     "type": "git",
