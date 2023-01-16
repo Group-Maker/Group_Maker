@@ -4,16 +4,18 @@ import style from '../../pages/NewGroup/Result.module.css';
 
 export default class Groups extends Component {
   DOMStr() {
-    const { result } = this.props;
+    const { groupArr } = this.props;
     // prettier-ignore
     return `
       <div>
-        ${result.map(group => `
-          <div class="${style.dropContainer} ${style.group}">
+        ${groupArr.map((group, i) => `
+          <div class="dropzone ${style.group}" data-list-id="${i}" draggable="true">
+            <ul class="${style.memberList}">
             ${group.map(id => `
-              <div class="${style.member}" data-list-id="${id}" draggable="true">
+              <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">
                 ${getMemberNameById(id)}
-              </div>`).join('')}
+              </li>`).join('')}
+            </ul>
           </div>`).join('')}
       </div>`;
   }
