@@ -1,13 +1,13 @@
 import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
-import { getActiveMembersLength } from '../../state/index.js';
+import { getActiveMembers } from '../../state/index.js';
 import style from './NewGroup.module.css';
 
 export default class SelectGroupCnt extends Component {
   constructor(props) {
     super(props);
 
-    this.memberCnt = getActiveMembersLength();
+    this.memberCnt = getActiveMembers().length;
     this.groupCounter = new Counter({ minCount: 1, maxCount: this.memberCnt });
   }
 
