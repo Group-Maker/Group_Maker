@@ -13,17 +13,20 @@ class ComponentNode {
 
 export class ComponentTree {
   // 컴포넌트를 담아두는 객체
-  // 탐색 없이 모든
+  // 탐색 없이 모든 객체에 바로 접근할 수 있다
   #components = {};
   // 컴포넌트 호출 순서를 관리하는 배열
   // 컴포넌트를 트리에 추가할 때 부모 컴포넌트를 확인할 수 있다
   #callStack = [];
+
+  // 디버깅을 위해 임시로 사용할 접근자 프로퍼티
   get callStack() {
     return this.#callStack;
   }
   get components() {
     return this.#components;
   }
+
   pushToCallStack(componentId) {
     this.#callStack.push(componentId);
   }
