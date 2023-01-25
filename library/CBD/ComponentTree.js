@@ -26,7 +26,6 @@ export class ComponentTree {
   get components() {
     return this.#components;
   }
-
   pushToCallStack(componentId) {
     this.#callStack.push(componentId);
   }
