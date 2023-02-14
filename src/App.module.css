@@ -58,6 +58,8 @@ input {
 :global .main {
   width: 100%;
   min-width: 40rem;
+  height: calc(100vh - 4rem);
+  overflow: hidden;
   background-color: rgba(247, 247, 247, 0.25);
   border-radius: 1rem;
   margin: 2rem 2rem 2rem 0;
