@@ -104,7 +104,7 @@ const render = ($container, componentInstance) => {
     $virtual = $virtualRoot.querySelector(`[data-component-id="${currentRootId}"]`);
     $newVirtual = createVirtualRoot(componentInstance.render());
   }
-  console.log('----------------render phase---------------------');
+  // console.log('----------------render phase---------------------');
 
   componentTree.trav(currentRootId, (_, componentId) => {
     const isRemoved =
@@ -120,13 +120,13 @@ const render = ($container, componentInstance) => {
 
   // 브라우저에 렌더링
   reconciliation($newVirtual, $real);
-  console.log('----------------commit phase---------------------');
+  // console.log('----------------commit phase---------------------');
 
   // 컴포넌트 트리를 순회하며 업데이트한다 - 현재 컴포넌트 트리와 DOM트리는 동기화된 상태이다
   // 처음 생성된 컴포넌트는 didMount함수를 호출하고 이벤트 핸들러를 등록한다
   // 나머지 컴포넌트는 didUpdate를 호출한다
   componentTree.trav(currentRootId, componentTree.update);
-  console.log('-------------------------------------');
+  // console.log('-------------------------------------');
 };
 
 export { render, componentTree };

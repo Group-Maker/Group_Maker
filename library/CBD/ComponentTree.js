@@ -71,7 +71,6 @@ export class ComponentTree {
     if (!componentId || !this.#components[componentId]) {
       return;
     }
-    console.log(`travling`, componentId);
     const { component, children } = this.#components[componentId];
 
     callback(component, componentId);
