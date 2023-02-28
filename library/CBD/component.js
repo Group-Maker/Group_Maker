@@ -22,7 +22,6 @@ class Component {
 
   render() {
     componentTree.pushToCallStack(this.id);
-    // console.log(componentTree.callStack);
     const labledDOMStr = this.labelDOMStr(this.DOMStr().trim());
     componentTree.popCallStack();
     return labledDOMStr;
