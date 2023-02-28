@@ -1,114 +1,130 @@
+/* [Members.js] */
+
+.guide {
+  max-width: 100%;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  color: rgb(39, 50, 84, 0.7);
+}
+
+.addMemberForm input {
+  width: 13rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: solid 1px rgb(39, 50, 84, 0.5);
+  border-radius: 4px;
+  background-color: rgba(247, 247, 247, 0.5);
+}
+
+.addMemberForm button {
+  width: 6rem;
+  height: 2rem;
+  margin-left: 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(247, 247, 247, 0.5);
+}
+
+.addMemberForm button:hover {
+  background-color: rgba(247, 247, 247, 0.7);
+}
+
+/* ---------------------------------------- */
+
+/* [MemberList.js] */
+
 .list {
+  width: 100%;
+  flex-grow: 1;
+  margin: 1.5rem 2rem;
+  padding: 2rem;
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 1.2rem;
-  /* padding: 0 2rem 2rem; */
-  max-height: 30rem;
+  gap: 1rem;
   overflow-y: scroll;
-  overflow-x: hidden;
+  border: 3px solid rgba(247, 247, 247, 0.5);
+  border-radius: 8px;
 }
 
 .list::-webkit-scrollbar {
   width: 0.8rem;
 }
+
 .list::-webkit-scrollbar-thumb {
-  background-color: rgba(144, 30, 184, 0.2);
-  border-radius: 1rem;
+  background-color: rgba(247, 247, 247, 0.5);
+  /* TODO: 스크롤과 list border가 겹치는 부분 해결 */
+  border-radius: 4px;
 }
-.listItem {
+
+/* ---------------------------------------- */
+
+/* [MemberItem.js] */
+
+.memberItem {
+  display: block;
   position: relative;
-  display: flex;
-  justify-content: center;
+}
+
+.memberItem span,
+.memberItem input {
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 1rem;
+  border: solid 1px rgb(39, 50, 84, 0.5);
+}
+
+/* TODO: span과 input의 미묘한 너비차이 해결 */
+
+.memberItem span {
+  padding: 1rem 2.2rem;
+  background-color: rgba(247, 247, 247, 0.5);
+}
+
+.memberItem input {
+  padding: 1rem 2rem;
+  background-color: rgba(247, 247, 247, 0.7);
+}
+
+.memberItem label {
+  display: inline-grid;
+  vertical-align: top;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
-  margin-top: 5%;
-  width: 12rem;
-  height: 5rem;
-  background: rgba(173, 171, 171, 0.316);
-  border: 2px solid #ffffff;
-  border-radius: 20px;
-  transition: all 200ms;
-}
-.listItem:hover {
-  background: rgba(247, 247, 247, 0.6);
+  position: relative;
+  font-family: inherit;
+  font-size: inherit;
 }
 
-.name {
-  font-size: 1.6rem;
+.memberItem label::after {
+  content: attr(data-value);
+  visibility: hidden;
+  height: 0;
+  padding: 0 2.2rem;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre-wrap;
 }
 
-.removeBtn {
+.memberItem button {
   position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
+  top: -0.3rem;
+  right: -0.3rem;
+  display: none;
   justify-content: center;
   align-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.6rem;
-  color: rgb(189, 64, 64);
-  background-color: #ddd;
-  /* border: 2px solid #000; */
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
-  opacity: 0;
-  transform: translate3D(50%, -50%, 0);
-  transition: opacity 120ms;
-  transition: background-color 220ms;
-}
-.listItem:hover .removeBtn,
-.removeBtn:hover {
-  opacity: 1;
-}
-.removeBtn:hover {
-  background-color: #999;
+  background-color: rgb(189, 64, 64);
 }
 
-.listItem.editing .view {
-  display: none;
-}
-.listItem.editing .edit {
-  display: block;
-}
-
-.edit {
-  display: none;
-  width: 100%;
-  height: 100%;
-  font-size: 2rem;
-  text-align: center;
-  border: 1px solid #ffffff;
-  border-radius: 20px;
-}
-.edit:focus {
-  outline: none;
-}
-
-.addBtn {
+.memberItem:hover button {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3rem;
-  height: 3rem;
-  font-size: 6rem;
-  background: rgba(77, 37, 190, 0.28);
-  border-radius: 50%;
-  color: rgb(39, 50, 84);
-}
-
-.listItem.editing .edit {
-  display: block;
-}
-
-.icon {
-  width: 10rem;
-  height: 10rem;
-}
-
-.guide {
-  padding: 1rem 0;
-  font-size: 1.5rem;
-  text-align: center;
-  color: rgb(39, 50, 84, 0.7);
+  transition: all 0.3s;
 }
