@@ -2,7 +2,7 @@ import { throttle } from 'lodash';
 import { Component } from '../../../library/CBD/index.js';
 import Members from '../../components/Result/Members.js';
 import Groups from '../../components/Result/Groups.js';
-import { addRecord, getActiveMemberIds } from '../../state/index.js';
+import { addRecord, getActiveMembers } from '../../state/index.js';
 import style from './Result.module.css';
 
 export default class Result extends Component {
@@ -21,7 +21,7 @@ export default class Result extends Component {
     } = this.props;
 
     this.state = {
-      memberArr: currentView === 'autoResult' ? [] : getActiveMemberIds(),
+      memberArr: currentView === 'autoResult' ? [] : getActiveMembers().map(member => member.id),
       groupArr: result,
     };
   }
@@ -100,12 +100,12 @@ export default class Result extends Component {
     const group2 = this.getGroupId($node2);
 
     this.setState(prevState => {
-      let groupArr = prevState.groupArr;
+      const { groupArr } = prevState;
       [groupArr[group1], groupArr[group2]] = [groupArr[group2], groupArr[group1]];
 
       return {
         ...prevState,
-        groupArr: groupArr,
+        groupArr,
       };
     });
   }
@@ -155,7 +155,9 @@ export default class Result extends Component {
 
     if (this.$dragTarget.matches(`.${style.member}`)) {
       this.$targetzone = e.target.closest('.dropzone');
-      if (this.$targetzone === this.$startzone) return;
+      if (this.$targetzone === this.$startzone) {
+        return;
+      }
 
       this.$startzone = this.$targetzone;
       this.$targetzone.children[0].appendChild(this.$dragTarget);
@@ -172,18 +174,18 @@ export default class Result extends Component {
         const to = this.getGroupId(this.$targetzone);
         const targetId = this.getMemberId(this.$dragTarget);
 
-        this.setState(({ memberArr, groupArr }) => {
-          return {
-            memberArr: memberArr.filter(member => member !== targetId),
-            groupArr: groupArr.map((group, id) => (id === to ? [...group, targetId] : group)),
-          };
-        });
+        this.setState(({ memberArr, groupArr }) => ({
+          memberArr: memberArr.filter(member => member !== targetId),
+          groupArr: groupArr.map((group, id) => (id === to ? [...group, targetId] : group)),
+        }));
       }
     }
 
     // from group
     if (this.$dragTarget.matches(`.${style.member}`) && this.$initTargetzone.matches(`.${style.group}`)) {
-      if (this.$targetzone === this.$initTargetzone) return;
+      if (this.$targetzone === this.$initTargetzone) {
+        return;
+      }
 
       // to group
       if (e.target.closest('.dropzone').matches(`.${style.group}`)) {
@@ -209,7 +211,7 @@ export default class Result extends Component {
         this.setState(({ memberArr, groupArr }) => {
           memberArr.push(targetId);
           return {
-            memberArr: memberArr,
+            memberArr,
             groupArr: groupArr.map(group => group.filter(member => member !== targetId)),
           };
         });
@@ -219,7 +221,9 @@ export default class Result extends Component {
     if (this.$dragTarget.matches(`.${style.group}`)) {
       this.$dropTarget = e.target.closest(`.${style.group}`) ?? null;
 
-      if (!this.$dropTarget || this.$dragTarget === this.$dropTarget) return;
+      if (!this.$dropTarget || this.$dragTarget === this.$dropTarget) {
+        return;
+      }
 
       this.swap(this.$dropTarget, this.$dragTarget);
     }
