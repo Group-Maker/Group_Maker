@@ -1,9 +1,8 @@
 import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/Modals/DeleteModal.js';
-import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
 import MemberList from './MemberList.js';
-
+import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
 import style from './Members.module.css';
 
 export default class Members extends Component {
@@ -22,27 +21,32 @@ export default class Members extends Component {
   DOMStr() {
     // prettier-ignore
     return `
-    <div class="mainContainer">
-      ${new MainLayout().render()}
-      <main class="main">
-        <h2 class="title">Manage Members</h2>
-        <pre class="${style.guide}">Double click & press Enter to edit name</pre>
-        ${new MemberList({
-          editingMember: this.state.editingMember,
-          toggleEditMode: this.toggleEditMode.bind(this),
-          onAdd: this.onAdd.bind(this),
-          onUpdate: this.onUpdate.bind(this),
-          openModal: this.openModal.bind(this),
-        }).render()}
-      </main>
-      ${this.state.isModalOpen
-        ? new DeleteModal({
-            target: 'member',
-            onRemove: this.onRemove.bind(this),
-            closeModal: this.closeModal.bind(this),
-          }).render()
-        : ''}
-    </div>`;
+      <div class="mainContainer">
+        ${new MainLayout().render()}
+        <main class="main">
+          <h2 class="title">Manage Members</h2>
+          <pre class="${
+            style.guide
+          }">Double-click name to edit. When you are done, press Enter.</pre>
+          ${new MemberList({
+            editingMember: this.state.editingMember,
+            toggleEditMode: this.toggleEditMode.bind(this),
+            onUpdate: this.onUpdate.bind(this),
+            openModal: this.openModal.bind(this),
+          }).render()}
+          <form class="${style.addMemberForm}">
+            <input type="text" maxlength="20" autofocus=${true}/>
+            <button type="submit">Add member</button>
+          </form>
+        </main>
+        ${this.state.isModalOpen
+            ? new DeleteModal({
+                target: 'member',
+                onRemove: this.onRemove.bind(this),
+                closeModal: this.closeModal.bind(this),
+              }).render()
+            : ''}
+      </div>`;
   }
 
   toggleEditMode(editingMember) {
@@ -53,29 +57,21 @@ export default class Members extends Component {
   }
 
   onAdd(name) {
-    if (name.trim() === '') {
-      this.toggleEditMode({ id: null, name: null });
+    if (isDuplicatedMemberName(name)) {
+      alert('중복된 이름입니다.');
       return;
     }
 
-    if (isDuplicatedMemberName(name)) {
-      alert('중복금지!중복금지!!');
-      return;
-    }
     addMember(name);
   }
 
   onUpdate({ id, name }) {
-    if (name.trim() === '') {
-      this.toggleEditMode({ id: null, name: null });
-      return;
-    }
-
     if (isDuplicatedMemberName(name)) {
-      alert('중복금지!중복금지!!');
+      alert('중복된 이름입니다.');
       return;
     }
 
+    console.log('XXXX');
     updateMember({ id, name });
   }
 
@@ -89,5 +85,24 @@ export default class Members extends Component {
 
   closeModal() {
     this.setState(prevState => ({ ...prevState, isModalOpen: false, removeMemberId: null }));
+  }
+
+  setEvent() {
+    return [
+      // TODO: sanitize
+      // TODO: 멤버 입력시 scrollable 요소의 bottom으로! 즉, 방금 추가된 멤버가 보이도록
+      {
+        type: 'submit',
+        selector: `.${style.addMemberForm}`,
+        handler: e => {
+          e.preventDefault();
+
+          const trimmedValue = e.target.querySelector('input').value.trim();
+          if (trimmedValue !== '') {
+            this.onAdd(trimmedValue);
+          }
+        },
+      },
+    ];
   }
 }
