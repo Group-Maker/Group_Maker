@@ -29,22 +29,20 @@ const validateEventHandlerInfo = eventHandlers => {
 };
 
 const subscribeEvents = eventHandlers => {
-  eventHandlers.forEach(eventHandler => {
-    const { selector, handler, type } = eventHandler;
-    const wrappedHandler = e => {
-      if (selector === 'window' || selector === 'document' || e.target.closest(selector)) {
-        handler(e);
-      }
-    };
+  eventHandlers.forEach(handlerInfo => {
+    const { id, type, handler } = handlerInfo;
+    const $container = document.querySelector(`[data-component-id="${id}"]`);
 
-    window.addEventListener(type, wrappedHandler);
+    $container.addEventListener(type, handler);
   });
 };
 
 const unSubscribeEvents = eventHandlers => {
   eventHandlers.forEach(handlerInfo => {
-    const { type, handler } = handlerInfo;
-    window.removeEventListener(type, handler);
+    const { id, type, handler } = handlerInfo;
+    const $container = document.querySelector(`[data-component-id="${id}"]`);
+
+    $container.removeEventListener(type, handler);
   });
 };
 
