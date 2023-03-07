@@ -34,7 +34,7 @@ export default class Result extends Component {
 
     // prettier-ignore
     return `
-      <div>
+      <div class="container">
         <h2 class="title">Result</h2>
         <h3 class="${style.subTitle}">MemberList</h3>
         <div class="dropzone ${style.members}">
@@ -66,12 +66,12 @@ export default class Result extends Component {
       },
       {
         type: 'dragstart',
-        selector: 'document',
+        selector: '.container',
         handler: this.onDragstart.bind(this),
       },
       {
         type: 'dragend',
-        selector: 'document',
+        selector: '.container',
         handler: this.onDragend.bind(this),
       },
       {
@@ -81,7 +81,7 @@ export default class Result extends Component {
       },
       {
         type: 'drop',
-        selector: 'document',
+        selector: '.container',
         handler: this.onDrop.bind(this),
       },
     ];

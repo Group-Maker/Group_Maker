@@ -45,7 +45,16 @@ class Component {
       const eventHandlers = this.setEvent();
       validateEventHandlerInfo(eventHandlers);
 
-      this.eventHandlers = eventHandlers;
+      this.eventHandlers = eventHandlers.map(handlerInfo => {
+        const { selector, handler } = handlerInfo;
+        const wrappedHandler = e => {
+          if (e.target.closest(selector)) {
+            handler(e);
+          }
+        };
+
+        return { ...handlerInfo, id: this.id, handler: wrappedHandler };
+      });
     }
   }
 }
