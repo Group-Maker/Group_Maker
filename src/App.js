@@ -1,11 +1,22 @@
 import axios from 'axios';
 import { Component } from '../library/CBD/index.js';
-import { createRoutes, resolveComponent } from '../library/SPA-router/index.js';
-import { loadFromLocalStorage, storeOnLocalStorage, setPageTitle } from './utils/index.js';
-import storeOnServer from './api/index.js';
+import { createRoutes, navigate, resolveComponent } from '../library/SPA-router/index.js';
+import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from './utils/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
-import { getInitialState, getUser, getIsLoading, setGlobalState } from './state/index.js';
+import Onboarding, { ONBOARDING_PLACEMENT } from './components/Onboarding/Onboarding.js';
+import { ONBOARDING_ID } from './constants/onboarding';
+import {
+  getInitialState,
+  getUser,
+  getIsLoading,
+  setGlobalState,
+  getOrganization,
+  disableOnboarding,
+  stepTo,
+  getCurrentStep,
+  isOnboarding,
+} from './state/index.js';
 import style from './App.module.css';
 
 const routes = [
@@ -20,6 +31,8 @@ const routes = [
 createRoutes(routes);
 
 export default class App extends Component {
+  organizationStorage = new LocalStorage(ORGANIZATION_KEY);
+
   didMount() {
     this.init();
     // 테스트 해봐야 함
@@ -34,12 +47,28 @@ export default class App extends Component {
   }
 
   DOMStr() {
+    if (getIsLoading()) {
+      return /* html */ `
+        <div>
+          ${new Loader().render()}
+        </div>`;
+    }
+
     const path = window.location.pathname;
     const Component = resolveComponent(path);
-
-    return `
+    return /* html */ `
       <div>
-        ${getIsLoading() ? new Loader().render() : new Component().render()}
+        ${new Component().render()}
+        ${
+          isOnboarding()
+            ? new Onboarding({
+                steps: this.onboardingSteps,
+                stepIndex: getCurrentStep(),
+                callback: this.handleOnboarding.bind(this),
+                onFinish: disableOnboarding,
+              }).render()
+            : ''
+        }
       </div>`;
   }
 
@@ -58,7 +87,7 @@ export default class App extends Component {
       // 토큰이 없거나 유효하지 않으면(로그인 실패)
       else {
         // 로컬스토리지 확인
-        const localOrganization = loadFromLocalStorage();
+        const localOrganization = this.organizationStorage.getItem();
         // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
         if (localOrganization) {
           initialState = { ...initialState, organization: localOrganization };
@@ -76,13 +105,85 @@ export default class App extends Component {
 
   async storeState() {
     try {
-      if (getUser()) {
-        await storeOnServer();
+      const user = getUser();
+      const organization = getOrganization();
+      if (user) {
+        const payload = { userId: user.id, newOrganization: organization };
+        await axios.post('/organization', payload);
       } else {
-        storeOnLocalStorage();
+        this.organizationStorage.setItem(organization);
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  onboardingSteps = [
+    {
+      title: 'Welcome to Optimal Group Generator!',
+      content: "Let's begin super simple and easy tutorials.",
+      placement: ONBOARDING_PLACEMENT.CENTER,
+    },
+    {
+      title: 'Manage Members',
+      content: 'You can manage your members here.',
+      target: `[data-onboarding-id="${ONBOARDING_ID.MEMBERS_PAGE}"]`,
+      placement: ONBOARDING_PLACEMENT.RIGHT,
+      page: '/',
+    },
+    {
+      title: 'Add Member',
+      content: "Write member's name and press Enter.<br />At least 1 member is needed to generate group.",
+      target: `[data-onboarding-id="${ONBOARDING_ID.ADD_MEMBER}"]`,
+      placement: ONBOARDING_PLACEMENT.TOP,
+      page: '/',
+    },
+    {
+      title: 'Previous Records',
+      content: 'You can review and remove previous records here.',
+      target: `[data-onboarding-id="${ONBOARDING_ID.RECORDS_PAGE}"]`,
+      placement: ONBOARDING_PLACEMENT.RIGHT,
+      page: '/records',
+    },
+    {
+      title: 'Generate New Group',
+      content: 'You can generate new group here.',
+      target: `[data-onboarding-id="${ONBOARDING_ID.NEW_GROUP_PAGE}"]`,
+      placement: ONBOARDING_PLACEMENT.RIGHT,
+      page: '/newgroup',
+    },
+    {
+      title: 'Select the number of groups',
+      content: "Click '+' and '-' button to control the number of groups.",
+      target: `[data-onboarding-id="${ONBOARDING_ID.SELECT_GROUP_CNT}"]`,
+      placement: ONBOARDING_PLACEMENT.LEFT,
+      page: '/newgroup',
+    },
+    {
+      title: 'Generate optimized groups',
+      content: 'Be with new people!<br />We care all about tedious calculation.',
+      target: `[data-onboarding-id="${ONBOARDING_ID.OPTIMAL_GENERATE}"]`,
+      placement: ONBOARDING_PLACEMENT.TOP,
+      page: '/newgroup',
+    },
+    {
+      title: 'Generate group manually',
+      content: 'You can generate group manually either.<br />Just Drag&Drop to assign members to group.',
+      target: `[data-onboarding-id="${ONBOARDING_ID.MANUAL_GENERATE}"]`,
+      placement: ONBOARDING_PLACEMENT.TOP,
+      page: '/newgroup',
+    },
+    {
+      title: 'Congratulations!',
+      content: "That's all!<br />Now manage your groups with Optimal-Group-Generator.",
+      page: '/',
+    },
+  ];
+
+  handleOnboarding(step) {
+    const onboardPage = this.onboardingSteps[step]?.page;
+    onboardPage && navigate(onboardPage);
+    const isFinished = step >= this.onboardingSteps.length;
+    isFinished ? disableOnboarding() : stepTo(step);
   }
 }
