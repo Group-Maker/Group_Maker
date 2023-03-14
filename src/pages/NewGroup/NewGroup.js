@@ -1,6 +1,6 @@
 import { Component } from '../../../library/CBD/index.js';
 import solver from '../../core/solver.js';
-import { getActiveMembers, getMembers, getRecords } from '../../state/index.js';
+import { getActiveMembers, getRecords } from '../../state/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import SelectGroupCnt from './SelectGroupCnt.js';
 import Result from './Result.js';
@@ -41,7 +41,6 @@ export default class NewGroup extends Component {
       records: getRecords().map(({ record }) => record),
       groupNum: groupCnt,
       peopleArr: getActiveMembers().map(member => member.id),
-      totalPeopleNum: getMembers().length,
       forbiddenPairs: [],
     };
     const { newRecord } = solver(data);
@@ -68,6 +67,5 @@ export default class NewGroup extends Component {
 
   returnToSelectCount() {
     this.setState(prevState => ({ ...prevState, currentView: 'selectGroupCnt' }));
-    console.log(this.state);
   }
 }
