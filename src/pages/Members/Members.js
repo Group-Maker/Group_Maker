@@ -2,7 +2,16 @@ import { Component } from '../../../library/CBD/index.js';
 import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/Modals/DeleteModal.js';
 import MemberList from './MemberList.js';
-import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
+import {
+  getMemberIdByName,
+  checkDuplicatedName,
+  checkActiveMember,
+  checkMemberIncludedInRecords,
+  addMember,
+  updateMember,
+  inactiveMember,
+  removeMember,
+} from '../../state/index.js';
 import style from './Members.module.css';
 
 export default class Members extends Component {
@@ -56,27 +65,39 @@ export default class Members extends Component {
     }));
   }
 
-  onAdd(name) {
-    if (isDuplicatedMemberName(name)) {
+  preventDuplicatedName(name, callback) {
+    if (!checkDuplicatedName(name)) {
+      callback();
+      return;
+    }
+
+    const id = getMemberIdByName(name);
+
+    if (checkActiveMember(id)) {
       alert('중복된 이름입니다.');
       return;
     }
 
-    addMember(name);
+    if (checkMemberIncludedInRecords(id)) {
+      alert('Previous Records에 존재하는 이름이므로 사용할 수 없습니다.');
+      return;
+    }
+
+    removeMember(id);
+    callback();
+  }
+
+  onAdd(name) {
+    this.preventDuplicatedName(name, () => addMember(name));
+    document.getElementById('memberList').scroll({ top: 9999, behavior: 'smooth' });
   }
 
   onUpdate({ id, name }) {
-    if (isDuplicatedMemberName(name)) {
-      alert('중복된 이름입니다.');
-      return;
-    }
-
-    console.log('XXXX');
-    updateMember({ id, name });
+    this.preventDuplicatedName(name, () => updateMember({ id, name }));
   }
 
   onRemove() {
-    removeMember(this.state.removeMemberId);
+    inactiveMember(this.state.removeMemberId);
   }
 
   openModal(removeMemberId) {
