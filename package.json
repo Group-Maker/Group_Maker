@@ -38,16 +38,17 @@
     "html-webpack-plugin": "^5.5.0",
     "livereload": "^0.9.3",
     "mini-css-extract-plugin": "^2.6.1",
+    "netlify-cli": "^12.2.6",
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
     "prettier": "2.7.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "netlify-cli": "^12.2.6"
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.19.4",
+    "@google-cloud/storage": "^6.9.3",
     "axios": "^1.1.2",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.25.5",
