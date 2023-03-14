@@ -1,0 +1,37 @@
+.container {
+  width: 100%;
+  min-width: 40rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.notFoundMsg {
+  display: block;
+  margin-top: 2rem;
+  font-size: 1.6rem;
+}
+
+.goToHome {
+  width: fit-content;
+  margin: 3rem auto 0 auto;
+  font-size: 1.5rem;
+  border: 2px solid rgba(247, 247, 247, 0.8);
+  border-radius: 0.5rem;
+  color: rgb(247, 247, 247);
+  transition: 0.3s;
+}
+
+.goToHome > a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+}
+
+.goToHome:hover {
+  background: rgba(247, 247, 247, 0.8);
+}
+
+.goToHome:hover > a {
+  color: rgb(39, 50, 84);
+}
