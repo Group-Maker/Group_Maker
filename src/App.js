@@ -5,7 +5,7 @@ import { loadFromLocalStorage, storeOnLocalStorage, setPageTitle } from './utils
 import storeOnServer from './api/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
-import { getInitialState, getUser, getIsLoading, setGlobalState } from './state/index.js';
+import { getInitialState, getUser, checkLoading, setGlobalState } from './state/index.js';
 import style from './App.module.css';
 
 const routes = [
@@ -39,7 +39,7 @@ export default class App extends Component {
 
     return `
       <div>
-        ${getIsLoading() ? new Loader().render() : new Component().render()}
+        ${checkLoading() ? new Loader().render() : new Component().render()}
       </div>`;
   }
 
