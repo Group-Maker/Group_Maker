@@ -74,12 +74,12 @@ export default class Members extends Component {
     const id = getMemberIdByName(name);
 
     if (checkActiveMember(id)) {
-      alert('중복된 이름입니다.');
+      alert('Duplicate name is not allowed.');
       return;
     }
 
     if (checkMemberIncludedInRecords(id)) {
-      alert('Previous Records에 존재하는 이름이므로 사용할 수 없습니다.');
+      alert('The name exists in Previous Records is not allowed.');
       return;
     }
 
