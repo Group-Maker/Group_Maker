@@ -9,14 +9,14 @@ export default class MemberItem extends Component {
 
     // TODO: data-name 없이?
     // TODO: sanitize(https://www.npmjs.com/package/sanitize-html)
-    // TODO: 미묘한 padding 변화
+    // TODO: 글자 1개일 때 Input 상태와 Span 상태 글 미묘한 padding 변화 해결 필요
     // 입력값에 따라 길이가 달라지는 input: https://codepen.io/chaerin-dev/pen/gOdgPMN
     return `
       <li data-id="${id}" data-name="${name}" class="${style.memberItem}">
         ${
           isEditing
             ? `<label data-value="${name}">
-                <input type="text" value="${name}" size="1" maxlength="20">
+                <input id="addMemberInput" type="text" value="${name}" size="1" maxlength="20">
               </label>`
             : `<span>${name}</span>
               <button aria-label="delete member">
@@ -29,18 +29,14 @@ export default class MemberItem extends Component {
       </li>`;
   }
 
-  // TODO: 생명주기 함수 이용 -> 선택된 input 자동 포커스
-
   setEvent() {
     const { openModal, onUpdate, toggleEditMode, editingMember } = this.props;
 
-    // TODO: 이벤트 중복 해결
     return [
       {
         type: 'input',
         selector: `.${style.memberItem} input`,
         handler: e => {
-          console.log('INPUT EVENT');
           e.target.closest('label').dataset.value = e.target.value;
         },
       },
@@ -55,13 +51,10 @@ export default class MemberItem extends Component {
               toggleEditMode({ id: null, name: null });
               return;
             }
-            console.log('UPDATE MEMBER');
             onUpdate({ id, name: trimmedValue });
           }
 
           if (e.key === 'Escape') {
-            console.log('KEYDOWN ESC');
-            console.log('TOGGLE EDIT MODE');
             toggleEditMode({ id: null, name: null });
           }
         },
@@ -75,7 +68,7 @@ export default class MemberItem extends Component {
         },
       },
       {
-        type: 'click',
+        type: 'dblclick',
         selector: `.${style.memberItem}`,
         handler: e => {
           const $li = e.target.closest(`.${style.memberItem}`);
