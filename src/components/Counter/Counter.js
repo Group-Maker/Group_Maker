@@ -1,5 +1,4 @@
 import { Component } from '../../../library/CBD/index.js';
-import { ONBOARDING_ID } from '../../constants/onboarding';
 import style from './Counter.module.css';
 
 export default class Counter extends Component {
@@ -12,7 +11,7 @@ export default class Counter extends Component {
   DOMStr() {
     const { minCount, maxCount } = this.props;
     return `
-      <div class=${style.container} data-onboarding-id="${ONBOARDING_ID.SELECT_GROUP_CNT}">
+      <div class=${style.container}>
         <button class="${style.decreaseBtn}" ${this.state.count <= minCount ? 'disabled' : ''}>-</button>
         <div class="counter ${style.count}">${this.state.count}</div>
         <button class="${style.increaseBtn}" ${this.state.count >= maxCount ? 'disabled' : ''}>+</button>

@@ -25,7 +25,7 @@ export default class SelectGroupCnt extends Component {
     } members.<br>${noMember ? 'Create member before make group!' : 'How many groups do you want?'}</p>
           ${this.groupCounter.render()}
           <div class="${style.btnContainer}">
-            <button class="${style.manualGroupBtn}" ${noMember ? 'disabled' : ''} data-onboarding-id="${ONBOARDING_ID.MANUAL_GENERATE}">MANUALLY<br>CREATE GROUPS</button>
+            <button class="${style.manualGroupBtn}" ${noMember ? 'disabled' : ''}>MANUALLY<br>CREATE GROUPS</button>
             <button class="${style.optimizedGroupBtn}" ${noMember ? 'disabled' : ''} data-onboarding-id="${ONBOARDING_ID.OPTIMAL_GENERATE}">CREATE<br>OPTIMIZED GROUPS</button>
           </div>
         </div>

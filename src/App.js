@@ -4,8 +4,8 @@ import { createRoutes, navigate, resolveComponent } from '../library/SPA-router/
 import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from './utils/index.js';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
 import Loader from './components/Loading/Loader.js';
-import Onboarding, { ONBOARDING_PLACEMENT } from './components/Onboarding/Onboarding.js';
-import { ONBOARDING_ID } from './constants/onboarding';
+import Onboarding from './components/Onboarding/Onboarding.js';
+import { ONBOARDING_STEPS } from './constants/onboarding';
 import {
   getInitialState,
   getUser,
@@ -62,10 +62,10 @@ export default class App extends Component {
         ${
           isOnboarding()
             ? new Onboarding({
-                steps: this.onboardingSteps,
+                steps: ONBOARDING_STEPS,
                 stepIndex: getCurrentStep(),
                 callback: this.handleOnboarding.bind(this),
-                onFinish: disableOnboarding,
+                onFinish: () => this.handleOnboarding(ONBOARDING_STEPS.length - 1),
               }).render()
             : ''
         }
@@ -118,72 +118,10 @@ export default class App extends Component {
     }
   }
 
-  onboardingSteps = [
-    {
-      title: 'Welcome to Optimal Group Generator!',
-      content: "Let's begin super simple and easy tutorials.",
-      placement: ONBOARDING_PLACEMENT.CENTER,
-    },
-    {
-      title: 'Manage Members',
-      content: 'You can manage your members here.',
-      target: `[data-onboarding-id="${ONBOARDING_ID.MEMBERS_PAGE}"]`,
-      placement: ONBOARDING_PLACEMENT.RIGHT,
-      page: '/',
-    },
-    {
-      title: 'Add Member',
-      content: "Write member's name and press Enter.<br />At least 1 member is needed to generate group.",
-      target: `[data-onboarding-id="${ONBOARDING_ID.ADD_MEMBER}"]`,
-      placement: ONBOARDING_PLACEMENT.TOP,
-      page: '/',
-    },
-    {
-      title: 'Previous Records',
-      content: 'You can review and remove previous records here.',
-      target: `[data-onboarding-id="${ONBOARDING_ID.RECORDS_PAGE}"]`,
-      placement: ONBOARDING_PLACEMENT.RIGHT,
-      page: '/records',
-    },
-    {
-      title: 'Generate New Group',
-      content: 'You can generate new group here.',
-      target: `[data-onboarding-id="${ONBOARDING_ID.NEW_GROUP_PAGE}"]`,
-      placement: ONBOARDING_PLACEMENT.RIGHT,
-      page: '/newgroup',
-    },
-    {
-      title: 'Select the number of groups',
-      content: "Click '+' and '-' button to control the number of groups.",
-      target: `[data-onboarding-id="${ONBOARDING_ID.SELECT_GROUP_CNT}"]`,
-      placement: ONBOARDING_PLACEMENT.LEFT,
-      page: '/newgroup',
-    },
-    {
-      title: 'Generate optimized groups',
-      content: 'Be with new people!<br />We care all about tedious calculation.',
-      target: `[data-onboarding-id="${ONBOARDING_ID.OPTIMAL_GENERATE}"]`,
-      placement: ONBOARDING_PLACEMENT.TOP,
-      page: '/newgroup',
-    },
-    {
-      title: 'Generate group manually',
-      content: 'You can generate group manually either.<br />Just Drag&Drop to assign members to group.',
-      target: `[data-onboarding-id="${ONBOARDING_ID.MANUAL_GENERATE}"]`,
-      placement: ONBOARDING_PLACEMENT.TOP,
-      page: '/newgroup',
-    },
-    {
-      title: 'Congratulations!',
-      content: "That's all!<br />Now manage your groups with Optimal-Group-Generator.",
-      page: '/',
-    },
-  ];
-
   handleOnboarding(step) {
-    const onboardPage = this.onboardingSteps[step]?.page;
+    const onboardPage = ONBOARDING_STEPS[step]?.page;
     onboardPage && navigate(onboardPage);
-    const isFinished = step >= this.onboardingSteps.length;
+    const isFinished = step >= ONBOARDING_STEPS.length;
     isFinished ? disableOnboarding() : stepTo(step);
   }
 }

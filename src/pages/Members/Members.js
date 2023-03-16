@@ -3,7 +3,6 @@ import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/Modals/DeleteModal.js';
 import MemberList from './MemberList.js';
 import { addMember, isDuplicatedMemberName, removeMember, updateMember } from '../../state/index.js';
-import { ONBOARDING_ID } from '../../constants/onboarding.js';
 import style from './Members.module.css';
 
 export default class Members extends Component {
@@ -35,7 +34,7 @@ export default class Members extends Component {
             onUpdate: this.onUpdate.bind(this),
             openModal: this.openModal.bind(this),
           }).render()}
-          <form class="${style.addMemberForm}" data-onboarding-id="${ONBOARDING_ID.ADD_MEMBER}">
+          <form class="${style.addMemberForm}">
             <input type="text" maxlength="20" autofocus=${true}/>
             <button type="submit">Add member</button>
           </form>
