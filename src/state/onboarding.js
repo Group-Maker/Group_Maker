@@ -27,7 +27,7 @@ const enableOnboarding = () => {
 
 const disableOnboarding = () => {
   onboardingStorage.setItem(false);
-  setOnboarding(prev => ({ ...prev, isOnboarding: false }));
+  setOnboarding(prev => ({ ...prev, step: 0, isOnboarding: false }));
 };
 
 export { isOnboarding, getCurrentStep, stepTo, enableOnboarding, disableOnboarding };

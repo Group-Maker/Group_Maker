@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link, navigate } from '../../../library/SPA-router/index.js';
 import Nav from './Nav.js';
-import { getOrganization, getUser, getuserId, setUserAndOrganization } from '../../state/index.js';
+import { enableOnboarding, getOrganization, getUser, getuserId, setUserAndOrganization } from '../../state/index.js';
 import { LocalStorage, ORGANIZATION_KEY } from '../../utils/localStorage.js';
 import { ONBOARDING_ID } from '../../constants/onboarding.js';
 import style from './MainLayout.module.css';
@@ -64,8 +64,8 @@ export default class MainLayout extends Component {
             </a>
           </li>
           <li>
-            <button type="button" class="${style.settingBtn}">
-              <box-icon class="${style.icon}" name="cog"></box-icon>
+            <button type="button" class="${style.settingBtn}" data-onboarding-id="${ONBOARDING_ID.HELP}">
+              <box-icon class="${style.icon}" name="help-circle"></box-icon>
             </button>
           </li>
         </ul>
@@ -97,6 +97,11 @@ export default class MainLayout extends Component {
         type: 'click',
         selector: `.${style.signOutBtn}`,
         handler: this.signout.bind(this),
+      },
+      {
+        type: 'click',
+        selector: `.${style.settingBtn}`,
+        handler: enableOnboarding,
       },
     ];
   }
