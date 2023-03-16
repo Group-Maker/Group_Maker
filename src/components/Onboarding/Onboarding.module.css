@@ -7,8 +7,7 @@
   inset: 0px;
   width: 100%;
   height: 100%;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   overflow: hidden;
   mix-blend-mode: hard-light;
   pointer-events: auto;
@@ -21,7 +20,7 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  padding: 40px 40px;
+  padding: 50px 40px 40px;
   background: #8bc6ec;
   text-align: center;
   border-radius: 10px;
@@ -32,7 +31,7 @@
   position: absolute;
   display: block;
   content: '';
-  border: 20px solid transparent;
+  border: 22px solid transparent;
 }
 
 .tooltip.bottom::after {
@@ -101,12 +100,12 @@
 }
 
 .title {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
 .content {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .buttonBox {
@@ -120,7 +119,7 @@
   width: 140px;
   height: 40px;
   color: #000000;
-  font-size: 24px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,12 +143,20 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 8px;
+  width: 40px;
+  height: 40px;
+  /* padding: 8px; */
   border-radius: 50%;
+  fill: rgba(247, 247, 247);
 }
 
-.closeButton:hover svg {
-  fill: rgba(247, 247, 247, 0.5);
+.closeButton:hover {
+  fill: rgba(90, 90, 90, 0.8);
+}
+
+.closeIcon {
+  width: 100%;
+  height: 100%;
 }
 
 .container button,
