@@ -9,7 +9,7 @@ import { ONBOARDING_STEPS } from './constants/onboarding';
 import {
   getInitialState,
   getUser,
-  getIsLoading,
+  checkLoading,
   setGlobalState,
   getOrganization,
   disableOnboarding,
@@ -47,7 +47,7 @@ export default class App extends Component {
   }
 
   DOMStr() {
-    if (getIsLoading()) {
+    if (checkLoading()) {
       return /* html */ `
         <div>
           ${new Loader().render()}

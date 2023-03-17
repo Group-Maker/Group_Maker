@@ -5,12 +5,18 @@ import style from './Members.module.css';
 import 'boxicons';
 
 export default class MemberList extends Component {
+  didMount() {
+    const $editMemberInput = document.getElementById('editMemberInput');
+    $editMemberInput?.focus();
+    $editMemberInput?.setSelectionRange(21, 21);
+  }
+
   DOMStr() {
     const { editingMember, toggleEditMode, onUpdate, openModal } = this.props;
 
     // prettier-ignore
     return `
-      <ul class="${style.list}">
+      <ul id="memberList" class="${style.list}">
         ${getActiveMembers()
           .map(member =>
             new MemberItem({

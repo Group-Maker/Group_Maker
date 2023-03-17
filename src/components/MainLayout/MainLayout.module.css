@@ -4,42 +4,49 @@
   align-items: stretch;
   gap: 1rem;
   justify-content: space-between;
-  padding: 2rem;
+  margin: 2rem;
   text-align: center;
   width: 25%;
-  min-width: 20rem;
-  height: 100vh;
-}
-
-.title {
-  font-size: 4rem;
-  line-height: 3.5rem;
-  color: rgb(39, 50, 84);
-  text-shadow: 1px 1px 0px #ffffff, 3px 3px 3px #663333;
+  min-width: 17rem;
+  height: calc(100vh - 4rem);
+  min-height: 38rem;
 }
 
 .description {
   font-size: 1.2rem;
-  color: rgba(247, 247, 247, 0.7);
+  line-height: 1.4rem;
+  /* TODO: 색상 변경 */
+  color: rgba(247, 247, 247, 0.8);
 }
 
-.link {
-  line-height: 3rem;
+.signInLink,
+.signOutBtn {
+  width: 8rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  margin: 0 auto;
+  font-size: 1rem;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  transition: 0.3s;
+  color: rgb(247, 247, 247);
+  background-color: rgba(247, 247, 247, 0.3);
+}
+
+.signInLink:hover,
+.signOutBtn:hover {
+  color: rgb(39, 50, 84);
+  background-color: rgba(247, 247, 247, 0.8);
+}
+
+.membersLink,
+.recordsLink {
+  /* padding: 0.8rem; */
   font-size: 1.3rem;
 }
 
-.membersLink {
-  composes: link;
-}
-
-.recordsLink {
-  composes: link;
-}
-
 .newgroupLink {
-  composes: link;
-  line-height: 2.5rem;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
 }
 
 .subMenu {
@@ -53,7 +60,7 @@
 .settingBtn {
   width: 2.3rem;
   height: 2.3rem;
-  background-color: rgba(247, 247, 247, 0.2);
+  background-color: rgba(247, 247, 247, 0.3);
   border-radius: 50%;
   display: inline-block;
   fill: rgba(247, 247, 247);
@@ -64,32 +71,10 @@
 .issueLink:hover,
 .settingBtn:hover {
   background: rgba(247, 247, 247, 0.8);
-  transition: all 0.3ms;
-  fill: rgb(39, 40, 84);
-  transition: 0.3s;
+  fill: rgb(39, 50, 84);
 }
 
 .icon {
   width: 2.3rem;
   height: 2.3rem;
-}
-
-.signInLink,
-.signOutBtn {
-  width: 8rem;
-  height: 2.5rem;
-  line-height: 2.5rem;
-  margin: 0 auto;
-  font-size: 1rem;
-  border-radius: 2rem;
-  text-transform: uppercase;
-  transition: 0.3s;
-  color: #f7f7f7;
-  background-color: rgba(247, 247, 247, 0.3);
-}
-
-.signInLink:hover,
-.signOutBtn:hover {
-  background-color: rgba(247, 247, 247, 0.8);
-  color: rgb(39, 50, 84);
 }

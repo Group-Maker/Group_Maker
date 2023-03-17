@@ -31,8 +31,8 @@ export default class signIn extends Component {
 
     try {
       const { data: response } = await axios.post(`/auth/signin`, payload);
-      const { user, userId, organization } = response;
-      setUserAndOrganization({ user, userId, organization });
+      const { userId, user, organization } = response;
+      setUserAndOrganization({ userId, user, organization });
       navigate('/');
     } catch (err) {
       // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요

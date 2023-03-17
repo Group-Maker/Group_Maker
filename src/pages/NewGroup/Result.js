@@ -34,20 +34,25 @@ export default class Result extends Component {
 
     // prettier-ignore
     return `
-      <div class="container">
+      <div class="${style.container}">
         <h2 class="title">Result</h2>
-        <h3 class="${style.subTitle}">MemberList</h3>
-        <div class="dropzone ${style.members}">
-          ${new Members({ memberArr }).render()}
-        </div>
-        <div class="${style.groups}">${new Groups({ groupArr }).render()}</div>
-        <div class="${style.buttons}">
-          ${
-            currentView === 'autoResult'
-              ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
-              : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`
-          }
-          <button class="${style.save}">SAVE</button>
+        <div class="${style.innerContainer}">
+          <pre class="${style.guide}">Drag and drop members to each group.</pre>
+          <div class="${style.memberList}">
+            <h3 class="${style.subTitle}">MemberList</h3>
+            <div class="dropzone ${style.members}">
+              ${new Members({ memberArr }).render()}
+            </div>
+          </div>
+          ${new Groups({ groupArr }).render()}
+          <div class="${style.buttons}">
+            ${
+              currentView === 'autoResult'
+                ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
+                : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`
+            }
+            <button class="${style.save}">SAVE</button>
+          </div>
         </div>
       </div>`;
   }
@@ -66,12 +71,12 @@ export default class Result extends Component {
       },
       {
         type: 'dragstart',
-        selector: '.container',
+        selector: `.${style.container}`,
         handler: this.onDragstart.bind(this),
       },
       {
         type: 'dragend',
-        selector: '.container',
+        selector: `.${style.container}`,
         handler: this.onDragend.bind(this),
       },
       {
@@ -81,7 +86,7 @@ export default class Result extends Component {
       },
       {
         type: 'drop',
-        selector: '.container',
+        selector: `.${style.container}`,
         handler: this.onDrop.bind(this),
       },
     ];
@@ -112,8 +117,9 @@ export default class Result extends Component {
 
   appendDragImage() {
     this.$ghost = document.createElement('div');
-    const $ghostChild = this.$dragTarget.cloneNode(true);
+    this.$ghost.classList.add(`${style.ghostContainer}`);
 
+    const $ghostChild = this.$dragTarget.cloneNode(true);
     $ghostChild.classList.add(`${style.ghost}`);
 
     this.$ghost.appendChild($ghostChild);
@@ -161,6 +167,7 @@ export default class Result extends Component {
 
       this.$startzone = this.$targetzone;
       this.$targetzone.children[0].appendChild(this.$dragTarget);
+      this.$targetzone.scroll({ top: 9999, behavior: 'smooth' });
     }
   }
 

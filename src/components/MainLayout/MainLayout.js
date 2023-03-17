@@ -27,7 +27,7 @@ export default class MainLayout extends Component {
       {
         path: '/newgroup',
         classNames: [style.newgroupLink],
-        content: `MAKE<br />NEW GROUP`,
+        content: `GENERATE<br />OPTIMAL GROUPS`,
         onboardingId: ONBOARDING_ID.NEW_GROUP_PAGE,
       },
     ];
@@ -40,13 +40,13 @@ export default class MainLayout extends Component {
     // prettier-ignore
     return `
       <section class="${style.container}">
-        <h1 class="${style.title}">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
-        <p class="${
-          style.description
-        }">We make a group<br>where you can be with<br>new people.</p>
-        ${user 
-          ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>` 
-          : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()}
+        <h1 class="logoLink">${new Link({ path: '/', content: 'OPTIMAL<br/ >GROUP<br/ >GENERATOR' }).render()}</h1>
+        <p class="${style.description}">We generate groups<br>where everyone can be<br>with new people.</p>
+         ${
+           user
+             ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`
+             : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()
+         }
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
           <li>
@@ -81,8 +81,8 @@ export default class MainLayout extends Component {
 
       const localOrganization = this.organizationStorage.getItem();
       setUserAndOrganization({
-        user: null,
         userId: null,
+        user: null,
         organization: localOrganization,
       });
       navigate('/');

@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.19.4",
+    "@google-cloud/storage": "^6.9.3",
     "axios": "^1.1.2",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.25.5",
