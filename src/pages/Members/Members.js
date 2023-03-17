@@ -28,10 +28,6 @@ export default class Members extends Component {
     };
   }
 
-  didMount() {
-    document.getElementById('addMemberInput').focus();
-  }
-
   DOMStr() {
     // prettier-ignore
     return `
