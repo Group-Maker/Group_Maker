@@ -3,6 +3,7 @@ import MainLayout from '../../components/MainLayout/MainLayout.js';
 import DeleteModal from '../../components/Modals/DeleteModal.js';
 import MemberList from './MemberList.js';
 import {
+  getActiveMembers,
   getMemberIdByName,
   checkDuplicatedName,
   checkActiveMember,
@@ -27,34 +28,40 @@ export default class Members extends Component {
     };
   }
 
+  didMount() {
+    document.getElementById('addMemberInput').focus();
+  }
+
   DOMStr() {
     // prettier-ignore
     return `
       <div class="mainContainer">
         ${new MainLayout().render()}
         <main class="main">
-          <h2 class="title">Manage Members</h2>
-          <pre class="${
-            style.guide
-          }">Double-click name to edit. When you are done, press Enter.</pre>
-          ${new MemberList({
-            editingMember: this.state.editingMember,
-            toggleEditMode: this.toggleEditMode.bind(this),
-            onUpdate: this.onUpdate.bind(this),
-            openModal: this.openModal.bind(this),
-          }).render()}
-          <form class="${style.addMemberForm}">
-            <input type="text" maxlength="20" autofocus=${true}/>
-            <button type="submit">Add member</button>
-          </form>
+          <h2 class="title">MANAGE MEMBERS</h2>
+          <div class="${style.innerContainer}">
+            <pre class="${style.guide}">Double-click name to edit.</pre>
+            ${new MemberList({
+              editingMember: this.state.editingMember,
+              toggleEditMode: this.toggleEditMode.bind(this),
+              onUpdate: this.onUpdate.bind(this),
+              openModal: this.openModal.bind(this),
+            }).render()}
+            <form class="${style.addMemberForm}">
+              <input id="addMemberInput" type="text" maxlength="20" />
+              <button type="submit">Add member</button>
+            </form>
+          </div>
         </main>
-        ${this.state.isModalOpen
+        ${
+          this.state.isModalOpen
             ? new DeleteModal({
                 target: 'member',
                 onRemove: this.onRemove.bind(this),
                 closeModal: this.closeModal.bind(this),
               }).render()
-            : ''}
+            : ''
+        }
       </div>`;
   }
 
@@ -88,6 +95,10 @@ export default class Members extends Component {
   }
 
   onAdd(name) {
+    if (getActiveMembers().length >= 50) {
+      alert('You have reached the maximum number of members.');
+      return;
+    }
     this.preventDuplicatedName(name, () => addMember(name));
     document.getElementById('memberList').scroll({ top: 9999, behavior: 'smooth' });
   }
