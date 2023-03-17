@@ -1,67 +1,76 @@
 /* [Members.js] */
+.innerContainer {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
 
+/* TODO guide 분리 */
 .guide {
   max-width: 100%;
-  margin-top: 1rem;
   font-size: 1.2rem;
   text-align: center;
   white-space: normal;
   word-break: keep-all;
-  color: rgb(39, 50, 84, 0.7);
+  color: rgb(39, 50, 84, 0.8);
 }
 
 .addMemberForm input {
   width: 13rem;
-  height: 2rem;
+  height: 2.5rem;
   padding: 0 0.5rem;
   border: solid 1px rgb(39, 50, 84, 0.5);
   border-radius: 4px;
-  background-color: rgba(247, 247, 247, 0.5);
+  background-color: rgba(247, 247, 247, 0.8);
+  font-size: 1rem;
 }
 
 .addMemberForm button {
-  width: 6rem;
-  height: 2rem;
+  width: 9rem;
+  height: 2.5rem;
   margin-left: 0.5rem;
   border-radius: 4px;
   background-color: rgba(247, 247, 247, 0.5);
+  font-size: 1.2rem;
 }
 
 .addMemberForm button:hover {
-  background-color: rgba(247, 247, 247, 0.7);
+  background-color: rgba(247, 247, 247, 0.8);
 }
 
 /* ---------------------------------------- */
-
 /* [MemberList.js] */
 
 .list {
   width: 100%;
   flex-grow: 1;
-  margin: 1.5rem 2rem;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  align-content: flex-start;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem 0.5rem;
   overflow-y: scroll;
   border: 3px solid rgba(247, 247, 247, 0.5);
   border-radius: 8px;
 }
 
 .list::-webkit-scrollbar {
-  width: 0.8rem;
+  width: 12px;
 }
 
 .list::-webkit-scrollbar-thumb {
   background-color: rgba(247, 247, 247, 0.5);
   /* TODO: 스크롤과 list border가 겹치는 부분 해결 */
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 /* ---------------------------------------- */
-
 /* [MemberItem.js] */
 
 .memberItem {
@@ -72,22 +81,25 @@
 .memberItem span,
 .memberItem input {
   display: block;
+  padding: 0 20px;
+  height: 2.4rem;
+  line-height: 2.4rem;
   font-family: inherit;
   font-size: inherit;
-  border-radius: 1rem;
-  border: solid 1px rgb(39, 50, 84, 0.5);
+  border-radius: 16px;
 }
 
 /* TODO: span과 input의 미묘한 너비차이 해결 */
 
 .memberItem span {
-  padding: 1rem 2.2rem;
   background-color: rgba(247, 247, 247, 0.5);
+  border: 2px solid rgba(247, 247, 247, 0.5);
+  user-select: none;
 }
 
 .memberItem input {
-  padding: 1rem 2rem;
-  background-color: rgba(247, 247, 247, 0.7);
+  background-color: rgba(247, 247, 247, 0.8);
+  border: 2px solid rgb(39, 50, 84, 0.5);
 }
 
 .memberItem label {
@@ -104,8 +116,9 @@
 .memberItem label::after {
   content: attr(data-value);
   visibility: hidden;
+  width: fit-content;
   height: 0;
-  padding: 0 2.2rem;
+  padding: 0 22px;
   font-family: inherit;
   font-size: inherit;
   white-space: pre-wrap;
@@ -121,7 +134,7 @@
   width: 23px;
   height: 23px;
   border-radius: 50%;
-  background-color: rgb(189, 64, 64);
+  background-color: rgb(195, 76, 76);
 }
 
 .memberItem:hover button {

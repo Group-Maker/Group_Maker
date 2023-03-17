@@ -4,18 +4,24 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'IBMPlexSansKR';
+  src: url('./fonts/IBMPlexSansKR-Bold.woff') format('woff');
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  color: rgb(39, 50, 84);
 }
 
 body {
-  color: rgb(39, 50, 84);
   height: 100%;
-  font-family: 'Emelind';
+  font-family: 'Emelind', 'IBMPlexSansKR';
   background: #8bc6ec linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%);
   background-attachment: fixed;
 }
@@ -32,13 +38,10 @@ a {
 }
 
 button {
-  color: inherit;
-  background: inherit;
+  font-family: inherit;
   border: none;
   box-shadow: none;
-  /* overflow: visible; */
   cursor: pointer;
-  font-family: inherit;
 }
 
 pre,
@@ -53,26 +56,35 @@ input {
 :global .mainContainer {
   display: flex;
   flex-direction: row;
+  overflow: scroll;
 }
 
 :global .main {
   width: 100%;
   min-width: 40rem;
   height: calc(100vh - 4rem);
+  min-height: 38rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: rgba(247, 247, 247, 0.25);
+  /* justify-content: center; */
+  background-color: rgba(247, 247, 247, 0.3);
   border-radius: 1rem;
   margin: 2rem 2rem 2rem 0;
-  padding: 2rem;
+  padding: 2rem 2rem 2.5rem 2rem;
+  overflow: hidden;
+}
+
+:global .logoLink {
+  font-size: 3rem;
+  line-height: 3rem;
+  text-shadow: 1px 1px 0px #ffffff, 3px 3px 3px #663333;
 }
 
 :global .title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-align: center;
-  color: rgb(39, 50, 84);
+  margin-bottom: 1rem;
 }
 
 :global .modal {
