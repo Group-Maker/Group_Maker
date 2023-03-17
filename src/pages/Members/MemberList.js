@@ -6,9 +6,9 @@ import 'boxicons';
 
 export default class MemberList extends Component {
   didMount() {
-    const $addMemberInput = document.getElementById('addMemberInput');
-    $addMemberInput?.focus();
-    $addMemberInput?.setSelectionRange(21, 21);
+    const $editMemberInput = document.getElementById('editMemberInput');
+    $editMemberInput?.focus();
+    $editMemberInput?.setSelectionRange(21, 21);
   }
 
   DOMStr() {

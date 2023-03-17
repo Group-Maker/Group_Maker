@@ -16,7 +16,7 @@ export default class MemberItem extends Component {
         ${
           isEditing
             ? `<label data-value="${name}">
-                <input id="addMemberInput" type="text" value="${name}" size="1" maxlength="20">
+                <input id="editMemberInput" type="text" value="${name}" size="1" maxlength="20">
               </label>`
             : `<span>${name}</span>
               <button aria-label="delete member">
@@ -74,6 +74,19 @@ export default class MemberItem extends Component {
           const $li = e.target.closest(`.${style.memberItem}`);
           const { id, name } = $li.dataset;
           toggleEditMode({ id: +id, name });
+        },
+      },
+      {
+        type: 'focusout',
+        selector: `.${style.memberItem}`,
+        handler: e => {
+          const id = +e.target.closest(`.${style.memberItem}`).dataset.id;
+          const trimmedValue = e.target.value.trim();
+          if (editingMember.name === trimmedValue || trimmedValue === '') {
+            toggleEditMode({ id: null, name: null });
+            return;
+          }
+          onUpdate({ id, name: trimmedValue });
         },
       },
     ];
