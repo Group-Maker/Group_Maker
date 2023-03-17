@@ -11,7 +11,7 @@ export default class Nav extends Component {
       <nav>
         <ul class="${style.ul}">
           ${this.props.linkInfo.map(linkInfo => `
-            <li class="${style.li} ${linkInfo.path === currentPath ? style.active : ''}">
+            <li class="${style.li} ${linkInfo.path === currentPath ? style.active : ''}" data-onboarding-id="${linkInfo.onboardingId}">
               ${new Link(linkInfo).render()}
             </li>`).join('')}
         </ul>

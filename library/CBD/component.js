@@ -15,6 +15,10 @@ class Component {
   }
 
   setState(nextState) {
+    if (this.state === nextState) {
+      return;
+    }
+
     this.state = typeof nextState === 'function' ? nextState(this.state) : nextState;
 
     render(document.querySelector(`[data-component-id="${this.id}"]`), this);

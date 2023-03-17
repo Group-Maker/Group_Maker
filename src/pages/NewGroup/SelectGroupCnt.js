@@ -1,6 +1,7 @@
 import { Component } from '../../../library/CBD/index.js';
 import Counter from '../../components/Counter/Counter.js';
 import { getActiveMembers } from '../../state/index.js';
+import { ONBOARDING_ID } from '../../constants/onboarding';
 import style from './NewGroup.module.css';
 
 export default class SelectGroupCnt extends Component {
@@ -23,7 +24,7 @@ export default class SelectGroupCnt extends Component {
           } members.<br>${noMember ? 'Create member before make group!' : 'How many groups do you want?'}</p>
           ${this.groupCounter.render()}
           <div class="${style.btnContainer}">
-            <button class="${style.optimizedGroupBtn}" ${noMember ? 'disabled' : ''}>GENERATE</button>
+            <button class="${style.optimizedGroupBtn}" ${noMember ? 'disabled' : ''} data-onboarding-id="${ONBOARDING_ID.OPTIMAL_GENERATE}">GENERATE</button>
             <button class="${style.manualGroupBtn}" ${
               noMember ? 'disabled' : ''
             }>Or you can generate groups manually</button>
