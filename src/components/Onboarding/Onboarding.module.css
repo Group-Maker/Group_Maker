@@ -1,0 +1,165 @@
+.container {
+  position: absolute;
+  inset: 0;
+}
+.overlay {
+  position: absolute;
+  inset: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  mix-blend-mode: hard-light;
+  pointer-events: auto;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  padding: 50px 40px 40px;
+  background: #8bc6ec;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transform: translate3d(-50%, -50%, 0);
+}
+.tooltip::after {
+  position: absolute;
+  display: block;
+  content: '';
+  border: 22px solid transparent;
+}
+
+.tooltip.bottom::after {
+  top: -40px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  border-bottom-color: #8bc6ec;
+}
+.tooltip.bottomRight::after {
+  top: -40px;
+  left: 40px;
+  border-bottom-color: #8bc6ec;
+}
+.tooltip.bottomLeft::after {
+  top: -40px;
+  right: 40px;
+  border-bottom-color: #8bc6ec;
+}
+.tooltip.top::after {
+  bottom: -40px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  border-top-color: #8bc6ec;
+}
+.tooltip.topRight::after {
+  bottom: -40px;
+  left: 40px;
+  border-top-color: #8bc6ec;
+}
+.tooltip.topLeft::after {
+  bottom: -40px;
+  right: 40px;
+  border-top-color: #8bc6ec;
+}
+.tooltip.right::after {
+  top: 50%;
+  left: -40px;
+  transform: translate3d(0, -50%, 0);
+  border-right-color: #8bc6ec;
+}
+.tooltip.rightBottom::after {
+  top: 40px;
+  left: -40px;
+  border-right-color: #8bc6ec;
+}
+.tooltip.rightTop::after {
+  bottom: 40px;
+  left: -40px;
+  border-right-color: #8bc6ec;
+}
+.tooltip.left::after {
+  top: 50%;
+  right: -40px;
+  transform: translate3d(0, -50%, 0);
+  border-left-color: #8bc6ec;
+}
+.tooltip.leftBottom::after {
+  top: 40px;
+  right: -40px;
+  border-left-color: #8bc6ec;
+}
+.tooltip.leftTop::after {
+  bottom: 40px;
+  right: -40px;
+  border-left-color: #8bc6ec;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.content {
+  font-size: 1.3rem;
+}
+
+.buttonBox {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.button {
+  width: 140px;
+  height: 40px;
+  color: #000000;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(247, 247, 247, 0.7);
+  border-radius: 10px;
+  text-decoration-line: none;
+}
+.button:hover {
+  background-color: rgba(180, 180, 180, 0.8);
+}
+
+.spotlight {
+  position: absolute;
+  width: 0px;
+  background-color: gray;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  /* padding: 8px; */
+  border-radius: 50%;
+  fill: rgba(247, 247, 247);
+}
+
+.closeButton:hover {
+  fill: rgba(90, 90, 90, 0.8);
+}
+
+.closeIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.container button,
+.container svg {
+  transition: all 0.2s;
+}

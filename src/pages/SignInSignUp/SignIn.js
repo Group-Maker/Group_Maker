@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link, navigate } from '../../../library/SPA-router/index.js';
-import { setUserAndOrganization } from '../../state/index.js';
-import { storeOnLocalStorage } from '../../utils/localStorage.js';
+import { getOrganization, setUserAndOrganization } from '../../state/index.js';
+import { LocalStorage, ORGANIZATION_KEY } from '../../utils/localStorage.js';
 import { signInSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 
@@ -15,12 +15,13 @@ export default class signIn extends Component {
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
+    this.organizationStorage = new LocalStorage(ORGANIZATION_KEY);
   }
 
   async signIn(e) {
     e.preventDefault();
 
-    storeOnLocalStorage();
+    this.organizationStorage.setItem(getOrganization());
 
     const payload = [...new FormData(e.target)].reduce(
       // eslint-disable-next-line no-return-assign, no-sequences

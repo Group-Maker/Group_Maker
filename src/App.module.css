@@ -13,8 +13,11 @@
 }
 
 body {
-  color: rgb(39, 50, 84);
+  /* position: absolute를 주지 않았을 때 Onboarding의 위치가 깨지는 경우 발생 */
+  position: absolute;
+  inset: 0;
   height: 100%;
+  color: rgb(39, 50, 84);
   font-family: 'Emelind';
   background: #8bc6ec linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%);
   background-attachment: fixed;

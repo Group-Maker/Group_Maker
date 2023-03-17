@@ -2,9 +2,9 @@ import axios from 'axios';
 import { Component } from '../../../library/CBD/index.js';
 import { Link, navigate } from '../../../library/SPA-router/index.js';
 import Nav from './Nav.js';
-import { getUser, setUserAndOrganization } from '../../state/index.js';
-import { loadFromLocalStorage } from '../../utils/localStorage.js';
-import storeOnServer from '../../api/index.js';
+import { enableOnboarding, getOrganization, getUser, getuserId, setUserAndOrganization } from '../../state/index.js';
+import { LocalStorage, ORGANIZATION_KEY } from '../../utils/localStorage.js';
+import { ONBOARDING_ID } from '../../constants/onboarding.js';
 import style from './MainLayout.module.css';
 import 'boxicons';
 
@@ -12,10 +12,26 @@ export default class MainLayout extends Component {
   constructor(props) {
     super(props);
     this.linkInfo = [
-      { path: '/', classNames: [style.membersLink], content: 'MANAGE MEMBERS' },
-      { path: '/records', classNames: [style.recordsLink], content: 'PREVIOUS RECORDS' },
-      { path: '/newgroup', classNames: [style.newgroupLink], content: `MAKE<br />NEW GROUP` },
+      {
+        path: '/',
+        classNames: [style.membersLink],
+        content: 'MANAGE MEMBERS',
+        onboardingId: ONBOARDING_ID.MEMBERS_PAGE,
+      },
+      {
+        path: '/records',
+        classNames: [style.recordsLink],
+        content: 'PREVIOUS RECORDS',
+        onboardingId: ONBOARDING_ID.RECORDS_PAGE,
+      },
+      {
+        path: '/newgroup',
+        classNames: [style.newgroupLink],
+        content: `MAKE<br />NEW GROUP`,
+        onboardingId: ONBOARDING_ID.NEW_GROUP_PAGE,
+      },
     ];
+    this.organizationStorage = new LocalStorage(ORGANIZATION_KEY);
   }
 
   DOMStr() {
@@ -48,8 +64,8 @@ export default class MainLayout extends Component {
             </a>
           </li>
           <li>
-            <button type="button" class="${style.settingBtn}">
-              <box-icon class="${style.icon}" name="cog"></box-icon>
+            <button type="button" class="${style.settingBtn}" data-onboarding-id="${ONBOARDING_ID.HELP}">
+              <box-icon class="${style.icon}" name="help-circle"></box-icon>
             </button>
           </li>
         </ul>
@@ -58,13 +74,16 @@ export default class MainLayout extends Component {
 
   async signout() {
     try {
-      storeOnServer();
+      const payload = { userId: getuserId(), newOrganization: getOrganization() };
+      await axios.post('/organization', payload);
+
       await axios.get('/auth/signout');
-      const organization = loadFromLocalStorage();
+
+      const localOrganization = this.organizationStorage.getItem();
       setUserAndOrganization({
         user: null,
         userId: null,
-        organization,
+        organization: localOrganization,
       });
       navigate('/');
     } catch (err) {
@@ -78,6 +97,11 @@ export default class MainLayout extends Component {
         type: 'click',
         selector: `.${style.signOutBtn}`,
         handler: this.signout.bind(this),
+      },
+      {
+        type: 'click',
+        selector: `.${style.settingBtn}`,
+        handler: enableOnboarding,
       },
     ];
   }

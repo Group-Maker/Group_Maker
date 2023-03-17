@@ -43,6 +43,10 @@ const useGlobalState = initialState => {
 
   const getState = () => state;
   const setState = nextState => {
+    if (nextState === state) {
+      return;
+    }
+
     state = typeof nextState === 'function' ? nextState(state) : nextState;
 
     // resetHookIdx();
