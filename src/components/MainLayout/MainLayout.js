@@ -14,7 +14,7 @@ export default class MainLayout extends Component {
     this.linkInfo = [
       { path: '/', classNames: [style.membersLink], content: 'MANAGE MEMBERS' },
       { path: '/records', classNames: [style.recordsLink], content: 'PREVIOUS RECORDS' },
-      { path: '/newgroup', classNames: [style.newgroupLink], content: `MAKE<br />NEW GROUP` },
+      { path: '/newgroup', classNames: [style.newgroupLink], content: `GENERATE<br />OPTIMAL GROUPS` },
     ];
   }
 
@@ -24,13 +24,13 @@ export default class MainLayout extends Component {
     // prettier-ignore
     return `
       <section class="${style.container}">
-        <h1 class="logoLink">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
-        <p class="${style.description}">Organize groups<br>where everyone can be<br>with new people<br>as much as possible.</p>
-        ${
-          user
-            ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`
-            : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()
-        }
+        <h1 class="logoLink">${new Link({ path: '/', content: 'OPTIMAL<br/ >GROUP<br/ >GENERATOR' }).render()}</h1>
+        <p class="${style.description}">We generate groups<br>where everyone can be<br>with new people.</p>
+         ${
+           user
+             ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`
+             : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()
+         }
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
           <li>
