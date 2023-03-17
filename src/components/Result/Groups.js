@@ -7,9 +7,9 @@ export default class Groups extends Component {
     const { groupArr } = this.props;
     // prettier-ignore
     return `
-      <div>
+      <div class="${style.groups}">
         ${groupArr.map((group, i) => `
-          <div class="dropzone ${style.group}" data-list-id="${i}" draggable="true">
+          <div class="dropzone ${style.group}" data-list-id="${i}">
             <ul class="${style.memberList}">
             ${group.map(id => `
               <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">
