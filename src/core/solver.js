@@ -16,7 +16,7 @@ const forEachPair = (array, callback) => {
 const updateWeights = (round, weights) => {
   for (const group of round) {
     forEachPair(group, (a, b) => {
-      if (a !== null && b !== null) {
+      if (a !== null && b !== null && weights[a] !== undefined && weights[b] !== undefined) {
         weights[b][a] = weights[a][b] + 1;
         weights[a][b] = weights[b][a];
       }
