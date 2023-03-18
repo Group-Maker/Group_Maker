@@ -1,8 +1,9 @@
-import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
+import { Component } from '@@/CBD';
+import { Link } from '@@/SPA-router';
+import { ROUTE_PATH } from '@/constants';
 import style from './Modal.module.css';
 
-export default class SaveModal extends Component {
+export class SaveModal extends Component {
   DOMStr() {
     // prettier-ignore
     return `
@@ -11,7 +12,7 @@ export default class SaveModal extends Component {
         <div class="${style.content}">
           <div class="${style.message}">Store Records!</div>
           <div class="${style.buttons}">
-            ${new Link({ path: '/records', classNames: [style.button], content: '모든 기록 보기' }).render()}
+            ${new Link({ path: ROUTE_PATH.records, classNames: [style.button], content: '모든 기록 보기' }).render()}
             <button type="button" class="${style.button}">Make more Group!</button>
           </div>
         </div>

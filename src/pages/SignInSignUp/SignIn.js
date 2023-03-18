@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { Component } from '../../../library/CBD/index.js';
-import { Link, navigate } from '../../../library/SPA-router/index.js';
-import { getOrganization, setUserAndOrganization } from '../../state/index.js';
-import { LocalStorage, ORGANIZATION_KEY } from '../../utils/localStorage.js';
-import { signInSchema } from './schema.js';
+import { Component } from '@@/CBD';
+import { Link, navigate } from '@@/SPA-router';
+import { getOrganization, setUserAndOrganization } from '@/state';
+import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
+import { ROUTE_PATH } from '@/constants';
+import { signInSchema } from './schema';
 import style from './SignInSignUp.module.css';
-
-export default class signIn extends Component {
+export class SignIn extends Component {
   constructor(props) {
     super(props);
 
@@ -51,7 +51,7 @@ export default class signIn extends Component {
     // prettier-ignore
     return `
       <div class="${style.container}">
-        <h1 class="title">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
+        <h1 class="title">${new Link({ path: ROUTE_PATH.members, content: 'GROUP MAKER' }).render()}</h1>
         <form class="${style.signInForm}">
           <h2 class="${style.subTitle}">SIGN IN</h2>
           <div class="${style.inputWrapper}">
@@ -81,7 +81,7 @@ export default class signIn extends Component {
             <button class="submit-btn ${style.submitBtn}" ${
               isuserIdValid && isPasswordValid ? '' : 'disabled'
             }>SIGN IN</button>
-            ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
+            ${new Link({ path: ROUTE_PATH.signup, content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
         </form>
       </div>`;

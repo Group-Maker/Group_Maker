@@ -1,7 +1,7 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '@@/CBD';
 import style from './Loader.module.css';
 
-export default class Loader extends Component {
+export class Loader extends Component {
   DOMStr() {
     return `
       <div class="${style.spinner}">

@@ -1,4 +1,4 @@
-import { render } from '../CBD/index.js';
+import { render } from '../CBD';
 
 let _routes = null;
 

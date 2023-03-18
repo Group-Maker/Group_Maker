@@ -1,7 +1,7 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '@@/CBD';
 import style from './Modal.module.css';
 
-export default class DeleteModal extends Component {
+export class DeleteModal extends Component {
   DOMStr() {
     const { target } = this.props;
     // prettier-ignore

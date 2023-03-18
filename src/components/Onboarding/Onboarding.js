@@ -1,8 +1,8 @@
 /* eslint-disable curly */
 /* eslint-disable lines-between-class-members */
-import { Component } from '../../../library/CBD';
+import { Component } from '@@/CBD';
+import { appendStyles, formatTranslate3DCSS } from '@/utils';
 import style from './Onboarding.module.css';
-import { appendStyles, formatTranslate3DCSS } from '../../utils';
 import 'boxicons';
 
 export const ONBOARDING_PLACEMENT = {
@@ -21,7 +21,7 @@ export const ONBOARDING_PLACEMENT = {
   RIGHT_BOTTOM: 'rightBottom',
 };
 
-export default class Onboarding extends Component {
+export class Onboarding extends Component {
   #$container;
   #$tooltip;
   #$spotlight;
@@ -63,7 +63,7 @@ export default class Onboarding extends Component {
       return null;
     }
 
-    const { placement, title, content, hideBackButton, locale = {} } = step;
+    const { placement, title, content, hideBackButton, hideCloseButton, locale = {} } = step;
     const { start = 'Start', finish = 'Finish', prev = 'Prev', next = 'Next' } = locale;
 
     return /* html */ `
@@ -90,9 +90,14 @@ export default class Onboarding extends Component {
               ${stepIndex === steps.length - 1 ? finish : stepIndex === 0 ? start : next}
             </button>
           </div>
-          <button class="${style.closeButton}">
-            <box-icon class="${style.closeIcon}" name='x'></box-icon>  
-          </button>
+          ${
+            !hideCloseButton
+              ? /* html */ `
+              <button class="${style.closeButton}">
+                <box-icon class="${style.closeIcon}" name='x'></box-icon>  
+              </button>`
+              : ''
+          }
         </div>
       </section>
     `;

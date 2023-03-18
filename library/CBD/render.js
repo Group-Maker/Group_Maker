@@ -1,4 +1,4 @@
-import { ComponentTree } from './ComponentTree.js';
+import { ComponentTree } from './ComponentTree';
 
 const reconciliation = ($virtualNode, $realNode) => {
   if ($virtualNode.nodeType !== $realNode.nodeType) {

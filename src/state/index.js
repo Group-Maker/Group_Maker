@@ -1,4 +1,4 @@
-import { useGlobalState } from '../../library/CBD/index.js';
+import { useGlobalState } from '@@/CBD';
 
 const INITIAL_STATE = {
   isLoading: true,
@@ -125,4 +125,4 @@ export {
   inactiveMember,
   removeMember,
 };
-export * from './onboarding.js';
+export * from './onboarding';

@@ -1,8 +1,8 @@
-import { Component } from '../../../library/CBD/index.js';
-import { getMemberNameById } from '../../state/index.js';
-import style from '../../pages/NewGroup/Result.module.css';
+import { Component } from '@@/CBD';
+import { getMemberNameById } from '@/state';
+import style from '@/pages/NewGroup/Result.module.css';
 
-export default class Members extends Component {
+export class Members extends Component {
   DOMStr() {
     const { memberArr } = this.props;
     // prettier-ignore

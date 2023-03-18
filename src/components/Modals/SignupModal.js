@@ -1,8 +1,9 @@
-import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
+import { Component } from '@@/CBD';
+import { Link } from '@@/SPA-router';
+import { ROUTE_PATH } from '@/constants';
 import style from './Modal.module.css';
 
-export default class SignupModal extends Component {
+export class SignupModal extends Component {
   DOMStr() {
     // prettier-ignore
     return `
@@ -11,7 +12,7 @@ export default class SignupModal extends Component {
         <div class="${style.content}">
           <div class="${style.message}">Congratulation!<br> Now you can Sign in</div>
           <div class="${style.buttons}">
-            ${new Link({ path: '/signin', classNames: [style.button], content: 'Sign in' }).render()}
+            ${new Link({ path: ROUTE_PATH.signin, classNames: [style.button], content: 'Sign in' }).render()}
           </div>
         </div>
       </section>`;

@@ -1,31 +1,31 @@
 import axios from 'axios';
-import { Component } from '../../../library/CBD/index.js';
-import { Link, navigate } from '../../../library/SPA-router/index.js';
-import Nav from './Nav.js';
-import { enableOnboarding, getOrganization, getUser, getuserId, setUserAndOrganization } from '../../state/index.js';
-import { LocalStorage, ORGANIZATION_KEY } from '../../utils/localStorage.js';
-import { ONBOARDING_ID } from '../../constants/onboarding.js';
+import { Component } from '@@/CBD';
+import { Link, navigate } from '@@/SPA-router';
+import { enableOnboarding, getOrganization, getUser, getUserId, setUserAndOrganization } from '@/state';
+import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
+import { ONBOARDING_ID, ROUTE_PATH } from '@/constants';
+import Nav from './Nav';
 import style from './MainLayout.module.css';
 import 'boxicons';
 
-export default class MainLayout extends Component {
+export class MainLayout extends Component {
   constructor(props) {
     super(props);
     this.linkInfo = [
       {
-        path: '/',
+        path: ROUTE_PATH.members,
         classNames: [style.membersLink],
         content: 'MANAGE MEMBERS',
         onboardingId: ONBOARDING_ID.MEMBERS_PAGE,
       },
       {
-        path: '/records',
+        path: ROUTE_PATH.records,
         classNames: [style.recordsLink],
         content: 'PREVIOUS RECORDS',
         onboardingId: ONBOARDING_ID.RECORDS_PAGE,
       },
       {
-        path: '/newgroup',
+        path: ROUTE_PATH.newgroup,
         classNames: [style.newgroupLink],
         content: `GENERATE<br />OPTIMAL GROUPS`,
         onboardingId: ONBOARDING_ID.NEW_GROUP_PAGE,
@@ -40,12 +40,12 @@ export default class MainLayout extends Component {
     // prettier-ignore
     return `
       <section class="${style.container}">
-        <h1 class="logoLink">${new Link({ path: '/', content: 'OPTIMAL<br/ >GROUP<br/ >GENERATOR' }).render()}</h1>
+        <h1 class="logoLink">${new Link({ path: ROUTE_PATH.members, content: 'OPTIMAL<br/ >GROUP<br/ >GENERATOR' }).render()}</h1>
         <p class="${style.description}">We generate groups<br>where everyone can be<br>with new people.</p>
          ${
            user
              ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`
-             : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()
+             : new Link({ path: ROUTE_PATH.signin, content: 'SIGN IN', classNames: [style.signInLink] }).render()
          }
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
@@ -74,7 +74,7 @@ export default class MainLayout extends Component {
 
   async signout() {
     try {
-      const payload = { userId: getuserId(), newOrganization: getOrganization() };
+      const payload = { userId: getUserId(), newOrganization: getOrganization() };
       await axios.post('/organization', payload);
 
       await axios.get('/auth/signout');

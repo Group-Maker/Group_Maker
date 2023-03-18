@@ -1,5 +1,5 @@
-import { render } from './render.js';
-import Component from './Component.js';
-import useGlobalState from './state.js';
+import { render } from './render';
+import Component from './Component';
+import useGlobalState from './state';
 
 export { render, Component, useGlobalState };

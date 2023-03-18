@@ -1,5 +1,5 @@
-import { useGlobalState } from '../../library/CBD/index.js';
-import { LocalStorage, ONBOARDING_KEY } from '../utils/localStorage.js';
+import { useGlobalState } from '@@/CBD';
+import { LocalStorage, ONBOARDING_KEY } from '@/utils/localStorage.js';
 
 const onboardingStorage = new LocalStorage(ONBOARDING_KEY);
 

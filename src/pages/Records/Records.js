@@ -1,11 +1,10 @@
-import { Component } from '../../../library/CBD/index.js';
-import MainLayout from '../../components/MainLayout/MainLayout.js';
-import DeleteModal from '../../components/Modals/DeleteModal.js';
-import { removeRecord } from '../../state/index.js';
-import RecordList from './RecordList.js';
+import { Component } from '@@/CBD';
+import { MainLayout, DeleteModal } from '@/components';
+import { removeRecord } from '@/state';
+import { RecordList } from './RecordList';
 import style from './Records.module.css';
 
-export default class Records extends Component {
+export class Records extends Component {
   constructor(props) {
     super(props);
 

@@ -1,7 +1,7 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '@@/CBD';
 import style from './Counter.module.css';
 
-export default class Counter extends Component {
+export class Counter extends Component {
   constructor(props) {
     super(props);
 

@@ -1,10 +1,10 @@
-import { Component } from '../../../library/CBD/index.js';
-import Counter from '../../components/Counter/Counter.js';
-import { getActiveMembers } from '../../state/index.js';
-import { ONBOARDING_ID } from '../../constants/onboarding';
+import { Component } from '@@/CBD';
+import { Counter } from '@/components';
+import { getActiveMembers } from '@/state';
+import { ONBOARDING_ID } from '@/constants';
 import style from './NewGroup.module.css';
 
-export default class SelectGroupCnt extends Component {
+export class SelectGroupCnt extends Component {
   constructor(props) {
     super(props);
 

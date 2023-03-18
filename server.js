@@ -87,7 +87,7 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     });
   });
 
-  app.post('/organization', async (req, res) => {
+  app.post('/api/organization', async (req, res) => {
     const { userId, newOrganization } = req.body;
     try {
       await dbUsers.updateOne({ userId }, { $set: { organization: JSON.stringify(newOrganization) } });

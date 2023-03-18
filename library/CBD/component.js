@@ -1,5 +1,5 @@
-import { render, componentTree } from './render.js';
-import { validateEventHandlerInfo } from './eventHandler.js';
+import { render, componentTree } from './render';
+import { validateEventHandlerInfo } from './eventHandler';
 
 class Component {
   constructor(props) {
