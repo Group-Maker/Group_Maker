@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { Component } from '@@/CBD';
 import { Link, navigate } from '@@/SPA-router';
 import { enableOnboarding, getOrganization, getUser, getUserId, setUserAndOrganization } from '@/state';
 import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
 import { ONBOARDING_ID, ROUTE_PATH } from '@/constants';
+import { axiosWithRetry } from '@/api';
 import Nav from './Nav';
 import style from './MainLayout.module.css';
 import 'boxicons';
@@ -75,9 +75,8 @@ export class MainLayout extends Component {
   async signout() {
     try {
       const payload = { userId: getUserId(), newOrganization: getOrganization() };
-      await axios.post('/organization', payload);
-
-      await axios.get('/auth/signout');
+      await axiosWithRetry.post('/api/organization', payload);
+      await axiosWithRetry.get('/auth/signout');
 
       const localOrganization = this.organizationStorage.getItem();
       setUserAndOrganization({

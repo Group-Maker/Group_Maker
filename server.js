@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5004;
 const whitelist = ['https://optimal-group-generator.com', 'https://www.optimal-group-generator.com'];
 
 const corsOptions = {
+  credentials: true,
   origin(origin, callback) {
     if (process.env.NODE_ENV === 'development' || whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
@@ -32,15 +33,19 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
 
   const dbUsers = client.db('authDB').collection('users');
 
-  app.get('/auth', (req, res) => {
+  app.get('/auth', async (req, res) => {
     const accessToken = req.headers.authorization || req.cookies.accessToken;
-
     try {
       const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-      const { user, userId } = decoded;
-      const { organization } = dbUsers.findOne({ userId });
+      const { userId } = decoded;
+      const { organization, user } = await dbUsers.findOne({ userId });
       console.log(`😀 auth success! userId: ${userId}`);
-      res.send({ success: true, user, userId, organization: JSON.parse(organization) });
+      res.send({
+        success: true,
+        user,
+        userId,
+        organization: organization ? JSON.parse(organization) : { members: [], records: [] },
+      });
     } catch {
       console.error('😱 auth failure..');
       res.send({ success: false });
@@ -79,8 +84,7 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     }
 
     const user = await dbUsers.findOne({ userId });
-
-    if (!user) {
+    if (!user || user.password !== password) {
       return res.status(401).send({ error: 'Incorrect email or password.' });
     }
 
@@ -91,6 +95,7 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     res.cookie('accessToken', accessToken, {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7d
       httpOnly: true,
+      secure: true,
     });
 
     res.send({
@@ -104,6 +109,7 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     const { userId, newOrganization } = req.body;
     try {
       await dbUsers.updateOne({ userId }, { $set: { organization: JSON.stringify(newOrganization) } });
+      res.send({ success: true });
       console.log('organization updated!');
     } catch {
       res.send({ error: 'organization update failed' });
