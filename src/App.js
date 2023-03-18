@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { Component } from '@@/CBD';
 import { createRoutes, navigate, resolveComponent } from '@@/SPA-router';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from '@/pages';
 import { Loader, Onboarding } from '@/components';
 import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from '@/utils';
-import { ONBOARDING_STEPS, ROUTE_PATH, BASE_URL } from '@/constants';
+import { ONBOARDING_STEPS, ROUTE_PATH } from '@/constants';
+import { axiosWithRetry } from '@/api';
 import {
   getInitialState,
   getUser,
@@ -16,7 +16,7 @@ import {
   getCurrentStep,
   isOnboarding,
 } from '@/state';
-import style from './App.module.css';
+import './App.module.css';
 
 const routes = [
   { path: ROUTE_PATH.members, component: Members },
@@ -38,7 +38,16 @@ export default class App extends Component {
     // 1. 비동기 처리가 어떤 흐름으로 이어지는지 (await을 쓰느냐 마느냐)
     // 1-1. await을 쓰려면 래퍼함수로 한 번 감싸야 하는데, 그 경우에 this바인딩은 어떻게 되나
     // 2. 저장에 실패하는 경우에 대한 fallback 처리를 어떻게 할건지
-    window.addEventListener('beforeunload', this.storeState);
+    window.addEventListener('beforeunload', async e => {
+      e.preventDefault();
+      await this.storeState();
+      e.returnValue = 'unloaaad';
+      return e.returnValue;
+    });
+
+    document.addEventListener('visibilitychange', e => {
+      console.log(document.visibilityState);
+    });
   }
 
   didUpdate() {
@@ -75,14 +84,12 @@ export default class App extends Component {
     let initialState = getInitialState();
 
     try {
-      const { data: response } = await axios.get('/auth');
-
+      const { data: response } = await axiosWithRetry.get('/auth');
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
       if (response.success) {
         const { user, userId, organization } = response;
         initialState = { ...initialState, user, userId, organization };
       }
-
       // 토큰이 없거나 유효하지 않으면(로그인 실패)
       else {
         // 로컬스토리지 확인
@@ -92,7 +99,6 @@ export default class App extends Component {
           initialState = { ...initialState, organization: localOrganization };
         }
       }
-
       setGlobalState({
         ...initialState,
         isLoading: false,
@@ -107,9 +113,8 @@ export default class App extends Component {
       const user = getUser();
       const organization = getOrganization();
       if (user) {
-        console.log(getOrganization());
         const payload = { userId: user.id, newOrganization: organization };
-        await axios.post('/organization', payload);
+        await axiosWithRetry.post('/api/organization', payload);
       } else {
         this.organizationStorage.setItem(organization);
       }

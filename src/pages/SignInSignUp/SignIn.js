@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { Component } from '@@/CBD';
 import { Link, navigate } from '@@/SPA-router';
 import { getOrganization, setUserAndOrganization } from '@/state';
 import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
 import { ROUTE_PATH } from '@/constants';
+import { axiosWithRetry } from '@/api';
 import { signInSchema } from './schema';
 import style from './SignInSignUp.module.css';
 export class SignIn extends Component {
@@ -30,7 +30,7 @@ export class SignIn extends Component {
     );
 
     try {
-      const { data: response } = await axios.post(`/auth/signin`, payload);
+      const { data: response } = await axiosWithRetry.post(`/auth/signin`, payload);
       const { userId, user, organization } = response;
       setUserAndOrganization({ userId, user, organization });
       navigate('/');
