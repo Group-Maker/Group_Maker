@@ -3,14 +3,27 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const { MongoClient } = require('mongodb');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5004;
+const whitelist = ['https://optimal-group-generator.com', 'https://www.optimal-group-generator.com'];
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (process.env.NODE_ENV === 'development' || whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors(corsOptions));
 
 MongoClient.connect(process.env.DB_URL, (err, client) => {
   if (err) {
@@ -104,6 +117,6 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
   });
 
   app.listen(PORT, () => {
-    console.log(`Server listening on http:/localhost:${PORT}`);
+    console.log(`Server listening on http://localhost:${PORT}`);
   });
 });
