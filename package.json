@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "build": "vite build",
-    "preview": "vite preview --port 8080 --open",
-    "build:watch": "vite build --watch"
+    "dev": "run-p watch:*",
+    "watch:client": "vite dev --open",
+    "watch:server": "NODE_ENV=development nodemon server",
+    "preview": "vite preview --port 8080 --open"
   },
   "repository": {
     "type": "git",
