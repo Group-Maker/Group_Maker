@@ -1,8 +1,8 @@
-import { Component } from '../../../library/CBD/index.js';
-import { getMemberNameById } from '../../state/index.js';
+import { Component } from '@@/CBD';
+import { getMemberNameById } from '@/state';
 import style from './Records.module.css';
 
-export default class RecordItem extends Component {
+export class RecordItem extends Component {
   DOMStr() {
     const { id, record, recordOrder } = this.props;
 

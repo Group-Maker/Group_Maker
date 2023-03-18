@@ -1,8 +1,5 @@
-import SignIn from './SignInSignUp/SignIn.js';
-import SignUp from './SignInSignUp/SignUp.js';
-import NewGroup from './NewGroup/NewGroup.js';
-import Members from './Members/Members.js';
-import Records from './Records/Records.js';
-import NotFound from './NotFound/NotFound.js';
-
-export { SignIn, SignUp, NewGroup, Members, Records, NotFound };
+export * from './SignInSignUp';
+export * from './NewGroup';
+export * from './Members';
+export * from './Records';
+export * from './NotFound';

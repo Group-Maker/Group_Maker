@@ -1,7 +1,6 @@
-import { Component } from '../../../library/CBD/index.js';
-import MainLayout from '../../components/MainLayout/MainLayout.js';
-import DeleteModal from '../../components/Modals/DeleteModal.js';
-import MemberList from './MemberList.js';
+import { Component } from '@@/CBD';
+import { MainLayout, DeleteModal } from '@/components';
+import { MemberList } from './MemberList';
 import {
   getActiveMembers,
   getMemberIdByName,
@@ -12,10 +11,10 @@ import {
   updateMember,
   inactiveMember,
   removeMember,
-} from '../../state/index.js';
+} from '@/state';
 import style from './Members.module.css';
 
-export default class Members extends Component {
+export class Members extends Component {
   constructor(props) {
     super(props);
     this.state = {

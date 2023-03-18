@@ -9,16 +9,15 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve('./src'),
-    }
+      '@@': resolve('./library'),
+    },
   },
-  plugins: [
-    envCompatible(),
-  ],
+  plugins: [envCompatible()],
   build: {
     rollupOptions: {
       input: {
         main: 'index.html',
       },
-    }
+    },
   },
-})
+});

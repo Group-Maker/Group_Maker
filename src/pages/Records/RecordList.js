@@ -1,9 +1,9 @@
-import { Component } from '../../../library/CBD/index.js';
-import { getRecords } from '../../state/index.js';
-import RecordItem from './RecordItem.js';
+import { Component } from '@@/CBD';
+import { getRecords } from '@/state';
+import { RecordItem } from './RecordItem';
 import style from './Records.module.css';
 
-export default class RecordList extends Component {
+export class RecordList extends Component {
   DOMStr() {
     const { openModal } = this.props;
 

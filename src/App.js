@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { Component } from '../library/CBD/index.js';
-import { createRoutes, navigate, resolveComponent } from '../library/SPA-router/index.js';
-import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from './utils/index.js';
-import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from './pages/index.js';
-import Loader from './components/Loading/Loader.js';
-import Onboarding from './components/Onboarding/Onboarding.js';
-import { ONBOARDING_STEPS } from './constants/onboarding';
+import { Component } from '@@/CBD';
+import { createRoutes, navigate, resolveComponent } from '@@/SPA-router';
+import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from '@/pages';
+import { Loader, Onboarding } from '@/components';
+import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from '@/utils';
+import { ONBOARDING_STEPS, ROUTE_PATH, BASE_URL } from '@/constants';
 import {
   getInitialState,
   getUser,
@@ -16,16 +15,16 @@ import {
   stepTo,
   getCurrentStep,
   isOnboarding,
-} from './state/index.js';
+} from '@/state';
 import style from './App.module.css';
 
 const routes = [
-  { path: '/', component: Members },
-  { path: '/signin', component: SignIn },
-  { path: '/signup', component: SignUp },
-  { path: '/newgroup', component: NewGroup },
-  { path: '/records', component: Records },
-  { path: '*', component: NotFound },
+  { path: ROUTE_PATH.members, component: Members },
+  { path: ROUTE_PATH.signin, component: SignIn },
+  { path: ROUTE_PATH.signup, component: SignUp },
+  { path: ROUTE_PATH.newgroup, component: NewGroup },
+  { path: ROUTE_PATH.records, component: Records },
+  { path: ROUTE_PATH.wildcard, component: NotFound },
 ];
 
 createRoutes(routes);
@@ -108,6 +107,7 @@ export default class App extends Component {
       const user = getUser();
       const organization = getOrganization();
       if (user) {
+        console.log(getOrganization());
         const payload = { userId: user.id, newOrganization: organization };
         await axios.post('/organization', payload);
       } else {

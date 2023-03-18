@@ -1,4 +1,4 @@
-import { render } from './render.js';
+import { render } from './render';
 
 // const hooks = [];
 // let hookIdx = 0;

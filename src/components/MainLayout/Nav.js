@@ -1,5 +1,5 @@
-import { Component } from '../../../library/CBD/index.js';
-import { Link } from '../../../library/SPA-router/index.js';
+import { Component } from '@@/CBD';
+import { Link } from '@@/SPA-router';
 import style from './Nav.module.css';
 
 export default class Nav extends Component {

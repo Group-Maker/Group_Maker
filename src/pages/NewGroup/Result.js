@@ -1,11 +1,10 @@
 import { throttle } from 'lodash';
-import { Component } from '../../../library/CBD/index.js';
-import Members from '../../components/Result/Members.js';
-import Groups from '../../components/Result/Groups.js';
-import { addRecord, getActiveMembers } from '../../state/index.js';
+import { Component } from '@@/CBD';
+import { Members, Groups } from '@/components';
+import { addRecord, getActiveMembers } from '@/state';
 import style from './Result.module.css';
 
-export default class Result extends Component {
+export class Result extends Component {
   constructor(props) {
     super(props);
 

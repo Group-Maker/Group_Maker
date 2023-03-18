@@ -1,5 +1,5 @@
-import { Component } from '../CBD/index.js';
-import { navigate } from './router.js';
+import { Component } from '../CBD';
+import { navigate } from './router';
 
 export default class Link extends Component {
   DOMStr() {

@@ -1,1 +1,2 @@
-export * from './onboarding.js';
+export * from './onboarding';
+export * from './routes';

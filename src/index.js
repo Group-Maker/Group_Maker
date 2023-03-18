@@ -1,4 +1,4 @@
-import { render } from '../library/CBD/index.js';
-import App from './App.js';
+import { render } from '@@/CBD';
+import App from './App';
 
 render(document.getElementById('root'), new App());

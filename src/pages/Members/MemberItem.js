@@ -1,7 +1,7 @@
-import { Component } from '../../../library/CBD/index.js';
+import { Component } from '@@/CBD';
 import style from './Members.module.css';
 
-export default class MemberItem extends Component {
+export class MemberItem extends Component {
   DOMStr() {
     const { member, editingMember } = this.props;
     const { id, name } = member;

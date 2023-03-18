@@ -1,10 +1,10 @@
-import { Component } from '../../../library/CBD/index.js';
-import MemberItem from './MemberItem.js';
-import { getActiveMembers } from '../../state/index.js';
+import { Component } from '@@/CBD';
+import { MemberItem } from './MemberItem';
+import { getActiveMembers } from '@/state';
 import style from './Members.module.css';
 import 'boxicons';
 
-export default class MemberList extends Component {
+export class MemberList extends Component {
   didMount() {
     const $editMemberInput = document.getElementById('editMemberInput');
     $editMemberInput?.focus();

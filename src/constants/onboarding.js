@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import { ONBOARDING_PLACEMENT } from '../components/Onboarding/Onboarding';
+import { ONBOARDING_PLACEMENT } from '@/components';
+import { ROUTE_PATH } from './routes';
 
 export const ONBOARDING_ID = {
   MEMBERS_PAGE: 'membersPage',
@@ -14,31 +15,30 @@ export const ONBOARDING_STEPS = [
     title: 'Welcome to<br/>Optimal Group Generator!',
     content: "Let's begin super simple and easy tutorials.",
     target: `[data-onboarding-id="${ONBOARDING_ID.ADD_MEMBER}"]`,
-    placement: ONBOARDING_PLACEMENT.TOP_LEFT,
   },
   {
     content: 'Add, delete and rename your members here.',
     target: `[data-onboarding-id="${ONBOARDING_ID.MEMBERS_PAGE}"]`,
     placement: ONBOARDING_PLACEMENT.RIGHT,
-    page: '/',
+    page: ROUTE_PATH.members,
   },
   {
     content: 'Check and remove previous records here.',
     target: `[data-onboarding-id="${ONBOARDING_ID.RECORDS_PAGE}"]`,
     placement: ONBOARDING_PLACEMENT.RIGHT,
-    page: '/records',
+    page: ROUTE_PATH.records,
   },
   {
     content: 'Generate new groups here.',
     target: `[data-onboarding-id="${ONBOARDING_ID.NEW_GROUP_PAGE}"]`,
     placement: ONBOARDING_PLACEMENT.RIGHT,
-    page: '/newgroup',
+    page: ROUTE_PATH.newgroup,
   },
   {
     content: 'Be with new people!<br />We care all about complicated calculations.',
     target: `[data-onboarding-id="${ONBOARDING_ID.OPTIMAL_GENERATE}"]`,
-    placement: ONBOARDING_PLACEMENT.LEFT_TOP,
-    page: '/newgroup',
+    placement: ONBOARDING_PLACEMENT.TOP_LEFT,
+    page: ROUTE_PATH.newgroup,
   },
   {
     title: "That's all!",
@@ -46,7 +46,7 @@ export const ONBOARDING_STEPS = [
     locale: {
       next: 'Finish',
     },
-    page: '/',
+    page: ROUTE_PATH.members,
   },
   {
     content: 'Click this button if you need tutorial again.',
@@ -56,6 +56,7 @@ export const ONBOARDING_STEPS = [
     target: `[data-onboarding-id="${ONBOARDING_ID.HELP}"]`,
     placement: ONBOARDING_PLACEMENT.TOP_RIGHT,
     hideBackButton: true,
-    page: '/',
+    hideCloseButton: true,
+    page: ROUTE_PATH.members,
   },
 ];

@@ -1,3 +1,3 @@
-export * from './localStorage.js';
-export * from './pageTitle.js';
-export * from './style.js';
+export * from './localStorage';
+export * from './pageTitle';
+export * from './style';
