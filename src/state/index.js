@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isLoading: true,
   userId: null,
   user: null,
+  uid: null,
   organization: {
     members: [],
     records: [],
@@ -17,8 +18,8 @@ const getInitialState = () => INITIAL_STATE;
 const checkLoading = () => getGlobalState().isLoading;
 
 const getUserId = () => getGlobalState().userId;
-
 const getUser = () => getGlobalState().user;
+const getUID = () => getGlobalState().uid;
 
 const getOrganization = () => getGlobalState().organization;
 
@@ -69,6 +70,9 @@ const setMembers = members => {
   }));
 };
 
+const getMemberById = id => getMembers().find(member => member.id === id);
+const getMemberByName = name => getMembers().find(member => member.name === name);
+
 const getMemberNameById = id => getMembers().find(member => member.id === id)?.name;
 
 const getMemberIdByName = name => getMembers().find(member => member.name === name)?.id;
@@ -87,13 +91,18 @@ const addMember = name => {
   setMembers(members);
 };
 
-const updateMember = ({ id, name }) => {
-  const members = getMembers().map(member => (member.id === id ? { ...member, name } : member));
+const updateMember = ({ id, name, isActive }) => {
+  const members = getMembers().map(member => (member.id === id ? { ...member, name, isActive } : member));
   setMembers(members);
 };
 
-const inactiveMember = id => {
+const inactivateMember = id => {
   const members = getMembers().map(member => (member.id === id ? { ...member, isActive: false } : member));
+  setMembers(members);
+};
+
+const activateMember = id => {
+  const members = getMembers().map(member => (member.id === id ? { ...member, isActive: true } : member));
   setMembers(members);
 };
 
@@ -105,6 +114,7 @@ const removeMember = id => {
 export {
   getInitialState,
   checkLoading,
+  getUID,
   getUserId,
   getUser,
   getOrganization,
@@ -114,6 +124,8 @@ export {
   removeRecord,
   setGlobalState,
   getMembers,
+  getMemberById,
+  getMemberByName,
   getMemberNameById,
   getMemberIdByName,
   checkDuplicatedName,
@@ -122,7 +134,8 @@ export {
   checkMemberIncludedInRecords,
   addMember,
   updateMember,
-  inactiveMember,
+  inactivateMember,
+  activateMember,
   removeMember,
 };
 export * from './onboarding';

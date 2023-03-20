@@ -2,6 +2,9 @@ import { Component } from '@@/CBD';
 import { MainLayout, DeleteModal } from '@/components';
 import { MemberList } from './MemberList';
 import {
+  getMemberById,
+  getMemberByName,
+  getUID,
   getActiveMembers,
   getMemberIdByName,
   checkDuplicatedName,
@@ -9,9 +12,18 @@ import {
   checkMemberIncludedInRecords,
   addMember,
   updateMember,
-  inactiveMember,
+  inactivateMember,
   removeMember,
+  activateMember,
 } from '@/state';
+import {
+  addMemberOnLocal,
+  addMemberOnServer,
+  updateMemberOnLocal,
+  updateMemberOnServer,
+  deleteMemberOnLocal,
+  deleteMemberOnServer,
+} from '@/apis';
 import style from './Members.module.css';
 
 export class Members extends Component {
@@ -67,7 +79,7 @@ export class Members extends Component {
     }));
   }
 
-  preventDuplicatedName(name, callback) {
+  async preventDuplicatedName(name, callback) {
     if (!checkDuplicatedName(name)) {
       callback();
       return;
@@ -85,25 +97,83 @@ export class Members extends Component {
       return;
     }
 
-    removeMember(id);
+    const uid = getUID();
+    try {
+      if (uid) {
+        await deleteMemberOnServer(uid, id);
+      } else {
+        deleteMemberOnLocal(id);
+      }
+      removeMember(id);
+    } catch (err) {
+      console.log('remove faild', err);
+      // 토스트 띄워줘야 함
+    }
+
     callback();
   }
 
-  onAdd(name) {
+  async onAdd(name) {
     if (getActiveMembers().length >= 50) {
       alert('You have reached the maximum number of members.');
       return;
     }
-    this.preventDuplicatedName(name, () => addMember(name));
+    await this.preventDuplicatedName(name, async () => {
+      const uid = getUID();
+      addMember(name);
+      const member = getMemberByName(name);
+      try {
+        if (uid) {
+          await addMemberOnServer(uid, member);
+        } else {
+          addMemberOnLocal(member);
+        }
+      } catch (err) {
+        console.log('add faild', err);
+        // 토스트 띄워줘야 함
+        removeMember(member.id);
+      }
+    });
     document.getElementById('memberList').scroll({ top: 9999, behavior: 'smooth' });
   }
 
-  onUpdate({ id, name }) {
-    this.preventDuplicatedName(name, () => updateMember({ id, name }));
+  async onUpdate({ id, name }) {
+    await this.preventDuplicatedName(name, async () => {
+      const uid = getUID();
+      const originalMember = getMemberById(id);
+      const updatedMember = { ...originalMember, id, name };
+      updateMember(updatedMember);
+      try {
+        if (uid) {
+          await updateMemberOnServer(uid, updatedMember);
+        } else {
+          updateMemberOnLocal(updatedMember);
+        }
+      } catch (err) {
+        console.log('update faild', err);
+        // 토스트 띄워줘야 함
+        updateMember(originalMember);
+      }
+    });
   }
 
-  onRemove() {
-    inactiveMember(this.state.removeMemberId);
+  async onRemove() {
+    const { removeMemberId } = this.state;
+    inactivateMember(removeMemberId);
+
+    const uid = getUID();
+    const member = getMemberById(removeMemberId);
+    try {
+      if (uid) {
+        await updateMemberOnServer(uid, member);
+      } else {
+        updateMemberOnLocal(member);
+      }
+    } catch (err) {
+      console.log('remove faild', err);
+      // 토스트 띄워줘야 함
+      activateMember(removeMemberId);
+    }
   }
 
   openModal(removeMemberId) {

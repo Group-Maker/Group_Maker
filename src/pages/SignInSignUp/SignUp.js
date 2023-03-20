@@ -2,7 +2,7 @@ import { Component } from '@@/CBD';
 import { Link } from '@@/SPA-router';
 import { SignupModal } from '@/components';
 import { ROUTE_PATH } from '@/constants';
-import { axiosWithRetry } from '@/api';
+import { signUp } from '@/apis';
 import { signUpSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 import 'boxicons';
@@ -23,8 +23,7 @@ export class SignUp extends Component {
 
   async checkDuplicateduserId(userId) {
     try {
-      const { data: isDuplicated } = await axiosWithRetry.post('/auth/userId', { userId });
-
+      const isDuplicated = await checkDuplicatedId(userId);
       if (isDuplicated) {
         this.setState(prevState => ({ ...prevState, isSignUpFailed: true }));
       }
@@ -43,7 +42,7 @@ export class SignUp extends Component {
     );
 
     try {
-      await axiosWithRetry.post(`/auth/signup`, payload);
+      await signUp(payload);
       // TODO: 모달 관련 코드 수정 필요
       document.querySelector('.modal').classList.remove('hidden');
     } catch (err) {

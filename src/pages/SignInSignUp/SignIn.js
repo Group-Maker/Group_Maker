@@ -1,9 +1,8 @@
 import { Component } from '@@/CBD';
 import { Link, navigate } from '@@/SPA-router';
 import { getOrganization, setUserAndOrganization } from '@/state';
-import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
+import { signIn, updateOrganizationOnLocal } from '@/apis';
 import { ROUTE_PATH } from '@/constants';
-import { axiosWithRetry } from '@/api';
 import { signInSchema } from './schema';
 import style from './SignInSignUp.module.css';
 export class SignIn extends Component {
@@ -15,24 +14,22 @@ export class SignIn extends Component {
       password: { value: '', isDirty: false },
       isSignInFailed: false,
     };
-    this.organizationStorage = new LocalStorage(ORGANIZATION_KEY);
   }
 
   async signIn(e) {
     e.preventDefault();
 
-    this.organizationStorage.setItem(getOrganization());
-
-    const payload = [...new FormData(e.target)].reduce(
-      // eslint-disable-next-line no-return-assign, no-sequences
-      (obj, [key, value]) => ((obj[key] = value), obj),
-      {}
-    );
-
     try {
-      const { data: response } = await axiosWithRetry.post(`/auth/signin`, payload);
-      const { userId, user, organization } = response;
-      setUserAndOrganization({ userId, user, organization });
+      updateOrganizationOnLocal(getOrganization());
+
+      const payload = [...new FormData(e.target)].reduce(
+        // eslint-disable-next-line no-return-assign, no-sequences
+        (obj, [key, value]) => ((obj[key] = value), obj),
+        {}
+      );
+
+      const { uid, userId, user, organization } = await signIn(payload);
+      setUserAndOrganization({ uid, userId, user, organization });
       navigate('/');
     } catch (err) {
       // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
