@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -37,82 +38,218 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     const accessToken = req.headers.authorization || req.cookies.accessToken;
     try {
       const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-      const { userId } = decoded;
-      const { organization, user } = await dbUsers.findOne({ userId });
-      console.log(`😀 auth success! userId: ${userId}`);
+      const { uid } = decoded;
+      const { user, userId } = await dbUsers.findOne({ _id: new ObjectId(uid) });
+      console.log(`😀 auth success!`);
       res.send({
         success: true,
+        uid,
         user,
         userId,
-        organization: organization ? JSON.parse(organization) : { members: [], records: [] },
       });
-    } catch {
+    } catch (err) {
       console.error('😱 auth failure..');
-      res.send({ success: false });
+      return res.send({ success: false, message: 'Server Error: Invalid or not JWT' });
     }
   });
 
-  app.get('/auth/signout', (req, res) => res.clearCookie('accessToken').end());
-
   // TODO: 주소 이름 RESTful하게 변경 필요
-  app.post('/auth/userId', (req, res) => {
+  app.post('/auth/userId', async (req, res) => {
     const { userId } = req.body;
-    const user = dbUsers.findOne({ userId });
-    res.send(!!user);
-  });
-
-  app.post('/auth/signup', (req, res) => {
-    const { user, userId, password } = req.body;
-
-    const organization = JSON.stringify({ members: [], records: [] });
 
     try {
-      dbUsers.insertOne({ user, userId, password, organization });
+      const user = await dbUsers.findOne({ userId });
+      res.send(!!user);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Check user id' });
+    }
+  });
+
+  app.post('/auth/signup', async (req, res) => {
+    const { user, userId, password } = req.body;
+
+    const organization = { members: [], records: [] };
+
+    try {
+      const hashedPW = await bcrypt.hash(password, 10);
+      await dbUsers.insertOne({ user, userId, password: hashedPW, organization });
+
       console.log('signup success!');
       res.send('Success');
     } catch (err) {
       console.log(err.message);
-      return res.status(500).send('Server Error');
+      return res.status(500).send({ success: false, message: 'Server Error: Sign up faild' });
     }
   });
 
   app.post('/auth/signin', async (req, res) => {
     const { userId, password } = req.body;
 
-    if (!userId || !password) {
-      return res.status(401).send({ error: 'No username or password was passed.' });
+    try {
+      if (!userId || !password) {
+        return res.status(401).send({ error: 'No username or password was passed.' });
+      }
+
+      const userData = await dbUsers.findOne({ userId });
+      if (!userData) {
+        return res.status(401).send({ error: 'Incorrect email or password.' });
+      }
+      const isCorrectPW = await bcrypt.compare(password, userData.password);
+      if (!isCorrectPW) {
+        return res.status(401).send({ error: 'Incorrect email or password.' });
+      }
+
+      const { _id, user, organization: org } = userData;
+
+      const uid = _id.toString();
+      const organization = org;
+
+      const accessToken = jwt.sign({ uid }, process.env.JWT_SECRET_KEY, {
+        expiresIn: '1d',
+      });
+
+      res.cookie('accessToken', accessToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7d
+        httpOnly: true,
+        secure: true,
+      });
+
+      res.send({
+        success: true,
+        uid,
+        user,
+        userId,
+        organization,
+      });
+    } catch (err) {
+      console.error('signin error:', err);
+      return res.status(500).send({ success: false, message: 'Server Error: Sign in faild' });
     }
-
-    const user = await dbUsers.findOne({ userId });
-    if (!user || user.password !== password) {
-      return res.status(401).send({ error: 'Incorrect email or password.' });
-    }
-
-    const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
-      expiresIn: '1d',
-    });
-
-    res.cookie('accessToken', accessToken, {
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7d
-      httpOnly: true,
-      secure: true,
-    });
-
-    res.send({
-      user,
-      userId,
-      organization: JSON.parse(user.organization),
-    });
   });
 
-  app.post('/api/organization', async (req, res) => {
-    const { userId, newOrganization } = req.body;
+  app.get('/auth/signout', (req, res) => res.clearCookie('accessToken').end());
+
+  app.get('/api/organization/:uid', async (req, res) => {
+    const { uid } = req.params;
     try {
-      await dbUsers.updateOne({ userId }, { $set: { organization: JSON.stringify(newOrganization) } });
-      res.send({ success: true });
+      const data = await dbUsers.findOne({ _id: new ObjectId(uid) });
+      const organization = data.organization;
+
+      res.send({ success: true, organization });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Get organization faild' });
+    }
+  });
+
+  app.patch('/api/organization/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { organization } = req.body;
+    try {
+      const updateResult = await dbUsers.updateOne({ _id: new ObjectId(uid) }, { $set: { organization } });
+      updateResult.modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Update organization faild' });
       console.log('organization updated!');
     } catch {
-      res.send({ error: 'organization update failed' });
+      return res.status(500).send({ success: false, message: 'Server Error: Update organization faild' });
+    }
+  });
+
+  app.post('/api/members', async (req, res) => {
+    const { uid, member } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $push: { 'organization.members': member } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Add member faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Add member faild' });
+    }
+  });
+
+  app.patch('/api/members/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { member } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        {
+          _id: new ObjectId(uid),
+        },
+        {
+          $set: {
+            'organization.members.$[v]': member,
+          },
+        },
+        {
+          arrayFilters: [
+            {
+              'v.id': member.id,
+            },
+          ],
+        }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Update member faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Update member faild' });
+    }
+  });
+
+  app.delete('/api/members/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { id } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $pull: { 'organization.members': { id } } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Delete member faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Delete member faild' });
+    }
+  });
+
+  app.post('/api/records', async (req, res) => {
+    const { uid, record } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $push: { 'organization.records': record } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Add record faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Add record faild' });
+    }
+  });
+
+  app.delete('/api/records/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { id } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $pull: { 'organization.records': { id } } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Delete record faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Delete record faild' });
     }
   });
 

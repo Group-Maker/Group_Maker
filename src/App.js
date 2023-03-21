@@ -2,12 +2,17 @@ import { Component } from '@@/CBD';
 import { createRoutes, navigate, resolveComponent } from '@@/SPA-router';
 import { SignIn, SignUp, NewGroup, Members, Records, NotFound } from '@/pages';
 import { Loader, Onboarding } from '@/components';
-import { LocalStorage, ORGANIZATION_KEY, setPageTitle } from '@/utils';
+import { setPageTitle } from '@/utils';
 import { ONBOARDING_STEPS, ROUTE_PATH } from '@/constants';
-import { axiosWithRetry } from '@/api';
+import {
+  getOrganizationOnLocal,
+  getOrganizationOnServer,
+  updateOrganizationOnServer,
+  updateOrganizationOnLocal,
+} from '@/apis';
 import {
   getInitialState,
-  getUser,
+  getUID,
   checkLoading,
   setGlobalState,
   getOrganization,
@@ -17,6 +22,7 @@ import {
   isOnboarding,
 } from '@/state';
 import './App.module.css';
+import { getUserInfo } from './apis/auth';
 
 const routes = [
   { path: ROUTE_PATH.members, component: Members },
@@ -30,20 +36,12 @@ const routes = [
 createRoutes(routes);
 
 export default class App extends Component {
-  organizationStorage = new LocalStorage(ORGANIZATION_KEY);
-
   didMount() {
     this.init();
     // 테스트 해봐야 함
     // 1. 비동기 처리가 어떤 흐름으로 이어지는지 (await을 쓰느냐 마느냐)
     // 1-1. await을 쓰려면 래퍼함수로 한 번 감싸야 하는데, 그 경우에 this바인딩은 어떻게 되나
     // 2. 저장에 실패하는 경우에 대한 fallback 처리를 어떻게 할건지
-    window.addEventListener('beforeunload', async e => {
-      e.preventDefault();
-      await this.storeState();
-      e.returnValue = 'unloaaad';
-      return e.returnValue;
-    });
 
     document.addEventListener('visibilitychange', e => {
       console.log(document.visibilityState);
@@ -84,19 +82,19 @@ export default class App extends Component {
     let initialState = getInitialState();
 
     try {
-      const { data: response } = await axiosWithRetry.get('/auth');
+      const { success, uid, user, userId } = await getUserInfo();
       // 토큰이 있고 유효하면(로그인 성공) 받아온 정보 갱신
-      if (response.success) {
-        const { user, userId, organization } = response;
-        initialState = { ...initialState, user, userId, organization };
-      }
-      // 토큰이 없거나 유효하지 않으면(로그인 실패)
-      else {
-        // 로컬스토리지 확인
-        const localOrganization = this.organizationStorage.getItem();
-        // 로컬스토리지에 정보가 있으면 받아온 정보 갱신
-        if (localOrganization) {
-          initialState = { ...initialState, organization: localOrganization };
+      if (success) {
+        initialState = { ...initialState, uid, user, userId };
+
+        const organization = await getOrganizationOnServer(uid);
+        if (organization) {
+          initialState = { ...initialState, organization };
+        }
+      } else {
+        const organization = getOrganizationOnLocal();
+        if (organization) {
+          initialState = { ...initialState, organization };
         }
       }
       setGlobalState({
@@ -110,14 +108,9 @@ export default class App extends Component {
 
   async storeState() {
     try {
-      const user = getUser();
+      const uid = getUID();
       const organization = getOrganization();
-      if (user) {
-        const payload = { userId: user.id, newOrganization: organization };
-        await axiosWithRetry.post('/api/organization', payload);
-      } else {
-        this.organizationStorage.setItem(organization);
-      }
+      uid ? await updateOrganizationOnServer(uid, organization) : updateOrganizationOnLocal(organization);
     } catch (err) {
       console.error(err);
     }

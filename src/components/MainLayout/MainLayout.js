@@ -1,9 +1,8 @@
 import { Component } from '@@/CBD';
 import { Link, navigate } from '@@/SPA-router';
-import { enableOnboarding, getOrganization, getUser, getUserId, setUserAndOrganization } from '@/state';
-import { LocalStorage, ORGANIZATION_KEY } from '@/utils';
+import { enableOnboarding, getUser, setUserAndOrganization } from '@/state';
+import { getOrganizationOnLocal, signOut } from '@/apis';
 import { ONBOARDING_ID, ROUTE_PATH } from '@/constants';
-import { axiosWithRetry } from '@/api';
 import Nav from './Nav';
 import style from './MainLayout.module.css';
 import 'boxicons';
@@ -31,7 +30,6 @@ export class MainLayout extends Component {
         onboardingId: ONBOARDING_ID.NEW_GROUP_PAGE,
       },
     ];
-    this.organizationStorage = new LocalStorage(ORGANIZATION_KEY);
   }
 
   DOMStr() {
@@ -74,15 +72,14 @@ export class MainLayout extends Component {
 
   async signout() {
     try {
-      const payload = { userId: getUserId(), newOrganization: getOrganization() };
-      await axiosWithRetry.post('/api/organization', payload);
-      await axiosWithRetry.get('/auth/signout');
+      await signOut();
 
-      const localOrganization = this.organizationStorage.getItem();
+      const organization = getOrganizationOnLocal();
       setUserAndOrganization({
+        uid: null,
         userId: null,
         user: null,
-        organization: localOrganization,
+        organization,
       });
       navigate('/');
     } catch (err) {

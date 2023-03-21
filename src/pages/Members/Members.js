@@ -2,6 +2,9 @@ import { Component } from '@@/CBD';
 import { MainLayout, DeleteModal } from '@/components';
 import { MemberList } from './MemberList';
 import {
+  getMemberById,
+  getMemberByName,
+  getUID,
   getActiveMembers,
   getMemberIdByName,
   checkDuplicatedName,
@@ -9,9 +12,18 @@ import {
   checkMemberIncludedInRecords,
   addMember,
   updateMember,
-  inactiveMember,
+  inactivateMember,
   removeMember,
+  activateMember,
 } from '@/state';
+import {
+  addMemberOnLocal,
+  addMemberOnServer,
+  updateMemberOnLocal,
+  updateMemberOnServer,
+  deleteMemberOnLocal,
+  deleteMemberOnServer,
+} from '@/apis';
 import style from './Members.module.css';
 
 export class Members extends Component {
@@ -67,43 +79,99 @@ export class Members extends Component {
     }));
   }
 
-  preventDuplicatedName(name, callback) {
+  async preventDuplicatedName(name) {
     if (!checkDuplicatedName(name)) {
-      callback();
       return;
     }
 
     const id = getMemberIdByName(name);
 
     if (checkActiveMember(id)) {
-      alert('Duplicate name is not allowed.');
-      return;
+      throw new Error('Duplicate name is not allowed.');
     }
 
     if (checkMemberIncludedInRecords(id)) {
-      alert('The name exists in Previous Records is not allowed.');
-      return;
+      throw new Error('The name exists in Previous Records is not allowed.');
     }
 
-    removeMember(id);
-    callback();
+    const uid = getUID();
+    try {
+      uid ? await deleteMemberOnServer(uid, id) : deleteMemberOnLocal(id);
+      removeMember(id);
+    } catch (err) {
+      console.log('Delete duplicated name error');
+      throw new Error('Network Error. Please check network connection');
+    }
   }
 
-  onAdd(name) {
-    if (getActiveMembers().length >= 50) {
-      alert('You have reached the maximum number of members.');
-      return;
+  async onAdd(name) {
+    let member;
+
+    try {
+      if (getActiveMembers().length >= 50) {
+        throw new Error('You have reached the maximum number of members.');
+      }
+      await this.preventDuplicatedName(name);
+
+      addMember(name);
+
+      const uid = getUID();
+      member = getMemberByName(name);
+
+      uid ? await addMemberOnServer(uid, member) : addMemberOnLocal(member);
+    } catch (err) {
+      console.error('add faild', err);
+      // 토스트 띄워줘야 함
+      alert(err.message);
+      member && removeMember(member.id);
     }
-    this.preventDuplicatedName(name, () => addMember(name));
     document.getElementById('memberList').scroll({ top: 9999, behavior: 'smooth' });
   }
 
-  onUpdate({ id, name }) {
-    this.preventDuplicatedName(name, () => updateMember({ id, name }));
+  async onUpdate({ id, name }) {
+    const originalMember = getMemberById(id);
+
+    try {
+      await this.preventDuplicatedName(name);
+
+      const uid = getUID();
+      const updatedMember = { ...originalMember, id, name };
+
+      updateMember(updatedMember);
+
+      if (uid) {
+        await updateMemberOnServer(uid, updatedMember);
+      } else {
+        updateMemberOnLocal(updatedMember);
+      }
+    } catch (err) {
+      console.error('update faild', err);
+      // 토스트 띄워줘야 함
+      alert(err.message);
+      updateMember(originalMember);
+    }
   }
 
-  onRemove() {
-    inactiveMember(this.state.removeMemberId);
+  async onRemove() {
+    const id = this.state.removeMemberId;
+
+    try {
+      inactivateMember(id);
+
+      const uid = getUID();
+      const member = getMemberById(id);
+      const isIncludedInRecord = checkMemberIncludedInRecords(id);
+      if (uid) {
+        isIncludedInRecord ? await updateMemberOnServer(uid, member) : await deleteMemberOnServer(uid, id);
+      } else {
+        isIncludedInRecord ? updateMemberOnLocal(member) : deleteMemberOnLocal(id);
+      }
+    } catch (err) {
+      console.error('remove faild', err);
+      // 토스트 띄워줘야 함
+      alert(err.message);
+      activateMember(id);
+    }
   }
 
   openModal(removeMemberId) {
