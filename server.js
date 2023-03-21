@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5004;
-const whitelist = ['https://optimal-group-generator.com', 'https://www.optimal-group-generator.com', 'https://vanilla-group-maker.herokuapp.com/', 'https://www.vanilla-group-maker.herokuapp.com/'];
+const whitelist = ['https://optimal-group-generator.com', 'https://www.optimal-group-generator.com', 'https://vanilla-group-maker.herokuapp.com', 'https://www.vanilla-group-maker.herokuapp.com'];
 
 const corsOptions = {
   credentials: true,
