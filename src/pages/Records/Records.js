@@ -1,8 +1,10 @@
 import { Component } from '@@/CBD';
 import { MainLayout, DeleteModal } from '@/components';
-import { removeRecord } from '@/state';
+import { removeRecord, getUID, addRecord } from '@/state';
 import { RecordList } from './RecordList';
 import style from './Records.module.css';
+import { deleteRecordOnLocal, deleteRecordOnServer } from '../../apis/records';
+import { getRecordById } from '../../state';
 
 export class Records extends Component {
   constructor(props) {
@@ -35,8 +37,18 @@ export class Records extends Component {
     </div>`;
   }
 
-  removeRecord() {
-    removeRecord(this.state.recordId);
+  async removeRecord() {
+    const id = this.state.recordId;
+    const { record } = getRecordById(id);
+    console.log(record);
+    removeRecord(id);
+    try {
+      const uid = getUID();
+      uid ? await deleteRecordOnServer(uid, id) : deleteRecordOnLocal(id);
+    } catch (err) {
+      console.log(err);
+      addRecord(record);
+    }
   }
 
   openModal(recordId) {

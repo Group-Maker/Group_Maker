@@ -220,6 +220,39 @@ MongoClient.connect(process.env.DB_URL, (err, client) => {
     }
   });
 
+  app.post('/api/records', async (req, res) => {
+    const { uid, record } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $push: { 'organization.records': record } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Add record faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Add record faild' });
+    }
+  });
+
+  app.delete('/api/records/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { id } = req.body;
+    try {
+      const { modifiedCount } = await dbUsers.updateOne(
+        { _id: new ObjectId(uid) },
+        { $pull: { 'organization.records': { id } } }
+      );
+      modifiedCount
+        ? res.send({ success: true })
+        : res.status(500).send({ success: false, message: 'Server Error: Delete record faild' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ success: false, message: 'Server Error: Delete record faild' });
+    }
+  });
+
   // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)
   // 브라우저 새로고침 시 서버는 index.html을 전달하고 클라이언트는 window.location.pathname를 참조해 다시 라우팅한다.
   app.get('*', (req, res) => {

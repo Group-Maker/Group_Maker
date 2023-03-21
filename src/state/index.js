@@ -45,6 +45,8 @@ const setRecords = records => {
   }));
 };
 
+const getRecordById = id => getRecords().find(record => record.id === id);
+
 const addRecord = record => {
   const prevRecords = getRecords();
   const records = [...prevRecords, { id: generateNextId(prevRecords), record }];
@@ -120,6 +122,7 @@ export {
   getOrganization,
   setUserAndOrganization,
   getRecords,
+  getRecordById,
   addRecord,
   removeRecord,
   setGlobalState,

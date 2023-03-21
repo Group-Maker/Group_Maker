@@ -1,7 +1,8 @@
 import { throttle } from 'lodash';
 import { Component } from '@@/CBD';
 import { Members, Groups } from '@/components';
-import { addRecord, getActiveMembers } from '@/state';
+import { addRecord, getActiveMembers, getRecords, getUID, removeRecord } from '@/state';
+import { addRecordOnLocal, addRecordOnServer } from '@/apis';
 import style from './Result.module.css';
 
 export class Result extends Component {
@@ -235,10 +236,17 @@ export class Result extends Component {
     }
   }
 
-  saveRecord() {
+  async saveRecord() {
     addRecord(this.state.groupArr);
-
-    // will change to dialog
-    alert('Successfully saved!');
+    const record = getRecords().at(-1);
+    try {
+      const uid = getUID();
+      uid ? await addRecordOnServer(uid, record) : addRecordOnLocal(record);
+      // will change to dialog
+      alert('Successfully saved!');
+    } catch (err) {
+      console.log(err);
+      removeRecord(record.id);
+    }
   }
 }
