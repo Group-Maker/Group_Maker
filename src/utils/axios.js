@@ -3,7 +3,7 @@ import axios from 'axios';
 const { DEV, VITE_DEV_URL, VITE_PROD_URL } = import.meta.env;
 
 const DEFAULT_RETRY_COUNT = 3;
-const DEFAULT_RETRY_DELAY = 1000;
+const DEFAULT_RETRY_DELAY = 0;
 
 const customConfig = {
   withCredentials: 'include',

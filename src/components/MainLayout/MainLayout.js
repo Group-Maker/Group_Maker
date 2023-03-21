@@ -79,7 +79,7 @@ export class MainLayout extends Component {
         uid: null,
         userId: null,
         user: null,
-        organization: organization,
+        organization,
       });
       navigate('/');
     } catch (err) {
