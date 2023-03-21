@@ -79,103 +79,95 @@ export class Members extends Component {
     }));
   }
 
-  async preventDuplicatedName(name, callback) {
+  async preventDuplicatedName(name) {
     if (!checkDuplicatedName(name)) {
-      callback();
       return;
     }
 
     const id = getMemberIdByName(name);
 
     if (checkActiveMember(id)) {
-      alert('Duplicate name is not allowed.');
-      return;
+      throw new Error('Duplicate name is not allowed.');
     }
 
     if (checkMemberIncludedInRecords(id)) {
-      alert('The name exists in Previous Records is not allowed.');
-      return;
+      throw new Error('The name exists in Previous Records is not allowed.');
     }
 
     const uid = getUID();
     try {
-      if (uid) {
-        await deleteMemberOnServer(uid, id);
-      } else {
-        deleteMemberOnLocal(id);
-      }
+      uid ? await deleteMemberOnServer(uid, id) : deleteMemberOnLocal(id);
       removeMember(id);
     } catch (err) {
-      console.log('remove faild', err);
-      // 토스트 띄워줘야 함
+      console.log('Delete duplicated name error');
+      throw new Error('Network Error. Please check network connection');
     }
-
-    callback();
   }
 
   async onAdd(name) {
-    if (getActiveMembers().length >= 50) {
-      alert('You have reached the maximum number of members.');
-      return;
-    }
-    await this.preventDuplicatedName(name, async () => {
+    let member;
+
+    try {
+      if (getActiveMembers().length >= 50) {
+        throw new Error('You have reached the maximum number of members.');
+      }
+      await this.preventDuplicatedName(name);
+
       addMember(name);
 
       const uid = getUID();
-      const member = getMemberByName(name);
-      try {
-        if (uid) {
-          await addMemberOnServer(uid, member);
-        } else {
-          addMemberOnLocal(member);
-        }
-      } catch (err) {
-        console.log('add faild', err);
-        // 토스트 띄워줘야 함
-        removeMember(member.id);
-      }
-    });
+      member = getMemberByName(name);
+
+      uid ? await addMemberOnServer(uid, member) : addMemberOnLocal(member);
+    } catch (err) {
+      console.error('add faild', err);
+      // 토스트 띄워줘야 함
+      alert(err.message);
+      member && removeMember(member.id);
+    }
     document.getElementById('memberList').scroll({ top: 9999, behavior: 'smooth' });
   }
 
   async onUpdate({ id, name }) {
-    await this.preventDuplicatedName(name, async () => {
+    const originalMember = getMemberById(id);
+
+    try {
+      await this.preventDuplicatedName(name);
+
       const uid = getUID();
-      const originalMember = getMemberById(id);
       const updatedMember = { ...originalMember, id, name };
 
       updateMember(updatedMember);
 
-      try {
-        if (uid) {
-          await updateMemberOnServer(uid, updatedMember);
-        } else {
-          updateMemberOnLocal(updatedMember);
-        }
-      } catch (err) {
-        console.log('update faild', err);
-        // 토스트 띄워줘야 함
-        alert(err.message);
-        updateMember(originalMember);
+      if (uid) {
+        await updateMemberOnServer(uid, updatedMember);
+      } else {
+        updateMemberOnLocal(updatedMember);
       }
-    });
+    } catch (err) {
+      console.error('update faild', err);
+      // 토스트 띄워줘야 함
+      alert(err.message);
+      updateMember(originalMember);
+    }
   }
 
   async onRemove() {
-    const { removeMemberId: id } = this.state;
-    inactivateMember(id);
+    const id = this.state.removeMemberId;
 
-    const uid = getUID();
-    const member = getMemberById(id);
-    const isIncludedInRecord = checkMemberIncludedInRecords(id);
     try {
+      inactivateMember(id);
+
+      const uid = getUID();
+      const member = getMemberById(id);
+      const isIncludedInRecord = checkMemberIncludedInRecords(id);
       if (uid) {
         isIncludedInRecord ? await updateMemberOnServer(uid, member) : await deleteMemberOnServer(uid, id);
       } else {
         isIncludedInRecord ? updateMemberOnLocal(member) : deleteMemberOnLocal(id);
       }
     } catch (err) {
-      console.log('remove faild', err);
+      console.error('remove faild', err);
       // 토스트 띄워줘야 함
       alert(err.message);
       activateMember(id);

@@ -246,6 +246,7 @@ export class Result extends Component {
       alert('Successfully saved!');
     } catch (err) {
       console.log(err);
+      alert(err.message);
       removeRecord(record.id);
     }
   }

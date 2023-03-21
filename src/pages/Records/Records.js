@@ -40,13 +40,13 @@ export class Records extends Component {
   async removeRecord() {
     const id = this.state.recordId;
     const { record } = getRecordById(id);
-    console.log(record);
     removeRecord(id);
     try {
       const uid = getUID();
       uid ? await deleteRecordOnServer(uid, id) : deleteRecordOnLocal(id);
     } catch (err) {
       console.log(err);
+      alert(err.message);
       addRecord(record);
     }
   }
