@@ -23,9 +23,10 @@ const getUID = () => getGlobalState().uid;
 
 const getOrganization = () => getGlobalState().organization;
 
-const setUserAndOrganization = ({ userId, user, organization }) => {
+const setUserAndOrganization = ({ uid, userId, user, organization }) => {
   setGlobalState(prevState => ({
     ...prevState,
+    uid,
     userId,
     user,
     organization,

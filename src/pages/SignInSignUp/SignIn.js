@@ -20,8 +20,6 @@ export class SignIn extends Component {
     e.preventDefault();
 
     try {
-      updateOrganizationOnLocal(getOrganization());
-
       const payload = [...new FormData(e.target)].reduce(
         // eslint-disable-next-line no-return-assign, no-sequences
         (obj, [key, value]) => ((obj[key] = value), obj),
