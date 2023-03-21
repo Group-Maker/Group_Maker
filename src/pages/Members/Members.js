@@ -119,8 +119,9 @@ export class Members extends Component {
       return;
     }
     await this.preventDuplicatedName(name, async () => {
-      const uid = getUID();
       addMember(name);
+
+      const uid = getUID();
       const member = getMemberByName(name);
       try {
         if (uid) {
@@ -142,7 +143,9 @@ export class Members extends Component {
       const uid = getUID();
       const originalMember = getMemberById(id);
       const updatedMember = { ...originalMember, id, name };
+
       updateMember(updatedMember);
+
       try {
         if (uid) {
           await updateMemberOnServer(uid, updatedMember);
@@ -152,27 +155,30 @@ export class Members extends Component {
       } catch (err) {
         console.log('update faild', err);
         // 토스트 띄워줘야 함
+        alert(err.message);
         updateMember(originalMember);
       }
     });
   }
 
   async onRemove() {
-    const { removeMemberId } = this.state;
-    inactivateMember(removeMemberId);
+    const { removeMemberId: id } = this.state;
+    inactivateMember(id);
 
     const uid = getUID();
-    const member = getMemberById(removeMemberId);
+    const member = getMemberById(id);
+    const isIncludedInRecord = checkMemberIncludedInRecords(id);
     try {
       if (uid) {
-        await updateMemberOnServer(uid, member);
+        isIncludedInRecord ? await updateMemberOnServer(uid, member) : await deleteMemberOnServer(uid, id);
       } else {
-        updateMemberOnLocal(member);
+        isIncludedInRecord ? updateMemberOnLocal(member) : deleteMemberOnLocal(id);
       }
     } catch (err) {
       console.log('remove faild', err);
       // 토스트 띄워줘야 함
-      activateMember(removeMemberId);
+      alert(err.message);
+      activateMember(id);
     }
   }
 
