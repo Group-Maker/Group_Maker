@@ -1,15 +1,22 @@
-import { getOrganization } from '../state';
+export const ORGANIZATION_KEY = 'organization';
+export const ONBOARDING_KEY = 'isOnboarding';
 
-const KEY = 'organization';
+export class LocalStorage {
+  constructor(key) {
+    this.key = key;
+  }
 
-const storeOnLocalStorage = () => {
-  const serialized = JSON.stringify(getOrganization());
-  localStorage.setItem(KEY, serialized);
-};
+  getItem() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(this.key));
+      return parsed;
+    } catch (err) {
+      throw new Error('localStorage parsing error');
+    }
+  }
 
-const loadFromLocalStorage = () => {
-  const serialized = localStorage.getItem(KEY);
-  return JSON.parse(serialized);
-};
-
-export { storeOnLocalStorage, loadFromLocalStorage };
+  setItem(value) {
+    const serialized = JSON.stringify(value);
+    localStorage.setItem(this.key, serialized);
+  }
+}

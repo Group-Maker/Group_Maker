@@ -1,4 +1,4 @@
-import { updateEventHandlers } from './eventHandler';
+import { ComponentTree } from './ComponentTree';
 
 const reconciliation = ($virtualNode, $realNode) => {
   if ($virtualNode.nodeType !== $realNode.nodeType) {
@@ -67,10 +67,6 @@ const reconciliation = ($virtualNode, $realNode) => {
   }
 };
 
-let init = true;
-let $rootContainer = null;
-let RootComponentInstance = null;
-
 const createVirtualRoot = DOMStr => {
   const $temp = document.createElement('div');
   $temp.innerHTML = DOMStr;
@@ -80,27 +76,57 @@ const createVirtualRoot = DOMStr => {
   return $temp.firstElementChild;
 };
 
+let isInit = true;
+let $realRoot = null;
+let $virtualRoot = null;
+let RootComponentInstance = null;
+const componentTree = new ComponentTree();
+
 const render = ($container, componentInstance) => {
   let $real;
   let $virtual;
+  let $newVirtual;
+  const currentRootId = (componentInstance ?? RootComponentInstance).id;
 
-  if (init || !componentInstance) {
-    if (init) {
-      $rootContainer = $container;
+  if (isInit || !$container) {
+    if (isInit) {
+      $realRoot = $container;
+      $virtualRoot = $realRoot.cloneNode(false);
       RootComponentInstance = componentInstance;
-      init = false;
+      isInit = false;
     }
-    $real = $rootContainer;
-    $virtual = $real.cloneNode(false);
-    $virtual.innerHTML = RootComponentInstance.render();
+    $real = $realRoot;
+    $virtual = $virtualRoot;
+    $newVirtual = $virtual.cloneNode(false);
+    $newVirtual.innerHTML = RootComponentInstance.render();
   } else {
     $real = $container;
-    $virtual = createVirtualRoot(componentInstance.render());
+    $virtual = $virtualRoot.querySelector(`[data-component-id="${currentRootId}"]`);
+    $newVirtual = createVirtualRoot(componentInstance.render());
   }
+  // console.log('----------------render phase---------------------');
 
-  reconciliation($virtual, $real);
+  componentTree.trav(currentRootId, (_, componentId) => {
+    const isRemoved =
+      $newVirtual.dataset.componentId !== componentId &&
+      !$newVirtual.querySelector(`[data-component-id="${componentId}"]`);
+    if (isRemoved) {
+      componentTree.remove(componentId);
+    }
+  });
 
-  updateEventHandlers();
+  // virtualDOM 업데이트
+  $virtual.innerHTML = $newVirtual.innerHTML;
+
+  // 브라우저에 렌더링
+  reconciliation($newVirtual, $real);
+  // console.log('----------------commit phase---------------------');
+
+  // 컴포넌트 트리를 순회하며 업데이트한다 - 현재 컴포넌트 트리와 DOM트리는 동기화된 상태이다
+  // 처음 생성된 컴포넌트는 didMount함수를 호출하고 이벤트 핸들러를 등록한다
+  // 나머지 컴포넌트는 didUpdate를 호출한다
+  componentTree.trav(currentRootId, componentTree.update);
+  // console.log('-------------------------------------');
 };
 
-export default render;
+export { render, componentTree };

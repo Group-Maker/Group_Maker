@@ -1,11 +1,15 @@
 {
   "name": "group_maker",
   "version": "1.0.0",
-  "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를만들어주는 프로그램입니다",
+  "description": "여러 번의 팀프로젝트가 필요한 상황에서 **이전과 최대한 겹치지 않게** 새로운 조를 만들어주는 프로그램입니다",
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "rm -rf dist && webpack"
+    "build": "vite build",
+    "dev": "run-p watch:*",
+    "watch:client": "vite dev --open",
+    "watch:server": "NODE_ENV=development nodemon server",
+    "preview": "vite preview --port 8080 --open"
   },
   "repository": {
     "type": "git",
@@ -39,13 +43,14 @@
     "npm-run-all": "^4.1.5",
     "prettier": "2.7.1",
     "style-loader": "^3.3.1",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "netlify-cli": "^12.2.6"
+    "vite": "^4.1.4",
+    "vite-plugin-env-compatible": "^1.1.1"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.19.4",
+    "@google-cloud/storage": "^6.9.3",
     "axios": "^1.1.2",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.25.5",
     "cors": "^2.8.5",
@@ -56,7 +61,7 @@
     "mongodb": "^4.12.0"
   },
   "engines": {
-    "node": "18.12.1",
+    "node": "^18.12.1 || ^16.18.0",
     "npm": "8.19.2"
   }
 }

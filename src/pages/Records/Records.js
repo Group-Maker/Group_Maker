@@ -1,10 +1,12 @@
-import { Component } from '../../../library/CBD/index.js';
-import MainLayout from '../../components/MainLayout/MainLayout.js';
-import DeleteModal from '../../components/Modals/DeleteModal.js';
-import { removeRecord } from '../../state/index.js';
-import RecordList from './RecordList.js';
+import { Component } from '@@/CBD';
+import { MainLayout, DeleteModal } from '@/components';
+import { removeRecord, getUID, addRecord } from '@/state';
+import { RecordList } from './RecordList';
+import style from './Records.module.css';
+import { deleteRecordOnLocal, deleteRecordOnServer } from '../../apis/records';
+import { getRecordById } from '../../state';
 
-export default class Records extends Component {
+export class Records extends Component {
   constructor(props) {
     super(props);
 
@@ -22,19 +24,31 @@ export default class Records extends Component {
       <main class="main">
         <h2 class="title">Previous Records</h2>
         ${new RecordList({ openModal: this.openModal.bind(this) }).render()}
-        ${this.state.isModalOpen
-          ? new DeleteModal({
-              target: 'record',
-              onRemove: this.removeRecord.bind(this),
-              closeModal: this.closeModal.bind(this),
-            }).render()
-          : ''}
+        ${
+          this.state.isModalOpen
+            ? new DeleteModal({
+                target: 'record',
+                onRemove: this.removeRecord.bind(this),
+                closeModal: this.closeModal.bind(this),
+              }).render()
+            : ''
+        }
       </main>
     </div>`;
   }
 
-  removeRecord() {
-    removeRecord(this.state.recordId);
+  async removeRecord() {
+    const id = this.state.recordId;
+    const { record } = getRecordById(id);
+    removeRecord(id);
+    try {
+      const uid = getUID();
+      uid ? await deleteRecordOnServer(uid, id) : deleteRecordOnLocal(id);
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+      addRecord(record);
+    }
   }
 
   openModal(recordId) {

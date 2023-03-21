@@ -44,7 +44,9 @@
       }
     ],
     "import/no-extraneous-dependencies": ["off", { "devDependencies": true }],
-    "import/extensions": ["off"],
+    "import/no-unresolved": 0,
+    "import/extensions": "never",
+    "import/prefer-default-export": ["off"],
     "max-len": [
       "error",
       {

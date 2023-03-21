@@ -16,7 +16,7 @@ const forEachPair = (array, callback) => {
 const updateWeights = (round, weights) => {
   for (const group of round) {
     forEachPair(group, (a, b) => {
-      if (a !== null && b !== null) {
+      if (a !== null && b !== null && weights[a] !== undefined && weights[b] !== undefined) {
         weights[b][a] = weights[a][b] + 1;
         weights[a][b] = weights[b][a];
       }
@@ -25,13 +25,16 @@ const updateWeights = (round, weights) => {
 };
 
 // 초기값(0)으로 가중치 배열 생성한 뒤 누적 라운드 순회하며 가중치 업데이트 후 반환
-const initWeights = (totalPeopleNum, records) => {
-  const weights = _.range(totalPeopleNum).map(() => _.range(totalPeopleNum).fill(0));
+const initWeights = (records, peopleArr) => {
+  const rowEntries = peopleArr.map(id => [id, 0]);
+  const rowObject = Object.fromEntries(rowEntries);
+  const entries = peopleArr.map(id => [id, { ...rowObject }]);
+  const weights = Object.fromEntries(entries);
   records.forEach(record => updateWeights(record, weights));
   return weights;
 };
 
-const solver = ({ records, groupNum, peopleArr, totalPeopleNum, forbiddenPairs }) => {
+const solver = ({ records, groupNum, peopleArr, forbiddenPairs }) => {
   // 빈 공간 채우도록 초기화
   while (peopleArr.length % groupNum !== 0) {
     peopleArr.push(null);
@@ -120,7 +123,7 @@ const solver = ({ records, groupNum, peopleArr, totalPeopleNum, forbiddenPairs }
 
   // 현재까지 누적된 rounds를 기준으로 weights 산출
   let roundScore = 0;
-  const weights = initWeights(totalPeopleNum, records);
+  const weights = initWeights(records, peopleArr);
   let topOptions = _.range(5).map(() => getScoredRound(generateValidRound(groupNum), weights));
 
   let generation = 0;

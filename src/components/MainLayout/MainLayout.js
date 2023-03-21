@@ -1,20 +1,34 @@
-import axios from 'axios';
-import { Component } from '../../../library/CBD/index.js';
-import { Link, navigate } from '../../../library/SPA-router/index.js';
-import Nav from './Nav.js';
-import { getUser, setUserAndOrganization } from '../../state/index.js';
-import { loadFromLocalStorage } from '../../utils/localStorage.js';
-import storeOnServer from '../../api/index.js';
+import { Component } from '@@/CBD';
+import { Link, navigate } from '@@/SPA-router';
+import { enableOnboarding, getUser, setUserAndOrganization } from '@/state';
+import { getOrganizationOnLocal, signOut } from '@/apis';
+import { ONBOARDING_ID, ROUTE_PATH } from '@/constants';
+import Nav from './Nav';
 import style from './MainLayout.module.css';
 import 'boxicons';
 
-export default class MainLayout extends Component {
+export class MainLayout extends Component {
   constructor(props) {
     super(props);
     this.linkInfo = [
-      { path: '/', classNames: [style.membersLink], content: 'MANAGE MEMBERS' },
-      { path: '/records', classNames: [style.recordsLink], content: 'PREVIOUS RECORDS' },
-      { path: '/newgroup', classNames: [style.newgroupLink], content: `MAKE<br />NEW GROUP` },
+      {
+        path: ROUTE_PATH.members,
+        classNames: [style.membersLink],
+        content: 'MANAGE MEMBERS',
+        onboardingId: ONBOARDING_ID.MEMBERS_PAGE,
+      },
+      {
+        path: ROUTE_PATH.records,
+        classNames: [style.recordsLink],
+        content: 'PREVIOUS RECORDS',
+        onboardingId: ONBOARDING_ID.RECORDS_PAGE,
+      },
+      {
+        path: ROUTE_PATH.newgroup,
+        classNames: [style.newgroupLink],
+        content: `GENERATE<br />OPTIMAL GROUPS`,
+        onboardingId: ONBOARDING_ID.NEW_GROUP_PAGE,
+      },
     ];
   }
 
@@ -24,13 +38,13 @@ export default class MainLayout extends Component {
     // prettier-ignore
     return `
       <section class="${style.container}">
-        <h1 class="${style.title}">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
-        <p class="${
-          style.description
-        }">We make a group<br>where you can be with<br>new people.</p>
-        ${user 
-          ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>` 
-          : new Link({ path: '/signin', content: 'SIGN IN', classNames: [style.signInLink] }).render()}
+        <h1 class="logoLink">${new Link({ path: ROUTE_PATH.members, content: 'OPTIMAL<br/ >GROUP<br/ >GENERATOR' }).render()}</h1>
+        <p class="${style.description}">We generate groups<br>where everyone can be<br>with new people.</p>
+         ${
+           user
+             ? `<button type="button" class="${style.signOutBtn}">SIGN OUT</button>`
+             : new Link({ path: ROUTE_PATH.signin, content: 'SIGN IN', classNames: [style.signInLink] }).render()
+         }
         ${new Nav({ linkInfo: this.linkInfo }).render()}
         <ul class="${style.subMenu}">
           <li>
@@ -48,8 +62,8 @@ export default class MainLayout extends Component {
             </a>
           </li>
           <li>
-            <button type="button" class="${style.settingBtn}">
-              <box-icon class="${style.icon}" name="cog"></box-icon>
+            <button type="button" class="${style.settingBtn}" data-onboarding-id="${ONBOARDING_ID.HELP}">
+              <box-icon class="${style.icon}" name="help-circle"></box-icon>
             </button>
           </li>
         </ul>
@@ -58,12 +72,13 @@ export default class MainLayout extends Component {
 
   async signout() {
     try {
-      storeOnServer();
-      await axios.get('/auth/signout');
-      const organization = loadFromLocalStorage();
+      await signOut();
+
+      const organization = getOrganizationOnLocal();
       setUserAndOrganization({
-        user: null,
+        uid: null,
         userId: null,
+        user: null,
         organization,
       });
       navigate('/');
@@ -78,6 +93,11 @@ export default class MainLayout extends Component {
         type: 'click',
         selector: `.${style.signOutBtn}`,
         handler: this.signout.bind(this),
+      },
+      {
+        type: 'click',
+        selector: `.${style.settingBtn}`,
+        handler: enableOnboarding,
       },
     ];
   }

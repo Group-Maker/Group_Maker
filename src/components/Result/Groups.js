@@ -1,19 +1,21 @@
-import { Component } from '../../../library/CBD/index.js';
-import { getMemberNameById } from '../../state/index.js';
-import style from '../../pages/NewGroup/Result.module.css';
+import { Component } from '@@/CBD';
+import { getMemberNameById } from '@/state';
+import style from '@/pages/NewGroup/Result.module.css';
 
-export default class Groups extends Component {
+export class Groups extends Component {
   DOMStr() {
-    const { result } = this.props;
+    const { groupArr } = this.props;
     // prettier-ignore
     return `
-      <div>
-        ${result.map(group => `
-          <div class="${style.dropContainer} ${style.group}">
+      <div class="${style.groups}">
+        ${groupArr.map((group, i) => `
+          <div class="dropzone ${style.group}" data-list-id="${i}">
+            <ul class="${style.memberList}">
             ${group.map(id => `
-              <div class="${style.member}" data-list-id="${id}" draggable="true">
+              <li class="draggable ${style.member}" data-list-id="${id}" draggable="true">
                 ${getMemberNameById(id)}
-              </div>`).join('')}
+              </li>`).join('')}
+            </ul>
           </div>`).join('')}
       </div>`;
   }

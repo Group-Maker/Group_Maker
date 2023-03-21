@@ -1,12 +1,11 @@
-import axios from 'axios';
-import { Component } from '../../../library/CBD/index.js';
-import { Link, navigate } from '../../../library/SPA-router/index.js';
-import { setUserAndOrganization } from '../../state/index.js';
-import { storeOnLocalStorage } from '../../utils/localStorage.js';
-import { signInSchema } from './schema.js';
+import { Component } from '@@/CBD';
+import { Link, navigate } from '@@/SPA-router';
+import { getOrganization, setUserAndOrganization } from '@/state';
+import { signIn, updateOrganizationOnLocal } from '@/apis';
+import { ROUTE_PATH } from '@/constants';
+import { signInSchema } from './schema';
 import style from './SignInSignUp.module.css';
-
-export default class signIn extends Component {
+export class SignIn extends Component {
   constructor(props) {
     super(props);
 
@@ -20,18 +19,17 @@ export default class signIn extends Component {
   async signIn(e) {
     e.preventDefault();
 
-    storeOnLocalStorage();
-
-    const payload = [...new FormData(e.target)].reduce(
-      // eslint-disable-next-line no-return-assign, no-sequences
-      (obj, [key, value]) => ((obj[key] = value), obj),
-      {}
-    );
-
     try {
-      const { data: response } = await axios.post(`/auth/signin`, payload);
-      const { user, userId, organization } = response;
-      setUserAndOrganization({ user, userId, organization });
+      updateOrganizationOnLocal(getOrganization());
+
+      const payload = [...new FormData(e.target)].reduce(
+        // eslint-disable-next-line no-return-assign, no-sequences
+        (obj, [key, value]) => ((obj[key] = value), obj),
+        {}
+      );
+
+      const { uid, userId, user, organization } = await signIn(payload);
+      setUserAndOrganization({ uid, userId, user, organization });
       navigate('/');
     } catch (err) {
       // TODO: 로그인 실패시 입력창을 비워줄지 결정 필요
@@ -50,7 +48,7 @@ export default class signIn extends Component {
     // prettier-ignore
     return `
       <div class="${style.container}">
-        <h1 class="title">${new Link({ path: '/', content: 'GROUP MAKER' }).render()}</h1>
+        <h1 class="title">${new Link({ path: ROUTE_PATH.members, content: 'GROUP MAKER' }).render()}</h1>
         <form class="${style.signInForm}">
           <h2 class="${style.subTitle}">SIGN IN</h2>
           <div class="${style.inputWrapper}">
@@ -80,7 +78,7 @@ export default class signIn extends Component {
             <button class="submit-btn ${style.submitBtn}" ${
               isuserIdValid && isPasswordValid ? '' : 'disabled'
             }>SIGN IN</button>
-            ${new Link({ path: '/signup', content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
+            ${new Link({ path: ROUTE_PATH.signup, content: 'Join us', classNames: ['switchSignInSignUp', style.link] }).render()}
           </div>
         </form>
       </div>`;

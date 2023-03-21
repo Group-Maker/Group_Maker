@@ -1,4 +1,4 @@
-import render from './render.js';
+import { render } from './render';
 
 // const hooks = [];
 // let hookIdx = 0;
@@ -43,6 +43,10 @@ const useGlobalState = initialState => {
 
   const getState = () => state;
   const setState = nextState => {
+    if (nextState === state) {
+      return;
+    }
+
     state = typeof nextState === 'function' ? nextState(state) : nextState;
 
     // resetHookIdx();
