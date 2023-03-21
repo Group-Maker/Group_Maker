@@ -8,7 +8,7 @@ export const addRecordOnServer = async (uid, record) => {
 };
 
 export const addRecordOnLocal = record => {
-  const organization = organizationStorage.getItem();
+  const organization = organizationStorage.getItem() ?? getInitialState().organization;
   organizationStorage.setItem({
     ...organization,
     records: [...organization.records, record],
@@ -20,7 +20,7 @@ export const deleteRecordOnServer = async (uid, id) => {
 };
 
 export const deleteRecordOnLocal = id => {
-  const organization = organizationStorage.getItem();
+  const organization = organizationStorage.getItem() ?? getInitialState().organization;
   organizationStorage.setItem({
     ...organization,
     records: organization.records.filter(record => record.id !== id),

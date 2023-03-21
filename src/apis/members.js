@@ -1,5 +1,6 @@
 import { axiosWithRetry } from '@/utils';
 import { LocalStorage, ORGANIZATION_KEY } from '@/utils/localStorage';
+import { getInitialState } from '@/state';
 
 const organizationStorage = new LocalStorage(ORGANIZATION_KEY);
 
@@ -8,7 +9,7 @@ export const addMemberOnServer = async (uid, member) => {
 };
 
 export const addMemberOnLocal = member => {
-  const organization = organizationStorage.getItem();
+  const organization = organizationStorage.getItem() ?? getInitialState().organization;
   organizationStorage.setItem({
     ...organization,
     members: [...organization.members, member],
@@ -20,7 +21,7 @@ export const updateMemberOnServer = async (uid, member) => {
 };
 
 export const updateMemberOnLocal = member => {
-  const organization = organizationStorage.getItem();
+  const organization = organizationStorage.getItem() ?? getInitialState().organization;
   organizationStorage.setItem({
     ...organization,
     members: organization.members.map(existingMember => (existingMember.id === member.id ? member : existingMember)),
@@ -32,7 +33,7 @@ export const deleteMemberOnServer = async (uid, id) => {
 };
 
 export const deleteMemberOnLocal = id => {
-  const organization = organizationStorage.getItem();
+  const organization = organizationStorage.getItem() ?? getInitialState().organization;
   organizationStorage.setItem({
     ...organization,
     members: organization.members.filter(member => member.id !== id),

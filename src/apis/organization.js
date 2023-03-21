@@ -13,7 +13,7 @@ export const getOrganizationOnServer = async uid => {
 };
 export const getOrganizationOnLocal = () => {
   try {
-    const organization = organizationStorage.getItem();
+    const organization = organizationStorage.getItem() ?? getInitialState().organization;
     return organization;
   } catch (err) {
     return null;
