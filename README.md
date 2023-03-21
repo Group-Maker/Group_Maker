@@ -6,7 +6,7 @@
 
 <p align=center>여러 번의 팀프로젝트에서 <b>모두가 최대한 새로운 사람과 만날 수 있도록</b> 조를 편성해주는 웹사이트입니다.</p>
 
-<p align=center><a href="https://group-maker-vanillajs.herokuapp.com/">✨ Group Maker ✨</a><p>
+<p align=center><a href="https://www.optimal-group-generator.com/">✨ Group Maker ✨</a><p>
 
 <br>
 <br>
