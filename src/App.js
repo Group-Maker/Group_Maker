@@ -9,6 +9,7 @@ import {
   getOrganizationOnServer,
   updateOrganizationOnServer,
   updateOrganizationOnLocal,
+  getUserInfo,
 } from '@/apis';
 import {
   getInitialState,
@@ -22,7 +23,6 @@ import {
   isOnboarding,
 } from '@/state';
 import './App.module.css';
-import { getUserInfo } from './apis/auth';
 
 const routes = [
   { path: ROUTE_PATH.members, component: Members },

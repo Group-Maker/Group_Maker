@@ -1,10 +1,8 @@
 import { Component } from '@@/CBD';
 import { MainLayout, DeleteModal } from '@/components';
-import { removeRecord, getUID, addRecord } from '@/state';
+import { removeRecord, getUID, addRecord, getRecordById } from '@/state';
+import { deleteRecordOnLocal, deleteRecordOnServer } from '@/apis';
 import { RecordList } from './RecordList';
-import style from './Records.module.css';
-import { deleteRecordOnLocal, deleteRecordOnServer } from '../../apis/records';
-import { getRecordById } from '../../state';
 
 export class Records extends Component {
   constructor(props) {
