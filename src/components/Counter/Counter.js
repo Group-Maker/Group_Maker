@@ -5,7 +5,7 @@ export class Counter extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { count: 1 };
+    this.state = { count: this.props.count };
   }
 
   DOMStr() {

@@ -24,6 +24,7 @@ export class NewGroup extends Component {
         <main class="main">
           ${this.state.currentView === 'selectGroupCnt'
             ? new SelectGroupCnt({
+                count: this.state.groupCnt,
                 createManualGroup: this.createManualGroup.bind(this),
                 createOptimizedGroup: this.createOptimizedGroup.bind(this),
               }).render()
