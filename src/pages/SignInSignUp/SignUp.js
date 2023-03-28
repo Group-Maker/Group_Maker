@@ -2,7 +2,8 @@ import { Component } from '@@/CBD';
 import { Link } from '@@/SPA-router';
 import { SignupModal } from '@/components';
 import { ROUTE_PATH } from '@/constants';
-import { signUp } from '@/apis';
+import { checkDuplicatedId, signUp } from '@/apis';
+import { sanitize } from '@/utils';
 import { signUpSchema } from './schema.js';
 import style from './SignInSignUp.module.css';
 import 'boxicons';
@@ -37,7 +38,7 @@ export class SignUp extends Component {
 
     const payload = [...new FormData(e.target)].reduce(
       // eslint-disable-next-line no-return-assign, no-sequences
-      (obj, [key, value]) => ((obj[key] = value), obj),
+      (obj, [key, value]) => ((obj[key] = sanitize(value)), obj),
       {}
     );
 

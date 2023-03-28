@@ -1,10 +1,12 @@
 import { Component } from '@@/CBD';
 import { Link, navigate } from '@@/SPA-router';
-import { getOrganization, setUserAndOrganization } from '@/state';
-import { signIn, updateOrganizationOnLocal } from '@/apis';
+import { setUserAndOrganization } from '@/state';
+import { signIn } from '@/apis';
 import { ROUTE_PATH } from '@/constants';
+import { sanitize } from '@/utils';
 import { signInSchema } from './schema';
 import style from './SignInSignUp.module.css';
+
 export class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,7 @@ export class SignIn extends Component {
     try {
       const payload = [...new FormData(e.target)].reduce(
         // eslint-disable-next-line no-return-assign, no-sequences
-        (obj, [key, value]) => ((obj[key] = value), obj),
+        (obj, [key, value]) => ((obj[key] = sanitize(value)), obj),
         {}
       );
 

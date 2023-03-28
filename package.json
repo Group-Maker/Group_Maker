@@ -58,10 +58,10 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "loadsh": "^0.0.4",
-    "mongodb": "^4.12.0"
+    "mongodb": "^4.12.0",
+    "sanitize-html": "^2.10.0"
   },
   "engines": {
-    "node": "^18.12.1 || ^16.18.0",
-    "npm": "8.19.2"
+    "node": "^v18.12.1 || ^v16.18.0"
   }
 }
