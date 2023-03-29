@@ -4,6 +4,7 @@ import { Members, Groups } from '@/components';
 import { addRecord, getActiveMembers, getRecords, getUID, removeRecord } from '@/state';
 import { addRecordOnLocal, addRecordOnServer } from '@/apis';
 import style from './Result.module.css';
+import 'boxicons';
 
 export class Result extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ export class Result extends Component {
     const { memberArr, groupArr } = this.state;
 
     // prettier-ignore
-    return `
+    return /* html */ `
       <div class="${style.container}">
         <h2 class="title">Result</h2>
         <div class="${style.innerContainer}">
@@ -54,6 +55,9 @@ export class Result extends Component {
             <button class="${style.save}">SAVE</button>
           </div>
         </div>
+        <button class="${style.backwardButton}">
+          <box-icon class="${style.backwardIcon}" name='arrow-back'></box-icon>
+        </button>
       </div>`;
   }
 
@@ -68,6 +72,11 @@ export class Result extends Component {
         type: 'click',
         selector: `.${style.save}`,
         handler: this.saveRecord.bind(this),
+      },
+      {
+        type: 'click',
+        selector: `.${style.backwardButton}`,
+        handler: this.props.returnToSelectCount,
       },
       {
         type: 'dragstart',

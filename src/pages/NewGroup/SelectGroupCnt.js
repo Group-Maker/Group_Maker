@@ -9,7 +9,7 @@ export class SelectGroupCnt extends Component {
     super(props);
 
     this.memberCnt = getActiveMembers().length;
-    this.groupCounter = new Counter({ minCount: 1, maxCount: this.memberCnt });
+    this.groupCounter = new Counter({ count: this.props.count, minCount: 1, maxCount: this.memberCnt });
   }
 
   // prettier-ignore
