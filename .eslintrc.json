@@ -45,7 +45,7 @@
     ],
     "import/no-extraneous-dependencies": ["off", { "devDependencies": true }],
     "import/no-unresolved": 0,
-    "import/extensions": "never",
+    "import/extensions": 0,
     "import/prefer-default-export": ["off"],
     "max-len": [
       "error",
