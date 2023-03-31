@@ -26,7 +26,7 @@ export class SelectGroupCnt extends Component {
             <p class="${style.msg} ${this.memberCnt ? '' : style.errorMsg}">There are currently ${
               this.memberCnt
             } members.<br>${noMember ? 'Create member before make group!' : 'How many groups do you want?'}</p>
-            ${new Counter({ count: this.props.count, minCount: 1, maxCount: this.memberCnt }).render()}
+            ${new Counter({ count: this.props.count, minCount: 1, maxCount: this.memberCnt, setGroupCnt: this.props.setGroupCnt }).render()}
             <div class="${style.btnContainer}">
               <button class="${style.optimizedGroupBtn}" ${noMember ? 'disabled' : ''} data-onboarding-id="${
                 ONBOARDING_ID.OPTIMAL_GENERATE

@@ -27,6 +27,7 @@ export class NewGroup extends Component {
             ? new SelectGroupCnt({
                 isLoading: this.state.isLoading,
                 count: this.state.groupCnt,
+                setGroupCnt: this.setGroupCnt.bind(this),
                 createManualGroup: this.createManualGroup.bind(this),
                 createOptimizedGroup: this.createOptimizedGroup.bind(this),
               }).render()
@@ -38,6 +39,13 @@ export class NewGroup extends Component {
               }).render()}
         </main>
       </div>`;
+  }
+
+  setGroupCnt(newGroupCnt) {
+    this.setState({
+      ...this.state,
+      groupCnt: newGroupCnt,
+    });
   }
 
   async createOptimizedGroup(groupCnt) {
@@ -62,6 +70,8 @@ export class NewGroup extends Component {
 
     const result = await asyncSolver();
     const { newRecord } = result;
+
+    // const { newRecord } = solver(data);
 
     this.setState({
       isLoading: false,
