@@ -10,6 +10,7 @@ export class NewGroup extends Component {
     super(props);
 
     this.state = {
+      isLoading: false,
       result: null,
       groupCnt: 1,
       currentView: 'selectGroupCnt',
@@ -24,11 +25,13 @@ export class NewGroup extends Component {
         <main class="main">
           ${this.state.currentView === 'selectGroupCnt'
             ? new SelectGroupCnt({
+                isLoading: this.state.isLoading,
                 count: this.state.groupCnt,
                 createManualGroup: this.createManualGroup.bind(this),
                 createOptimizedGroup: this.createOptimizedGroup.bind(this),
               }).render()
             : new Result({
+                isLoading: this.state.isLoading,
                 resultState: this.state,
                 resetGroup: this.resetGroup.bind(this),
                 returnToSelectCount: this.returnToSelectCount.bind(this),
@@ -37,16 +40,31 @@ export class NewGroup extends Component {
       </div>`;
   }
 
-  createOptimizedGroup(groupCnt) {
+  async createOptimizedGroup(groupCnt) {
     const data = {
       records: getRecords().map(({ record }) => record),
       groupNum: groupCnt,
       peopleArr: getActiveMembers().map(member => member.id),
       forbiddenPairs: [],
     };
-    const { newRecord } = solver(data);
 
     this.setState({
+      ...this.state,
+      isLoading: true,
+    });
+
+    const asyncSolver = () =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          resolve(solver(data));
+        }, 0);
+      });
+
+    const result = await asyncSolver();
+    const { newRecord } = result;
+
+    this.setState({
+      isLoading: false,
       result: newRecord,
       groupCnt,
       currentView: 'autoResult',
