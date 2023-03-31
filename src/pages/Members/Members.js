@@ -100,7 +100,7 @@ export class Members extends Component {
       uid ? await deleteMemberOnServer(uid, id) : deleteMemberOnLocal(id);
       removeMember(id);
     } catch (err) {
-      console.log('Delete duplicated name error');
+      console.error('Delete duplicated name error');
       throw new Error('Network Error. Please check network connection');
     }
   }
