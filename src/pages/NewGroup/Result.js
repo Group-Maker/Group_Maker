@@ -38,22 +38,27 @@ export class Result extends Component {
       <div class="${style.container}">
         <h2 class="title">Result</h2>
         <div class="${style.innerContainer}">
-          <pre class="${style.guide}">Drag and drop members to each group.</pre>
-          <div class="${style.memberList}">
-            <h3 class="${style.subTitle}">MemberList</h3>
-            <div class="dropzone ${style.members}">
-              ${new Members({ memberArr }).render()}
+        ${
+          this.props.isLoading
+            ? /* html */ `<span class="${style.loadingMsg}">generating groups...</span>`
+            : /* html */ `
+            <pre class="${style.guide}">Drag and drop members to each group.</pre>
+            <div class="${style.memberList}">
+              <h3 class="${style.subTitle}">MemberList</h3>
+              <div class="dropzone ${style.members}">
+                ${new Members({ memberArr }).render()}
+              </div>
             </div>
-          </div>
-          ${new Groups({ groupArr }).render()}
-          <div class="${style.buttons}">
-            ${
-              currentView === 'autoResult'
-                ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
-                : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`
-            }
-            <button class="${style.save}">SAVE</button>
-          </div>
+            ${new Groups({ groupArr }).render()}
+            <div class="${style.buttons}">
+              ${
+                currentView === 'autoResult'
+                  ? `<button type="button" class="resetBtn ${style.retry}">RETRY</button>`
+                  : `<button type="button" class="resetBtn ${style.reset}">RESET</button>`
+              }
+              <button class="${style.save}">SAVE</button>
+            </div>`
+        }
         </div>
         <button class="${style.backwardButton}">
           <box-icon class="${style.backwardIcon}" name='arrow-back'></box-icon>

@@ -17,6 +17,13 @@
   overflow-y: hidden;
 }
 
+.loadingMsg {
+  display: block;
+  margin: auto;
+  font-size: 2rem;
+  color: rgba(39, 50, 84, 0.8);
+}
+
 /* .result {
   position: absolute;
   margin-left: 27vw;
@@ -174,7 +181,7 @@
 
 .ghostContainer {
   position: absolute;
-  transform: translate3d(-9999px, 9999px, 0);
+  transform: translate3d(0, 9999px, 0);
 }
 
 .ghost {
