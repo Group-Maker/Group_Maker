@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -14,6 +15,13 @@
   gap: 1rem;
   align-items: center;
   overflow-y: hidden;
+}
+
+.loadingMsg {
+  display: block;
+  margin: auto;
+  font-size: 2rem;
+  color: rgba(39, 50, 84, 0.8);
 }
 
 /* .result {
@@ -173,10 +181,34 @@
 
 .ghostContainer {
   position: absolute;
-  transform: translate3d(-9999px, 9999px, 0);
+  transform: translate3d(0, 9999px, 0);
 }
 
 .ghost {
   opacity: 1;
   transform: rotate(12deg);
+}
+
+.backwardButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 50%;
+  fill: rgba(247, 247, 247);
+}
+
+.backwardButton:hover {
+  fill: rgba(90, 90, 90, 0.8);
+}
+
+.backwardIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.container button {
+  transition: all 0.1s;
 }

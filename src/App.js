@@ -9,6 +9,7 @@ import {
   getOrganizationOnServer,
   updateOrganizationOnServer,
   updateOrganizationOnLocal,
+  getUserInfo,
 } from '@/apis';
 import {
   getInitialState,
@@ -22,7 +23,6 @@ import {
   isOnboarding,
 } from '@/state';
 import './App.module.css';
-import { getUserInfo } from './apis/auth';
 
 const routes = [
   { path: ROUTE_PATH.members, component: Members },
@@ -42,10 +42,6 @@ export default class App extends Component {
     // 1. 비동기 처리가 어떤 흐름으로 이어지는지 (await을 쓰느냐 마느냐)
     // 1-1. await을 쓰려면 래퍼함수로 한 번 감싸야 하는데, 그 경우에 this바인딩은 어떻게 되나
     // 2. 저장에 실패하는 경우에 대한 fallback 처리를 어떻게 할건지
-
-    document.addEventListener('visibilitychange', e => {
-      console.log(document.visibilityState);
-    });
   }
 
   didUpdate() {

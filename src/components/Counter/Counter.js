@@ -2,32 +2,26 @@ import { Component } from '@@/CBD';
 import style from './Counter.module.css';
 
 export class Counter extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { count: 1 };
-  }
-
   DOMStr() {
     const { minCount, maxCount } = this.props;
     return `
       <div class=${style.container}>
-        <button class="${style.decreaseBtn}" ${this.state.count <= minCount ? 'disabled' : ''}>-</button>
-        <div class="counter ${style.count}">${this.state.count}</div>
-        <button class="${style.increaseBtn}" ${this.state.count >= maxCount ? 'disabled' : ''}>+</button>
+        <button class="${style.decreaseBtn}" ${this.props.count <= minCount ? 'disabled' : ''}>-</button>
+        <div class="counter ${style.count}">${this.props.count}</div>
+        <button class="${style.increaseBtn}" ${this.props.count >= maxCount ? 'disabled' : ''}>+</button>
       </div>`;
   }
 
   decrease() {
-    this.setState({ count: this.state.count - 1 });
+    this.props.setGroupCnt(this.props.count - 1);
   }
 
   increase() {
-    this.setState({ count: this.state.count + 1 });
+    this.props.setGroupCnt(this.props.count + 1);
   }
 
   getCount() {
-    return this.state.count;
+    return this.props.count;
   }
 
   setEvent() {

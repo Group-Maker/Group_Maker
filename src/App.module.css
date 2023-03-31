@@ -24,7 +24,10 @@ body {
   font-family: 'Emelind', 'IBMPlexSansKR';
   /* position: absolute를 주지 않았을 때 Onboarding의 위치가 깨지는 경우 발생 */
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: #8bc6ec linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%);
   background-attachment: fixed;
 }
@@ -59,7 +62,10 @@ input {
 :global .mainContainer {
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  min-width: 65rem;
 }
 
 :global .main {
@@ -70,10 +76,8 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   background-color: rgba(247, 247, 247, 0.3);
   border-radius: 1rem;
-  margin: 2rem 2rem 2rem 0;
   padding: 2rem 2rem 2.5rem 2rem;
   overflow: hidden;
 }

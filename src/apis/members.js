@@ -1,5 +1,4 @@
-import { axiosWithRetry } from '@/utils';
-import { LocalStorage, ORGANIZATION_KEY } from '@/utils/localStorage';
+import { axiosWithRetry, LocalStorage, ORGANIZATION_KEY } from '@/utils';
 import { getInitialState } from '@/state';
 
 const organizationStorage = new LocalStorage(ORGANIZATION_KEY);

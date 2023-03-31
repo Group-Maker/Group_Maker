@@ -15,7 +15,7 @@ import {
   inactivateMember,
   removeMember,
   activateMember,
-} from '@/state';
+} from '@/state/index.js';
 import {
   addMemberOnLocal,
   addMemberOnServer,
@@ -24,6 +24,7 @@ import {
   deleteMemberOnLocal,
   deleteMemberOnServer,
 } from '@/apis';
+import { sanitize } from '@/utils';
 import style from './Members.module.css';
 
 export class Members extends Component {
@@ -99,24 +100,25 @@ export class Members extends Component {
       uid ? await deleteMemberOnServer(uid, id) : deleteMemberOnLocal(id);
       removeMember(id);
     } catch (err) {
-      console.log('Delete duplicated name error');
+      console.error('Delete duplicated name error');
       throw new Error('Network Error. Please check network connection');
     }
   }
 
   async onAdd(name) {
     let member;
+    const sanitizedName = sanitize(name);
 
     try {
       if (getActiveMembers().length >= 50) {
         throw new Error('You have reached the maximum number of members.');
       }
-      await this.preventDuplicatedName(name);
+      await this.preventDuplicatedName(sanitizedName);
 
-      addMember(name);
+      addMember(sanitizedName);
 
       const uid = getUID();
-      member = getMemberByName(name);
+      member = getMemberByName(sanitizedName);
 
       uid ? await addMemberOnServer(uid, member) : addMemberOnLocal(member);
     } catch (err) {
@@ -130,12 +132,13 @@ export class Members extends Component {
 
   async onUpdate({ id, name }) {
     const originalMember = getMemberById(id);
+    const sanitizedName = sanitize(name);
 
     try {
-      await this.preventDuplicatedName(name);
+      await this.preventDuplicatedName(sanitizedName);
 
       const uid = getUID();
-      const updatedMember = { ...originalMember, id, name };
+      const updatedMember = { ...originalMember, id, name: sanitizedName };
 
       updateMember(updatedMember);
 
