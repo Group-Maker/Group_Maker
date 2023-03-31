@@ -181,7 +181,7 @@
 
 .ghostContainer {
   position: absolute;
-  transform: translate3d(-9999px, 9999px, 0);
+  transform: translate3d(0, 9999px, 0);
 }
 
 .ghost {
